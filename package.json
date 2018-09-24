@@ -1,0 +1,19 @@
+{
+  "name": "display-ui",
+  "version": "1.0.0",
+  "description": "An applicatio for display pictures and something else.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "umi dev",
+    "build": "umi build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "display"
+  ],
+  "author": "jiefang",
+  "license": "ISC",
+  "devDependencies": {
+    "umi": "^2.0.3"
+  }
+}
