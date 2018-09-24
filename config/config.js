@@ -2,14 +2,34 @@
 export default {
     singular: true,
 
-    routes: [{
-        path: '/',
-        component: './helloworld',
-    }],
-
     plugins: [
         ['umi-plugin-react', {
-        
+            antd: true, 
         }],    
+    ],
+
+    routes: [
+        {
+            path: '/',
+            component: '../layout',
+            routes: [
+                {
+                    path: '/',
+                    component: 'helloworld',
+                },            
+                {
+                    path: '/helloworld',
+                    component: 'helloworld',
+                },            
+                {
+                    path: '/dashboard',
+                    routes: [
+                        {path: '/dashboard/analysis', component: 'dashboard/analysis'},    
+                        {path: '/dashboard/monitor', component: 'dashboard/monitor'},    
+                        {path: '/dashboard/workplace', component: 'dashboard/workplace'}    
+                    ]
+                },
+            ],
+        }
     ],
 };
