@@ -5,6 +5,7 @@ export default {
     plugins: [
         ['umi-plugin-react', {
             antd: true, 
+            dva: true,
         }],    
     ],
 
@@ -28,6 +29,10 @@ export default {
                         {path: '/dashboard/monitor', component: 'dashboard/monitor'},    
                         {path: '/dashboard/workplace', component: 'dashboard/workplace'}    
                     ]
+                },
+                {
+                    path: '/gallery',
+                    component: './gallery.js'
                 },
             ],
         }
