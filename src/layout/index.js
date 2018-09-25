@@ -14,8 +14,10 @@ class BasicLayout extends Component {
                     <div style={{height: '32px', background: 'rgba(255, 255, 255, .2)', margin: '16px'}} />
                     <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
                         <Menu.Item key="1">
+                            <Link to="/helloworld">
                             <Icon type="pie-chart" />
-                            <span>hello world</span>
+                            hello world
+                            </Link>
                         </Menu.Item>
                         <SubMenu
                             key="sub1" 
