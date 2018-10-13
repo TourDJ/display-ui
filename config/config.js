@@ -34,7 +34,15 @@ export default {
                     path: '/gallery',
                     component: './gallery.js'
                 },
+                { path: 'list', component: '../page/list'},
             ],
         }
     ],
+
+    proxy: {
+        '/display': {
+            target: 'http://localhost:8020',
+            changeOrigin: true,
+        },
+    },
 };

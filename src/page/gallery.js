@@ -13,23 +13,27 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onClickAdd: (newPicture) => {
-            const action = {
-                type: `${namespace}/addNewPicture`,
-                payload: newPicture,
-            };
-            dispatch(action);
-        },
+        onDidMount: () => {
+            dispatch({
+                type: `${namespace}/queryInitPictures`
+            });
+        }
     };
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class gallery extends Component {
+    componentDidMount() {
+        this.props.onDidMount();
+    }
+
     render() {
+        {console.log(this.props.pictureList.length)}
         return (
             <div>
                 {
                     this.props.pictureList.map(picture => {
+                        {console.log(picture)}
                         return (
                             <Card key={picture.id}>
                                 <div> Q: {picture.setup}</div>
@@ -40,12 +44,6 @@ export default class gallery extends Component {
                         );
                     })
                 }
-                <div>
-                    <Button onClick={() => this.props.onClickAdd({
-                        setup: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-                        punchline: 'here we use dva',
-                    })}>添加照片</Button>
-                </div>
             </div>
         )
     }
