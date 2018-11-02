@@ -16,6 +16,7 @@ const getIcon = icon => {
   if (typeof icon === 'string' && icon.indexOf('http') === 0) {
     return <img src={icon} alt="icon" className={`${styles.icon} sider-menu-item-img`} />;
   }
+
   if (typeof icon === 'string') {
     return <Icon type={icon} />;
   }
@@ -37,6 +38,7 @@ export default class SiderMenu extends PureComponent {
       openKeys: this.getDefaultCollapsedSubMenus(props),
     };
   }
+
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.location.pathname !== this.props.location.pathname) {
       this.setState({
@@ -44,6 +46,7 @@ export default class SiderMenu extends PureComponent {
       });
     }
   }
+
   /**
    * Convert pathname to openKeys
    * /list/search/articles = > ['list','/list/search']
@@ -57,6 +60,7 @@ export default class SiderMenu extends PureComponent {
       })
       .filter(item => item);
   }
+
   /**
    * Recursively flatten the data
    * [{path:string},{path:string}] => {path,path2}
@@ -72,6 +76,7 @@ export default class SiderMenu extends PureComponent {
     });
     return keys;
   }
+
   /**
    * 判断是否是http链接.返回 Link 或 a
    * Judge whether it is http link.return a or Link
@@ -108,6 +113,7 @@ export default class SiderMenu extends PureComponent {
       </Link>
     );
   };
+
   /**
    * get SubMenu or Item
    */
@@ -139,6 +145,7 @@ export default class SiderMenu extends PureComponent {
       return <Menu.Item key={item.path}>{this.getMenuItemPath(item)}</Menu.Item>;
     }
   };
+
   /**
    * 获得菜单子节点
    * @memberof SiderMenu
@@ -156,11 +163,13 @@ export default class SiderMenu extends PureComponent {
       })
       .filter(item => item);
   };
+  
   // Get the currently selected menu
   getSelectedMenuKeys = () => {
     const { location: { pathname } } = this.props;
     return urlToList(pathname).map(itemPath => getMeunMatcheys(this.flatMenuKeys, itemPath).pop());
   };
+
   // conversion Path
   // 转化路径
   conversionPath = path => {
@@ -170,6 +179,7 @@ export default class SiderMenu extends PureComponent {
       return `/${path || ''}`.replace(/\/+/g, '/');
     }
   };
+
   // permission to check
   checkPermissionItem = (authority, ItemDom) => {
     if (this.props.Authorized && this.props.Authorized.check) {
@@ -178,9 +188,11 @@ export default class SiderMenu extends PureComponent {
     }
     return ItemDom;
   };
+
   isMainMenu = key => {
     return this.menus.some(item => key && (item.key === key || item.path === key));
   };
+
   handleOpenChange = openKeys => {
     const lastOpenKey = openKeys[openKeys.length - 1];
     const moreThanOne = openKeys.filter(openKey => this.isMainMenu(openKey)).length > 1;
@@ -198,6 +210,7 @@ export default class SiderMenu extends PureComponent {
       : {
           openKeys,
         };
+
     // if pathname can't match, use the nearest parent's key
     let selectedKeys = this.getSelectedMenuKeys();
     if (!selectedKeys.length) {
