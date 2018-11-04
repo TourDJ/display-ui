@@ -1,0 +1,16 @@
+{
+	"plugins": [
+		"transform-es2015-modules-commonjs",
+		"@babel/plugin-proposal-class-properties"
+	],
+	"presets": [
+		[
+			"@babel/preset-react",
+			{
+				"pragma": "dom", // default pragma is React.createElement
+				"pragmaFrag": "DomFrag", // default is React.Fragment
+				"throwIfNamespace": false // defaults to true
+			}
+		]
+	]
+}
