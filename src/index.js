@@ -1,34 +1,36 @@
-import React from 'react';
-import { render } from 'react-dom';
-import Counter from './Counter';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import React from 'react'
+import { render } from 'react-dom'
+import { createStore, applyMiddleware, compose } from 'redux'
+import { Provider } from 'react-redux'
+import { AppContainer } from 'react-hot-loader'
+import { createBrowserHistory } from 'history'
+import { routerMiddleware, connectRouter, ConnectedRouter } from 'connected-react-router'
+import IndexRouter from './viewer/index'
+import reducer from './reducer'
 
-const initialState = {
-  count: 0
-};
+const history = createBrowserHistory()
 
-function reducer(state = initialState, action) {
-	switch(action.type) {
-    case 'INCREMENT':
-      return {
-        count: state.count + 1
-      };
-    case 'DECREMENT':
-      return {
-        count: state.count - 1
-      };
-    default:
-      return state;
-  }
-}
+const store = createStore(
+	reducer(history),
+	compose(
+		applyMiddleware(
+			routerMiddleware(history),
+		),
+	),
+)
 
-const store = createStore(reducer);
 
 const App = () => (
-  <Provider store={store}>
-    <Counter />
-  </Provider>
-);
+	<AppContainer>
+		<Provider store={store}>
+			<ConnectedRouter history={history}>
+				{ IndexRouter }
+			</ConnectedRouter>
+		</Provider>
+	</AppContainer>
+)
 
-render(<App />, document.getElementById('root'));
+render(
+	<App />,
+	document.getElementById('root')
+)

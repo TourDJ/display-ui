@@ -14,13 +14,15 @@
   ],
   "author": "jiefang",
   "license": "ISC",
-  "devDependencies": {
-    "webpack": "^4.24.0"
-  },
+  "devDependencies": {},
   "dependencies": {
+    "connected-react-router": "^5.0.0",
+    "history": "^4.7.2",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
+    "react-hot-loader": "^4.3.12",
     "react-redux": "^5.1.0",
+    "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1",
     "redux": "^4.0.1"
   },
