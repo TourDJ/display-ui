@@ -5,19 +5,32 @@
   "main": "index.js",
   "scripts": {
     "start": "react-scripts start",
-    "dev": "umi dev",
-    "build": "umi build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "keywords": [
     "display"
   ],
   "author": "jiefang",
   "license": "ISC",
-  "devDependencies": {},
+  "devDependencies": {
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.5",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/plugin-proposal-decorators": "^7.1.2",
+    "@babel/plugin-transform-modules-commonjs": "^7.1.0",
+    "@babel/preset-env": "^7.1.5",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.1.0"
+  },
   "dependencies": {
+    "@babel/polyfill": "^7.0.0",
+    "antd": "^3.10.5",
     "connected-react-router": "^5.0.0",
     "history": "^4.7.2",
+    "lodash": "^4.17.11",
+    "lodash-decorators": "^6.0.0",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-hot-loader": "^4.3.12",

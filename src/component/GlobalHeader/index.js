@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import { Menu, Icon, Spin, Tag, Dropdown, Avatar, Divider, Tooltip, Button } from 'antd';
 import moment from 'moment';
 import groupBy from 'lodash/groupBy';
-import Debounce from 'lodash-decorators/debounce';
-import Link from 'umi/link';
+import Debounce123 from 'lodash-decorators/debounce';
+// import Link from 'umi/link';
 import NoticeIcon from '../NoticeIcon';
 import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
@@ -47,15 +47,16 @@ export default class GlobalHeader extends PureComponent {
   toggle = () => {
     const { collapsed, onCollapse } = this.props;
     onCollapse(!collapsed);
-    this.triggerResizeEvent();
+    // this.triggerResizeEvent();
   };
+  
   /* eslint-disable*/
-  @Debounce(600)
-  triggerResizeEvent() {
-    const event = document.createEvent('HTMLEvents');
-    event.initEvent('resize', true, false);
-    window.dispatchEvent(event);
-  }
+  // @Debounce(600)
+  // triggerResizeEvent() {
+  //   const event = document.createEvent('HTMLEvents');
+  //   event.initEvent('resize', true, false);
+  //   window.dispatchEvent(event);
+  // }
 
   render() {
     const {
@@ -90,9 +91,9 @@ export default class GlobalHeader extends PureComponent {
     return (
         <div className={styles.header}>
             {isMobile && [
-              <Link to="/" className={styles.logo} key="logo">
-                <img src={logo} alt="logo" width="32" />
-              </Link>,
+              // <Link to="/" className={styles.logo} key="logo">
+              //   <img src={logo} alt="logo" width="32" />
+              // </Link>,
               <Divider type="vertical" key="line" />,
             ]}
             <Icon

@@ -4,8 +4,8 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux'
 import { AppContainer } from 'react-hot-loader'
 import { createBrowserHistory } from 'history'
-import { routerMiddleware, connectRouter, ConnectedRouter } from 'connected-react-router'
-import IndexRouter from './viewer/index'
+import { routerMiddleware, ConnectedRouter } from 'connected-react-router'
+import IndexRouter from './router/index'
 import reducer from './reducer'
 
 const history = createBrowserHistory()
@@ -18,7 +18,6 @@ const store = createStore(
 		),
 	),
 )
-
 
 const App = () => (
 	<AppContainer>
