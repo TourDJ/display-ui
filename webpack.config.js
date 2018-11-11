@@ -19,7 +19,40 @@ module.exports = {
       {
         test: /\.jsx?/,
         // Don't use .babelrc in `yarn link`-ed dependency's directory and use in current direction instead
-        loader: 'babel-loader?babelrc=false&extends=' + path.resolve(__dirname, '.babelrc')
+        // loader: 'babel-loader?babelrc=false&extends=' + path.resolve(__dirname, '.babelrc')
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
+      },
+      {
+        test: /\.css$/,
+        use: [ 'style-loader', 'css-loader' ]
+      },
+      {
+        test: /\.less$/,
+        use: [
+          {
+            loader: "style-loader"
+          }, 
+          {
+            loader: "css-loader"
+          }, 
+          {
+            loader: "less-loader",
+            options: {
+                javascriptEnabled: true
+            }
+          }
+        ] // compiles Less to CSS
+      },
+      {
+        test: /\.svg$/,
+        loader: 'svg-inline-loader',
+        include: path.resolve('src/assets/logo.svg')
       }
     ],
   },
