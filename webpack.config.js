@@ -39,12 +39,22 @@ module.exports = {
             loader: "style-loader"
           }, 
           {
-            loader: "css-loader"
+            loader: "css-loader",
+            options: {
+              sourceMap: true,
+              modules: true,
+              localIdentName: "[local]___[hash:base64:5]"
+            }
           }, 
           {
             loader: "less-loader",
             options: {
-                javascriptEnabled: true
+              modifyVars: {
+                'primary-color': '#1DA57A',
+                'link-color': '#1DA57A',
+                'border-radius-base': '2px'
+              },
+              javascriptEnabled: true
             }
           }
         ] // compiles Less to CSS

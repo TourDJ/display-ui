@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Layout } from 'antd';
+import { Layout, Menu, Breadcrumb } from 'antd';
 import CommonHeader from "../component/CommonHeader";
 import logo from '../assets/logo.svg';
 
-const { Content, Header } = Layout;
+const { Content, Header, Footer } = Layout;
 
 class BasicLayout extends Component {
   constructor(props) {
@@ -39,8 +39,20 @@ class BasicLayout extends Component {
           </Header>
 
           <Content style={{ margin: '24px 24px 0', height: '100%' }}>
+            <Breadcrumb style={{ margin: '16px 0' }}>
+              <Breadcrumb.Item>Home</Breadcrumb.Item>
+              <Breadcrumb.Item>List</Breadcrumb.Item>
+              <Breadcrumb.Item>App</Breadcrumb.Item>
+            </Breadcrumb>
+            
+            <div style={{ background: '#fff', padding: 24, minHeight: 380 }}>
               { children }
+            </div>
           </Content>
+
+          <Footer style={{ textAlign: 'center' }}>
+            Display ©2018 Created by Hank Jiefang
+          </Footer>          
       </Layout>
     );
   }

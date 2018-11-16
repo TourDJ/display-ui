@@ -1,13 +1,13 @@
-import React, { PureComponent } from 'react';
-import { Menu, Icon, Spin, Tag, Dropdown, Avatar, Divider, Tooltip, Button } from 'antd';
-import moment from 'moment';
-import groupBy from 'lodash/groupBy';
-import Debounce123 from 'lodash-decorators/debounce';
+import React, { PureComponent } from 'react'
+import { Menu, Icon, Spin, Tag, Dropdown, Avatar, Divider, Tooltip, Button } from 'antd'
+import moment from 'moment'
+import groupBy from 'lodash/groupBy'
+import Debounce from 'lodash-decorators/debounce'
 // import Link from 'umi/link';
-import NoticeIcon from '../NoticeIcon';
-import styles from './index.less';
+import NoticeIcon from '../NoticeIcon'
+import styles from './index.less'
 
-export default class GlobalHeader extends PureComponent {
+export default class CommonHeader extends PureComponent {
   componentWillUnmount() {
     this.triggerResizeEvent.cancel();
   }
@@ -43,19 +43,6 @@ export default class GlobalHeader extends PureComponent {
     });
     return groupBy(newNotices, 'type');
   }
-  toggle = () => {
-    const { collapsed, onCollapse } = this.props;
-    onCollapse(!collapsed);
-    // this.triggerResizeEvent();
-  };
-  
-  /* eslint-disable*/
-  // @Debounce(600)
-  // triggerResizeEvent() {
-  //   const event = document.createEvent('HTMLEvents');
-  //   event.initEvent('resize', true, false);
-  //   window.dispatchEvent(event);
-  // }
 
   render() {
     const {
@@ -71,88 +58,40 @@ export default class GlobalHeader extends PureComponent {
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
         <Menu.Item disabled>
-          <Icon type="user" />¸öÈËÖĞĞÄ
+          <Icon type="user" />ä¸ªäººä¸­å¿ƒ
         </Menu.Item>
         <Menu.Item disabled>
-          <Icon type="setting" />ÉèÖÃ
+          <Icon type="setting" />è®¾ç½®
         </Menu.Item>
         <Menu.Item key="triggerError">
-          <Icon type="close-circle" />´¥·¢±¨´í
+          <Icon type="close-circle" />è§¦å‘æŠ¥é”™
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item key="logout">
-          <Icon type="logout" />ÍË³öµÇÂ¼
+          <Icon type="logout" />é€€å‡ºç™»å½•
         </Menu.Item>
       </Menu>
     );
     const noticeData = this.getNoticeData();
 
     return (
-        <div className={styles.header}>
-            {isMobile && [
-              // <Link to="/" className={styles.logo} key="logo">
-              //   <img src={logo} alt="logo" width="32" />
-              // </Link>,
-              <Divider type="vertical" key="line" />,
-            ]}
-            <Icon
-              className={styles.trigger}
-              type={collapsed ? 'menu-unfold' : 'menu-fold'}
-              onClick={this.toggle}
-            />
-            <div className={styles.right}>
-              <Tooltip title="Ê¹ÓÃÎÄµµ">
-                <a
-                  target="_blank"
-                  href="http://pro.ant.design/docs/getting-started"
-                  rel="noopener noreferrer"
-                  className={styles.action}
-                >
-                  <Icon type="question-circle-o" />
-                </a>
-              </Tooltip>
-              <NoticeIcon
-                className={styles.action}
-                count={currentUser.notifyCount}
-                onItemClick={(item, tabProps) => {
-                  console.log(item, tabProps); // eslint-disable-line
-                }}
-                onClear={onNoticeClear}
-                onPopupVisibleChange={onNoticeVisibleChange}
-                loading={fetchingNotices}
-                popupAlign={{ offset: [20, -16] }}
-              >
-                <NoticeIcon.Tab
-                  list={noticeData['Í¨Öª']}
-                  title="Í¨Öª"
-                  emptyText="ÄãÒÑ²é¿´ËùÓĞÍ¨Öª"
-                  emptyImage="https://gw.alipayobjects.com/zos/rmsportal/wAhyIChODzsoKIOBHcBk.svg"
-                />
-                <NoticeIcon.Tab
-                  list={noticeData['ÏûÏ¢']}
-                  title="ÏûÏ¢"
-                  emptyText="ÄúÒÑ¶ÁÍêËùÓĞÏûÏ¢"
-                  emptyImage="https://gw.alipayobjects.com/zos/rmsportal/sAuJeJzSKbUmHfBQRzmZ.svg"
-                />
-                <NoticeIcon.Tab
-                  list={noticeData['´ı°ì']}
-                  title="´ı°ì"
-                  emptyText="ÄãÒÑÍê³ÉËùÓĞ´ı°ì"
-                  emptyImage="https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg"
-                />
-              </NoticeIcon>
-              {currentUser.name ? (
-                <Dropdown overlay={menu}>
-                  <span className={`${styles.action} ${styles.account}`}>
-                    <Avatar size="small" className={styles.avatar} src={currentUser.avatar} />
-                    <span className={styles.name}>{currentUser.name}</span>
-                  </span>
-                </Dropdown>
-              ) : (
-                <Spin size="small" style={{ marginLeft: 8 }} />
-              )}
-            </div>
-        </div>
+      <div className={styles.header}>
+          {isMobile && [
+            // <Link to="/" className={styles.logo} key="logo">
+            //   <img src={logo} alt="logo" width="32" />
+            // </Link>,
+            <Divider type="vertical" key="line" />,
+          ]}
+
+          <div className={styles.logo}>
+            Display
+          </div>
+
+          <div className={styles.right}>
+            æµ‹è¯•ä¸­æ–‡
+          </div>
+
+      </div>
     );
   }
 }

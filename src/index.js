@@ -1,4 +1,4 @@
-import { AppContainer } from 'react-hot-loader'
+﻿import { AppContainer } from 'react-hot-loader'
 import { applyMiddleware, compose, createStore } from 'redux'
 import { createBrowserHistory } from 'history'
 import { routerMiddleware, connectRouter } from 'connected-react-router'
@@ -31,7 +31,7 @@ const Travelogue = () => (
 
 render(
   <Travelogue />,
-  document.getElementById('react-root')
+  document.getElementById('root')
 )
 
 // Hot reloading
