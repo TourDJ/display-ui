@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux'
 import { connectRouter } from 'connected-react-router'
 import counterReducer from './counter'
+import categoryReducer from './category'
 
 const rootReducer = (history) => combineReducers({
   count: counterReducer,
+  category: categoryReducer,
   router: connectRouter(history)
 })
 

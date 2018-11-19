@@ -16,6 +16,7 @@
     "@babel/core": "^7.1.2",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
     "@babel/plugin-proposal-decorators": "^7.1.2",
+    "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/preset-env": "^7.1.5",
     "@babel/preset-react": "^7.0.0",
     "babel-cli": "^6.26.0",
@@ -26,6 +27,7 @@
     "less": "^3.8.1",
     "less-loader": "^4.1.0",
     "react-hot-loader": "^4.3.12",
+    "redux-devtools": "^3.4.2",
     "style-loader": "^0.23.1",
     "svg-inline-loader": "^0.8.0",
     "webpack": "^4.24.0",
@@ -34,17 +36,22 @@
     "webpack-hot-middleware": "^2.24.3"
   },
   "dependencies": {
+    "@babel/runtime": "^7.1.5",
     "antd": "^3.10.7",
     "connected-react-router": "^5.0.0",
+    "hash.js": "^1.1.5",
     "history": "^4.7.2",
     "lodash-decorators": "^6.0.0",
+    "node-fetch": "^2.3.0",
     "prop-types": "^15.6.2",
+    "qs": "^6.5.2",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-redux": "^5.1.0",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "redux": "^4.0.1"
+    "redux": "^4.0.1",
+    "redux-saga": "^0.16.2"
   },
   "eslintConfig": {
     "extends": "react-app"

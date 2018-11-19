@@ -1,4 +1,5 @@
 import React , { PureComponent } from 'react'
+import { connect } from 'react-redux'
 import { Tabs, Button, Modal, Form, Input, Radio } from 'antd'
 import 'antd/dist/antd.css'
 
@@ -46,15 +47,20 @@ const CollectionCreateForm = Form.create()(
   }
 )
 
-
+//
 class Home extends PureComponent {
 	constructor(props) {
 		super(props)
+		const panes = []
     this.state = {
     	visible: false,
     }
 	}
 
+	componentDidMount() {
+		// const getCategories = this.props.getCategories
+		// getCategories()
+	}
 
 	showModal = () => {
     this.setState({ visible: true });
@@ -90,7 +96,7 @@ class Home extends PureComponent {
 		return (
 		  <div>
         <div style={{ marginBottom: 16 }}>
-          <Button type="primary" icon="picture" onClick={this.showModal}>新增相册</Button>
+          <Button type="primary" icon="picture" onClick={this.showModal}>新建相册</Button>
           <CollectionCreateForm
 	          wrappedComponentRef={this.saveFormRef}
 	          visible={this.state.visible}
@@ -102,10 +108,22 @@ class Home extends PureComponent {
 			    <TabPane tab="Tab 1" key="1">Content of Tab Pane 1</TabPane>
 			    <TabPane tab="Tab 2" key="2">Content of Tab Pane 2</TabPane>
 			    <TabPane tab="Tab 3" key="3">Content of Tab Pane 3</TabPane>
+
 			  </Tabs>		    
 		  </div>
 		)
 	}
 } 
 
-export default Home
+const mapStateToProps = state => ({
+
+})
+
+const mapDispatchToProps = dispatch => ({
+  getCategories: () => dispatch({type: "CATEGORY_ALL_GET"})
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home)

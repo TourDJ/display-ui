@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Breadcrumb } from 'antd';
-import CommonHeader from "../component/CommonHeader";
+import CommonHeader from "../components/CommonHeader";
 import logo from '../assets/logo.svg';
 
 const { Content, Header, Footer } = Layout;
@@ -44,7 +44,7 @@ class BasicLayout extends Component {
               <Breadcrumb.Item>List</Breadcrumb.Item>
               <Breadcrumb.Item>App</Breadcrumb.Item>
             </Breadcrumb>
-            
+
             <div style={{ background: '#fff', padding: 24, minHeight: 380 }}>
               { children }
             </div>

@@ -7,7 +7,7 @@ module.exports = {
   entry: [
     'react-hot-loader/patch',
     'webpack-hot-middleware/client',
-    path.resolve('src/index.js'),
+    path.resolve('src/global.js'),
   ],
   output: {
     filename: 'bundle.js',

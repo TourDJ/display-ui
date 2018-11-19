@@ -5,10 +5,15 @@ import { routerMiddleware, connectRouter } from 'connected-react-router'
 import { Provider } from 'react-redux'
 import React from 'react'
 import { render } from 'react-dom'
+import createSagaMiddleware from 'redux-saga'
+
 import App from './App'
 import rootReducer from './reducers'
+import sagas from './sagas'
 
 const history = createBrowserHistory()
+
+const sagaMiddleware = createSagaMiddleware()
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
@@ -17,9 +22,12 @@ const store = createStore(
   composeEnhancer(
     applyMiddleware(
       routerMiddleware(history),
+      sagaMiddleware,
     ),
   ),
 )
+
+sagaMiddleware.run(sagas)
 
 const Travelogue = () => (
   <AppContainer>
