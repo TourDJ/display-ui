@@ -1,8 +1,13 @@
-const categoryReducer = (state = [], action) => {
+const initialState = []
+
+const categoryReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'CATEGORY_ALL_SUCCEEDED':
-    	console.log(state)
-      return action.payload
+    	let data = action.payload['data']
+      return [
+      	...state,
+      	...data
+      ]
 
     case 'CATEGORY_ALL_FAILED':
       return action.message

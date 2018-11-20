@@ -8,10 +8,5 @@ const counterReducer = (state = 0, action) => {
       return state
   }
 }
-			   //  {
-			   //  	this.state.panes.map(pane => (
-						// 	<TabPane tab={pane.title} key={pane.key}>{pane.content}</TabPane>)
-			   //  	) 
-			  	// }
 
 export default counterReducer

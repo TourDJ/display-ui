@@ -51,16 +51,24 @@ const CollectionCreateForm = Form.create()(
 class Home extends PureComponent {
 	constructor(props) {
 		super(props)
-		const panes = []
     this.state = {
     	visible: false,
+      panes: [],
     }
 	}
 
 	componentDidMount() {
-		// const getCategories = this.props.getCategories
-		// getCategories()
+		let getCategories = this.props.getCategories
+    getCategories()
 	}
+
+  componentDidUpdate() {
+    let category = this.props.category
+    this.setState({
+      panes: category
+    })
+    console.log(this.state.panes)
+  }
 
 	showModal = () => {
     this.setState({ visible: true });
@@ -105,10 +113,11 @@ class Home extends PureComponent {
 	        />
         </div>		    
         <Tabs onChange={this.callback} type="card">
-			    <TabPane tab="Tab 1" key="1">Content of Tab Pane 1</TabPane>
-			    <TabPane tab="Tab 2" key="2">Content of Tab Pane 2</TabPane>
-			    <TabPane tab="Tab 3" key="3">Content of Tab Pane 3</TabPane>
-
+          {
+            this.state.panes.map(pane => (
+              <TabPane tab={pane.name} key={pane.ident}>{pane.code}</TabPane>)
+            ) 
+          }
 			  </Tabs>		    
 		  </div>
 		)
@@ -116,7 +125,7 @@ class Home extends PureComponent {
 } 
 
 const mapStateToProps = state => ({
-
+  category: state.category
 })
 
 const mapDispatchToProps = dispatch => ({
