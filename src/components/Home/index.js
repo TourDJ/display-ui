@@ -5,60 +5,16 @@ import {
   Button,
   Card,  
   Divider,
-  Form, 
-  Input, 
+  Form,  
   Icon, 
-  Modal,
-  Radio,
   Tabs, 
   Tag 
 } from 'antd'
-import 'antd/dist/antd.css'
+import CreateForm from './CreateForm'
+import styles from './home.less'
 
 const TabPane = Tabs.TabPane
-const FormItem = Form.Item
 const { Meta } = Card
-
-const CollectionCreateForm = Form.create()(
-  class extends React.Component {
-    render() {
-      const { visible, onCancel, onCreate, form } = this.props
-      const { getFieldDecorator } = form
-      return (
-        <Modal
-          visible={visible}
-          title="Create a new collection"
-          okText="Create"
-          onCancel={onCancel}
-          onOk={onCreate}
-        >
-          <Form layout="vertical">
-            <FormItem label="Title">
-              {getFieldDecorator('title', {
-                rules: [{ required: true, message: 'Please input the title of collection!' }],
-              })(
-                <Input />
-              )}
-            </FormItem>
-            <FormItem label="Description">
-              {getFieldDecorator('description')(<Input type="textarea" />)}
-            </FormItem>
-            <FormItem className="collection-create-form_last-form-item">
-              {getFieldDecorator('modifier', {
-                initialValue: 'public',
-              })(
-                <Radio.Group>
-                  <Radio value="public">Public</Radio>
-                  <Radio value="private">Private</Radio>
-                </Radio.Group>
-              )}
-            </FormItem>
-          </Form>
-        </Modal>
-      )
-    }
-  }
-)
 
 //主页
 class Home extends PureComponent {
@@ -83,6 +39,8 @@ class Home extends PureComponent {
   }
 
 	showModal = () => {
+    const form = this.formRef.props.form
+    form.resetFields()
     this.setState({ visible: true })
   }
 
@@ -99,6 +57,9 @@ class Home extends PureComponent {
       }
 
       console.log('Received values of form: ', values)
+
+      saveAlbum();
+      
       form.resetFields()
       this.setState({ visible: false })
     })
@@ -116,10 +77,10 @@ class Home extends PureComponent {
 		return (
 		  <div>
         <div style={{ marginBottom: 16 }}>
-          <Button icon="picture" onClick={this.showModal}>新建分类</Button>
-          <Button type="primary" icon="picture" onClick={this.showModal}>新建相册</Button>
-          <Button type="danger" icon="picture">删除相册</Button>
-          <CollectionCreateForm
+          <Button icon="picture" className={styles.btn} onClick={this.showModal}>新建分类</Button>
+          <Button type="primary" className={styles.btn} icon="picture" onClick={this.showModal}>新建相册</Button>
+          <Button type="danger" className={styles.btn} icon="picture">删除相册</Button>
+          <CreateForm
 	          wrappedComponentRef={this.saveFormRef}
 	          visible={this.state.visible}
 	          onCancel={this.handleCancel}
@@ -139,7 +100,7 @@ class Home extends PureComponent {
                 <Card
                   key={album.album_id}
                   style={{ width: 300 }}
-                  cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
+                  cover={<img alt="example" src="http://192.168.0.103:8020/images/jiefangxie.jpg" />}
                   actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
                 >
                   <Meta
@@ -165,7 +126,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  getCategories: () => dispatch({type: "CATEGORY_ALL_GET"})
+  getCategories: () => dispatch({type: "CATEGORY_ALL_GET"}),
+  saveAlbum: () => dispatch({type: "ALBUM_SAVE"}),
 })
 
 export default connect(
