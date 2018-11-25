@@ -77,8 +77,10 @@ export default function request(url, option) {
     .digest('hex')
 
   const defaultOptions = {
-    // credentials: 'include',
+    // credentials: 'include', //omit、same-origin 或者 include
   }
+
+  //https://developer.mozilla.org/zh-CN/docs/Web/API/WindowOrWorkerGlobalScope/fetch
   const newOptions = { ...defaultOptions, ...options }
   if (
     newOptions.method === 'POST' ||
@@ -88,7 +90,7 @@ export default function request(url, option) {
     if (!(newOptions.body instanceof FormData)) {
       newOptions.headers = {
         Accept: 'application/json',
-        'Content-Type': 'application/json charset=utf-8',
+        'Content-Type': 'application/json',
         ...newOptions.headers,
       }
       newOptions.body = JSON.stringify(newOptions.body)

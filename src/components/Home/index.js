@@ -12,6 +12,8 @@ import {
 } from 'antd'
 import CreateForm from './CreateForm'
 import styles from './home.less'
+import { categoryType, albumType } from '../../actions/actionTypes'
+import '../../utils/constant'
 
 const TabPane = Tabs.TabPane
 const { Meta } = Card
@@ -31,11 +33,13 @@ class Home extends PureComponent {
     getCategories()
 	}
 
-  componentDidUpdate() {
-    let category = this.props.category
-    this.setState({
-      panes: category
-    })
+  componentDidUpdate(prevProps) {
+    if(this.props.category.length != prevProps.category.length) {
+      let category = this.props.category
+      this.setState({
+        panes: category
+      })
+    }
   }
 
 	showModal = () => {
@@ -43,7 +47,6 @@ class Home extends PureComponent {
     form.resetFields()
     this.setState({ visible: true })
   }
-
 
   handleCancel = () => {
     this.setState({ visible: false })
@@ -56,13 +59,33 @@ class Home extends PureComponent {
         return
       }
 
+      values.cover = this.parseCover(values.upload)
+      delete values.upload
       console.log('Received values of form: ', values)
 
-      saveAlbum();
+      this.props.saveAlbum(values);
       
       form.resetFields()
       this.setState({ visible: false })
     })
+  }
+
+  //re-organize cover object
+  parseCover = (upload) => {
+    let file = upload ? upload.file : null,
+        cover
+    if(file && file.status === "done") {
+      let response = file.response
+      cover = {
+        filename: response.result.realName,
+        filepath: response.result.filePath,
+        lastModified: file.lastModified,
+        size: file.size,
+        type: file.type,
+        uid: file.uid
+      }
+    }
+    return cover
   }
 
   saveFormRef = (formRef) => {
@@ -100,11 +123,10 @@ class Home extends PureComponent {
                 <Card
                   key={album.album_id}
                   style={{ width: 300 }}
-                  cover={<img alt="example" src="http://192.168.0.103:8020/images/jiefangxie.jpg" />}
+                  cover={<img alt="example" src={`${constant.service_url}/images/jiefangxie.jpg`} />}
                   actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
                 >
                   <Meta
-                    avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
                     title="Card title"
                     description={album.notes}
                   />
@@ -112,8 +134,8 @@ class Home extends PureComponent {
                   ))
                 }
 
-              </TabPane>)
-            ) 
+              </TabPane>
+            ))
           }
 			  </Tabs>		    
 		  </div>
@@ -126,8 +148,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  getCategories: () => dispatch({type: "CATEGORY_ALL_GET"}),
-  saveAlbum: () => dispatch({type: "ALBUM_SAVE"}),
+  getCategories: () => dispatch({type: categoryType['CATEGORY_ALL_GET']}),
+  saveAlbum: (album) => dispatch({type: albumType['ALBUM_SAVE'], album: album}),
 })
 
 export default connect(
