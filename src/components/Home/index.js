@@ -8,7 +8,7 @@ import {
   Form,  
   Icon, 
   Tabs, 
-  Tag 
+  Tag, Col, Row
 } from 'antd'
 import CreateForm from './CreateForm'
 import styles from './home.less'
@@ -18,13 +18,15 @@ import '../../utils/constant'
 const TabPane = Tabs.TabPane
 const { Meta } = Card
 
-//主页
+//Home page
 class Home extends PureComponent {
 	constructor(props) {
 		super(props)
     this.state = {
     	visible: false,
       panes: [],
+      albums: [],
+      times: 0, //Nothing, just for update
     }
 	}
 
@@ -34,12 +36,49 @@ class Home extends PureComponent {
 	}
 
   componentDidUpdate(prevProps) {
+    //Initial loading categories
     if(this.props.category.length != prevProps.category.length) {
       let category = this.props.category
       this.setState({
         panes: category
       })
+      this.tabCallback(category[0]._key)
     }
+
+    if(this.props.albums.length != prevProps.albums.length) {
+      let albums = this.props.albums
+      this.setState({
+        albums: albums
+      })
+    }
+
+    // //When add a album in category
+    // if(this.props.albumData.albums) {
+    //   if(!prevProps.albumData.albums) {
+    //     this.changeCategoryAlbum(this.props)
+    //   } else {
+    //     if(this.props.albumData.albums.length != prevProps.albumData.albums.length) {
+    //       this.changeCategoryAlbum(this.props)
+    //     }
+    //   }
+    // }
+  }
+
+  //Change category albums
+  changeCategoryAlbum(props) {
+    let _albums = props.albumData.albums
+    let _key = props.albumData._key
+    let category = props.category
+    category.forEach(function(cat) {
+      if(cat._key == _key) {
+        cat.albums = _albums
+      }
+    })
+
+    this.setState((state, props) => ({
+      panes: category,
+      times: state.times + 1
+    }))    
   }
 
 	showModal = () => {
@@ -63,7 +102,7 @@ class Home extends PureComponent {
       delete values.upload
       console.log('Received values of form: ', values)
 
-      this.props.saveAlbum(values);
+      this.props.saveAlbum(values)
       
       form.resetFields()
       this.setState({ visible: false })
@@ -77,8 +116,8 @@ class Home extends PureComponent {
     if(file && file.status === "done") {
       let response = file.response
       cover = {
-        filename: response.result.realName,
-        filepath: response.result.filePath,
+        filename: response.data.realName,
+        filepath: response.data.filePath,
         lastModified: file.lastModified,
         size: file.size,
         type: file.type,
@@ -92,8 +131,9 @@ class Home extends PureComponent {
     this.formRef = formRef
   }
 
-	callback = (key) => {
-	  console.log(key)
+	tabCallback = (key) => {
+	  console.log("Current tab's key is: ", key)
+    this.props.getAlbums(key)
 	}
 
 	render() {
@@ -110,30 +150,30 @@ class Home extends PureComponent {
 	          onCreate={this.handleCreate}
 	        />
         </div>		    
-        <Tabs onChange={this.callback} type="card">
+        <Tabs onChange={this.tabCallback} type="card">
           {
             this.state.panes.map(pane => (
-              <TabPane tab={pane.name} key={pane.ident}>
+              <TabPane tab={pane.name} key={pane._key}>
                 <div style={{marginBottom: 10}}>
                   <Tag color="#108ee9">{pane.description}</Tag>
                 </div>
                 <Divider />
                 {
-                  pane.albums.map(album => (
-                <Card
-                  key={album.album_id}
-                  style={{ width: 300 }}
-                  cover={<img alt="example" src={`${constant.service_url}/images/jiefangxie.jpg`} />}
-                  actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
-                >
-                  <Meta
-                    title="Card title"
-                    description={album.notes}
-                  />
-                </Card>
+                  this.state.albums.map((album, index) => (
+                    <Col key={album._key} span={6} xs={24} sm={12} md={8} lg={6} xl={6}>
+                    <Card
+                      style={{ width: 300, marginBottom: 20 }}
+                      cover={<img alt="example" src={`${constant.service_url}${album.cover.filepath}`} />}
+                      actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
+                    >
+                      <Meta
+                        title={album.title}
+                        description={album.description}
+                      />
+                    </Card>
+                    </Col>
                   ))
                 }
-
               </TabPane>
             ))
           }
@@ -144,12 +184,25 @@ class Home extends PureComponent {
 } 
 
 const mapStateToProps = state => ({
-  category: state.category
+  category: state.category,
+  albums: state.albums
 })
 
 const mapDispatchToProps = dispatch => ({
-  getCategories: () => dispatch({type: categoryType['CATEGORY_ALL_GET']}),
-  saveAlbum: (album) => dispatch({type: albumType['ALBUM_SAVE'], album: album}),
+  getCategories: () => dispatch({
+    type: categoryType['CATEGORY_ALL_GET']
+  }),
+
+  getAlbums: (category) => dispatch({
+    type: albumType['ALBUM_GET'],
+    category: category
+  }),
+
+  saveAlbum: (album) => dispatch({
+    type: albumType['ALBUM_SAVE'], 
+    album: album
+  })
+
 })
 
 export default connect(

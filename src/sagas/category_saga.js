@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-import { queryCategories } from '../services/pictures'
+import { queryCategories } from '../services/categories'
 import { categoryType } from '../actions/actionTypes'
 
 function* retrievalCategories() {

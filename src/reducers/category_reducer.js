@@ -2,16 +2,19 @@ import { categoryType } from '../actions/actionTypes'
 const initialState = []
 
 const categoryReducer = (state = initialState, action) => {
+  let data
+
   switch (action.type) {
     case categoryType['CATEGORY_ALL_SUCCEEDED']:
-    	let data = action.payload['data']
+    	data = action.payload['data']
       return [
       	...state,
       	...data
       ]
 
     case categoryType['CATEGORY_ALL_FAILED']:
-      return action.message
+      console.log(action.message)
+      return state
 
     default:
       return state

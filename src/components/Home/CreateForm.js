@@ -63,7 +63,7 @@ const CreateForm = Form.create()(
       categories.map((category) => {
         return(
           categoryDatas.push(
-            <Select.Option value={category.ident} key={category.ident}>
+            <Select.Option value={category._key} key={category._key}>
               {category.name}
             </Select.Option>
           ),
