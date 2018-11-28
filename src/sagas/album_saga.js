@@ -24,7 +24,7 @@ export function* saveAlbum() {
   try {
     const action = yield take(albumType['ALBUM_SAVE'])
     
-    let result = yield call(addAlbum, action.album)
+    let result = yield call(addAlbum, action.album, action.activeTab)
     let data
     if(result.statusCode == 200)
       data = result.data

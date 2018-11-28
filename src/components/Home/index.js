@@ -27,6 +27,7 @@ class Home extends PureComponent {
       panes: [],
       albums: [],
       times: 0, //Nothing, just for update
+      activeTab: -1,
     }
 	}
 
@@ -46,39 +47,18 @@ class Home extends PureComponent {
     }
 
     if(this.props.albums.length != prevProps.albums.length) {
-      let albums = this.props.albums
       this.setState({
-        albums: albums
+        albums: this.props.albums
       })
     }
 
-    // //When add a album in category
-    // if(this.props.albumData.albums) {
-    //   if(!prevProps.albumData.albums) {
-    //     this.changeCategoryAlbum(this.props)
-    //   } else {
-    //     if(this.props.albumData.albums.length != prevProps.albumData.albums.length) {
-    //       this.changeCategoryAlbum(this.props)
-    //     }
-    //   }
-    // }
-  }
-
-  //Change category albums
-  changeCategoryAlbum(props) {
-    let _albums = props.albumData.albums
-    let _key = props.albumData._key
-    let category = props.category
-    category.forEach(function(cat) {
-      if(cat._key == _key) {
-        cat.albums = _albums
-      }
-    })
-
-    this.setState((state, props) => ({
-      panes: category,
-      times: state.times + 1
-    }))    
+    //When add a album in category
+    if(this.props.albums.length != prevProps.albums.length) {
+      this.setState((state, props) => ({
+        albums: this.props.albums,
+        times: state.times + 1
+      })) 
+    }
   }
 
 	showModal = () => {
@@ -98,12 +78,15 @@ class Home extends PureComponent {
         return
       }
 
+      let _category = values.category
+
+      values.category = _category.key
       values.cover = this.parseCover(values.upload)
       delete values.upload
       console.log('Received values of form: ', values)
 
-      this.props.saveAlbum(values)
-      
+      this.props.saveAlbum(values, this.state.activeTab)
+
       form.resetFields()
       this.setState({ visible: false })
     })
@@ -134,6 +117,9 @@ class Home extends PureComponent {
 	tabCallback = (key) => {
 	  console.log("Current tab's key is: ", key)
     this.props.getAlbums(key)
+    this.setState({
+      activeTab: key
+    })
 	}
 
 	render() {
@@ -148,6 +134,7 @@ class Home extends PureComponent {
 	          visible={this.state.visible}
 	          onCancel={this.handleCancel}
 	          onCreate={this.handleCreate}
+            activeKey={this.state.activeTab}
 	        />
         </div>		    
         <Tabs onChange={this.tabCallback} type="card">
@@ -198,9 +185,10 @@ const mapDispatchToProps = dispatch => ({
     category: category
   }),
 
-  saveAlbum: (album) => dispatch({
+  saveAlbum: (album, activeTab) => dispatch({
     type: albumType['ALBUM_SAVE'], 
-    album: album
+    album: album,
+    activeTab: activeTab
   })
 
 })

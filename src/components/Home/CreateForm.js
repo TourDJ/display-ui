@@ -35,18 +35,19 @@ function beforeUpload(file) {
 }
 
 function categoryChange(value) {
-  console.log(`selected ${value}`);
+  
 }
 
 const CreateForm = Form.create()(
   class extends React.Component {
     state = {
       loading: false,
-      categoryOptions: []
+      categoryOptions: [],
+      selectKey: 4993
     }
 
     componentDidMount() {
-      
+      console.log(this.props.activeKey)
     }
 
     componentDidUpdate(prevProps) {
@@ -128,11 +129,13 @@ const CreateForm = Form.create()(
             <FormItem label="Category">
               {getFieldDecorator('category', {
                 rules: [{ required: true, message: 'Select a category!' }],
+                initialValue: this.state.selectKey,
               })(
                 <Select
                     showSearch
                     style={{ width: 200 }}
                     placeholder="Select a person"
+                    labelInValue
                     optionFilterProp="children"
                     onChange={categoryChange}
                     filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}

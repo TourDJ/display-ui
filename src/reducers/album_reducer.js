@@ -6,10 +6,11 @@ const albumReducer = (state = [], action) => {
   switch (action.type) {
     case albumType['ALBUM_SAVE_SUCCEEDED']:
       data = action.payload
-      return data
+      return [...data]
 
     case albumType['ALBUM_SAVE_FAILED']:
-      return action.message
+      console.log(action.message)
+      return state
 
     //Get albums success
     case albumType['ALBUM_GET_SUCCEEDED']:

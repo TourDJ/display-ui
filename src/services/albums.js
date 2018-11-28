@@ -3,10 +3,13 @@ import request from '../utils/request'
 import '../utils/constant'
 
 //Add a album in a category
-export async function addAlbum(param) {
+export async function addAlbum(param, activeTab) {
   let result = request(`${constant.service_url}/album/add`, {
     method: 'POST',
-    body: param
+    body: {
+      album: param,
+      key: activeTab
+    }
   })
   return result
 }
