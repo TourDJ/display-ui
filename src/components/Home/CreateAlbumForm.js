@@ -38,16 +38,19 @@ function categoryChange(value) {
   
 }
 
-const CreateForm = Form.create()(
-  class extends React.Component {
-    state = {
-      loading: false,
-      categoryOptions: [],
-      selectKey: 4993
+const CreateAlbumForm = Form.create()(
+  class AlbumForm extends React.Component {
+    constructor(props) {
+      super(props)
+      this.state = {
+        loading: false,
+        categoryOptions: [],
+        selectTab: {}
+      }
     }
 
     componentDidMount() {
-      console.log(this.props.activeKey)
+      
     }
 
     componentDidUpdate(prevProps) {
@@ -55,6 +58,26 @@ const CreateForm = Form.create()(
       if(this.props.category.length != prevProps.category.length) {
         let categories = this.props.category
         this.getCategoties(categories)
+      }
+      
+      //When change the tab, also change the default seleted 
+      //item for category select
+      if(this.props.activeKey != prevProps.activeKey) {
+        this.changeSelectTab(this.props.activeKey, this.props.category)
+      }
+    }
+
+    changeSelectTab(activeKey, category) {
+      let tempTab = {}
+      if(category) {
+        category.forEach(function(cat){
+          if(cat && cat._key == activeKey) {
+            tempTab = {key: cat._key, label: cat.name}
+          }
+        })
+        this.setState({
+          selectTab: tempTab
+        })
       }
     }
 
@@ -129,7 +152,7 @@ const CreateForm = Form.create()(
             <FormItem label="Category">
               {getFieldDecorator('category', {
                 rules: [{ required: true, message: 'Select a category!' }],
-                initialValue: this.state.selectKey,
+                initialValue: this.state.selectTab,
               })(
                 <Select
                     showSearch
@@ -183,4 +206,4 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps
-)(CreateForm)
+)(CreateAlbumForm)

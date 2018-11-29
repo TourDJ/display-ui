@@ -1,11 +1,16 @@
+//Action type object dictionary, which defined all the ations for dispatch
 
-
+//Category action type
 export const categoryType = {
   CATEGORY_ALL_GET: 'CATEGORY_ALL_GET',
   CATEGORY_ALL_SUCCEEDED: 'CATEGORY_ALL_SUCCEEDED',
-  CATEGORY_ALL_FAILED: 'CATEGORY_ALL_FAILED'
+  CATEGORY_ALL_FAILED: 'CATEGORY_ALL_FAILED',
+  CATEGORY_SAVE: 'CATEGORY_SAVE',
+  CATEGORY_SAVE_SUCCEEDED: 'CATEGORY_SAVE_SUCCEEDED',
+  CATEGORY_SAVE_FAILED: 'CATEGORY_SAVE_FAILED'
 }
 
+//Album action type
 export const albumType = {
   ALBUM_GET: 'ALBUM_GET',
   ALBUM_GET_SUCCEEDED: 'ALBUM_GET_SUCCEEDED',

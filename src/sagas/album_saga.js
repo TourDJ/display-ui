@@ -7,6 +7,7 @@ export default function* watchAlbums() {
   yield takeEvery(albumType['ALBUM_GET'], getAlbumsByCategory) 
 }
 
+//When the ALBUM_GET action trigger, then invoke it
 export function* getAlbumsByCategory(action) {
   try {
     let result = yield call(getCategoryAlbums, action.category)
@@ -20,6 +21,7 @@ export function* getAlbumsByCategory(action) {
   }
 }
 
+//Save ablum effect for save album data to db
 export function* saveAlbum() {
   try {
     const action = yield take(albumType['ALBUM_SAVE'])

@@ -16,6 +16,17 @@ const categoryReducer = (state = initialState, action) => {
       console.log(action.message)
       return state
 
+    case categoryType['CATEGORY_SAVE_SUCCEEDED']:
+      data = action.payload['data']
+      return [
+        ...state,
+        ...data
+      ]
+
+    case categoryType['CATEGORY_SAVE_FAILED']:
+      console.log(action.message)
+      return state
+
     default:
       return state
   }

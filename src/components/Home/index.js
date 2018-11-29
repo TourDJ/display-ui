@@ -10,7 +10,8 @@ import {
   Tabs, 
   Tag, Col, Row
 } from 'antd'
-import CreateForm from './CreateForm'
+import CreateCategoryForm from './CreateCategoryForm'
+import CreateAlbumForm from './CreateAlbumForm'
 import styles from './home.less'
 import { categoryType, albumType } from '../../actions/actionTypes'
 import '../../utils/constant'
@@ -23,7 +24,8 @@ class Home extends PureComponent {
 	constructor(props) {
 		super(props)
     this.state = {
-    	visible: false,
+      categoryVisible: false,
+    	albumVisible: false,
       panes: [],
       albums: [],
       times: 0, //Nothing, just for update
@@ -46,12 +48,6 @@ class Home extends PureComponent {
       this.tabCallback(category[0]._key)
     }
 
-    if(this.props.albums.length != prevProps.albums.length) {
-      this.setState({
-        albums: this.props.albums
-      })
-    }
-
     //When add a album in category
     if(this.props.albums.length != prevProps.albums.length) {
       this.setState((state, props) => ({
@@ -61,18 +57,54 @@ class Home extends PureComponent {
     }
   }
 
-	showModal = () => {
-    const form = this.formRef.props.form
+  //Category form
+  saveCategoryFormRef = (categoryFormRef) => {
+    this.categoryFormRef = categoryFormRef
+  }
+
+  showCategoryModal = () => {
+    const form = this.categoryFormRef.props.form
     form.resetFields()
-    this.setState({ visible: true })
+    this.setState({ categoryVisible: true })
   }
 
-  handleCancel = () => {
-    this.setState({ visible: false })
+  categoryHandleCancel = () => {
+    this.setState({ categoryVisible: false })
   }
 
-  handleCreate = () => {
-    const form = this.formRef.props.form
+  categoryHandleCreate = () => {
+    const form = this.categoryFormRef.props.form
+    form.validateFields((err, values) => {
+      if (err) {
+        return
+      }
+
+      console.log('Received values of category form: ', values)
+
+      this.props.saveCategory(values)
+
+      form.resetFields()
+      this.setState({ categoryVisible: false })
+    })
+  }
+
+  //Album form
+  saveAlbumFormRef = (albumFormRef) => {
+    this.albumFormRef = albumFormRef
+  }
+
+	showAlbumModal = () => {
+    const form = this.albumFormRef.props.form
+    form.resetFields()
+    this.setState({ albumVisible: true })
+  }
+
+  albumHandleCancel = () => {
+    this.setState({ albumVisible: false })
+  }
+
+  albumHandleCreate = () => {
+    const form = this.albumFormRef.props.form
     form.validateFields((err, values) => {
       if (err) {
         return
@@ -83,12 +115,12 @@ class Home extends PureComponent {
       values.category = _category.key
       values.cover = this.parseCover(values.upload)
       delete values.upload
-      console.log('Received values of form: ', values)
+      console.log('Received values of album form: ', values)
 
       this.props.saveAlbum(values, this.state.activeTab)
 
       form.resetFields()
-      this.setState({ visible: false })
+      this.setState({ albumVisible: false })
     })
   }
 
@@ -110,10 +142,6 @@ class Home extends PureComponent {
     return cover
   }
 
-  saveFormRef = (formRef) => {
-    this.formRef = formRef
-  }
-
 	tabCallback = (key) => {
 	  console.log("Current tab's key is: ", key)
     this.props.getAlbums(key)
@@ -126,14 +154,19 @@ class Home extends PureComponent {
 		return (
 		  <div>
         <div style={{ marginBottom: 16 }}>
-          <Button icon="picture" className={styles.btn} onClick={this.showModal}>新建分类</Button>
-          <Button type="primary" className={styles.btn} icon="picture" onClick={this.showModal}>新建相册</Button>
-          <Button type="danger" className={styles.btn} icon="picture">删除相册</Button>
-          <CreateForm
-	          wrappedComponentRef={this.saveFormRef}
-	          visible={this.state.visible}
-	          onCancel={this.handleCancel}
-	          onCreate={this.handleCreate}
+          <Button icon="appstore" className={styles.btn} onClick={this.showCategoryModal}>新建分类</Button>
+          <Button type="primary" className={styles.btn} icon="picture" onClick={this.showAlbumModal}>新建相册</Button>
+          <CreateCategoryForm
+            wrappedComponentRef={this.saveCategoryFormRef}
+            visible={this.state.categoryVisible}
+            onCancel={this.categoryHandleCancel}
+            onCreate={this.categoryHandleCreate}
+          />
+          <CreateAlbumForm
+	          wrappedComponentRef={this.saveAlbumFormRef}
+	          visible={this.state.albumVisible}
+	          onCancel={this.albumHandleCancel}
+	          onCreate={this.albumHandleCreate}
             activeKey={this.state.activeTab}
 	        />
         </div>		    
@@ -178,6 +211,11 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getCategories: () => dispatch({
     type: categoryType['CATEGORY_ALL_GET']
+  }),
+
+  saveCategory: (category) => dispatch({
+    type: categoryType['CATEGORY_SAVE'],
+    category: category
   }),
 
   getAlbums: (category) => dispatch({
