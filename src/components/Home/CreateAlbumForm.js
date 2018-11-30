@@ -44,6 +44,7 @@ const CreateAlbumForm = Form.create()(
       super(props)
       this.state = {
         loading: false,
+        imageUrl: null,
         categoryOptions: [],
         selectTab: {}
       }
@@ -169,12 +170,12 @@ const CreateAlbumForm = Form.create()(
             </FormItem>
 
             <FormItem label="Cover">
-              {getFieldDecorator('upload', {
+              {getFieldDecorator('cover', {
                 rules: [{ required: true, message: 'Please select a cover!' }],
               })(
                 <Upload {...coverProps}
                   beforeUpload={beforeUpload} onChange={this.handleChange}>
-                  {imageUrl ? <img src={imageUrl} alt="avatar" /> : uploadButton}
+                  {imageUrl ? <img src={imageUrl} alt="cover" /> : uploadButton}
                 </Upload>
               )}
             </FormItem>

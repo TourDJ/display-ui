@@ -1,17 +1,12 @@
 import { takeEvery, take, call, put } from 'redux-saga/effects'
-import { addAlbum, getCategoryAlbums } from '../services/albums'
+import { addAlbum, getCategoryAlbums, minusAlbum } from '../services/albums'
 import { categoryType, albumType } from '../actions/actionTypes'
 
-//Get albums by category
-export default function* watchAlbums() {
-  yield takeEvery(albumType['ALBUM_GET'], getAlbumsByCategory) 
-}
-
 //When the ALBUM_GET action trigger, then invoke it
-export function* getAlbumsByCategory(action) {
+function* getAlbumsByCategory(action) {
+  let data
   try {
     let result = yield call(getCategoryAlbums, action.category)
-    let data
     if(result.statusCode == 200)
       data = result.data
 
@@ -22,12 +17,10 @@ export function* getAlbumsByCategory(action) {
 }
 
 //Save ablum effect for save album data to db
-export function* saveAlbum() {
+function* saveAlbum(action) {
+  let data
   try {
-    const action = yield take(albumType['ALBUM_SAVE'])
-    
     let result = yield call(addAlbum, action.album, action.activeTab)
-    let data
     if(result.statusCode == 200)
       data = result.data
 
@@ -35,4 +28,25 @@ export function* saveAlbum() {
   } catch (e) {
     yield put({type: albumType['ALBUM_SAVE_FAILED'], message: e.message})
   }
+}
+
+//Delete a ablum, just logic delete
+function* deleteAlbum(action) {
+  let data
+  try {
+    let result = yield call(minusAlbum, action.key)
+    if(result.statusCode == 200)
+      data = result.data
+
+    yield put({type: albumType['ALBUM_DELETE_SUCCEEDED'], payload: data})
+  } catch (e) {
+    yield put({type: albumType['ALBUM_DELETE_FAILED'], message: e.message})
+  }  
+}
+
+//Get albums by category
+export default function* watchAlbums() {
+  yield takeEvery(albumType['ALBUM_GET'], getAlbumsByCategory) 
+  yield takeEvery(albumType['ALBUM_SAVE'], saveAlbum)
+  yield takeEvery(albumType['ALBUM_DELETE'], deleteAlbum)
 }

@@ -8,7 +8,7 @@ import {
   Form,  
   Icon, 
   Tabs, 
-  Tag, Col, Row
+  Tag, Col, Row, Popconfirm, message 
 } from 'antd'
 import CreateCategoryForm from './CreateCategoryForm'
 import CreateAlbumForm from './CreateAlbumForm'
@@ -31,6 +31,8 @@ class Home extends PureComponent {
       times: 0, //Nothing, just for update
       activeTab: -1,
     }
+    this.setAlbum = this.setAlbum.bind(this)
+    this.editAlbum = this.editAlbum.bind(this)
 	}
 
 	componentDidMount() {
@@ -113,7 +115,7 @@ class Home extends PureComponent {
       let _category = values.category
 
       values.category = _category.key
-      values.cover = this.parseCover(values.upload)
+      values.cover = this.parseCover(values.cover)
       delete values.upload
       console.log('Received values of album form: ', values)
 
@@ -131,8 +133,8 @@ class Home extends PureComponent {
     if(file && file.status === "done") {
       let response = file.response
       cover = {
-        filename: response.data.realName,
-        filepath: response.data.filePath,
+        filename: response.data ? response.data.realName : "",
+        filepath: response.data ? response.data.filePath : "",
         lastModified: file.lastModified,
         size: file.size,
         type: file.type,
@@ -149,6 +151,25 @@ class Home extends PureComponent {
       activeTab: key
     })
 	}
+
+  setAlbum = (e) => {
+    
+  }
+
+  confirmDelete = (key) => {
+    this.props.dispatch({
+      type: albumType['ALBUM_DELETE'], 
+      key: key
+    })
+  }
+
+  editAlbum = () => {
+
+  }
+
+  cardChange = (e) => {
+    console.log(e)
+  }
 
 	render() {
 		return (
@@ -179,20 +200,32 @@ class Home extends PureComponent {
                 </div>
                 <Divider />
                 {
-                  this.state.albums.map((album, index) => (
-                    <Col key={album._key} span={6} xs={24} sm={12} md={8} lg={6} xl={6}>
-                    <Card
-                      style={{ width: 300, marginBottom: 20 }}
-                      cover={<img alt="example" src={`${constant.service_url}${album.cover.filepath}`} />}
-                      actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
-                    >
-                      <Meta
-                        title={album.title}
-                        description={album.description}
-                      />
-                    </Card>
-                    </Col>
-                  ))
+                  this.state.albums.map((album, index) => {
+                    if(!album.cover) 
+                      album.cover = {filePath: "/"}
+
+                    return (
+                      <Col key={album._key} span={6} xs={24} sm={12} md={8} lg={6} xl={6}>
+                        <Card
+                          style={{ width: 300, marginBottom: 20 }}  onTabChange={this.cardChange}
+                          cover={<img alt="example" src={`${constant.service_url}${album.cover.filepath}`} />}
+                          actions={[
+                            <Icon type="setting" theme="filled" onClick={this.setAlbum} />,
+                            <Popconfirm title="确定要删除该相册吗?" okText="确定" cancelText="取消"
+                                  onConfirm={() => this.confirmDelete(album._key)}> 
+                              <Icon type="delete" theme="filled" />
+                            </Popconfirm>, 
+                            <Icon type="edit" theme="filled" onClick={() => this.editAlbum()} />
+                          ]}
+                        >
+                          <Meta
+                            title={album.title}
+                            description={album.description}
+                          />
+                        </Card>
+                      </Col>
+                    )
+                  })
                 }
               </TabPane>
             ))
@@ -209,6 +242,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
+  dispatch: dispatch,
+
   getCategories: () => dispatch({
     type: categoryType['CATEGORY_ALL_GET']
   }),

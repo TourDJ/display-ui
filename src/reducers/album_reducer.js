@@ -22,6 +22,17 @@ const albumReducer = (state = [], action) => {
       console.log(action.message)
       return state      
 
+    //Delete album success
+    case albumType['ALBUM_DELETE_SUCCEEDED']:
+      data = action.payload
+      let newData = state.filter(album => album._key != data._key)
+      return [...newData]
+
+    //Delete album failed
+    case albumType['ALBUM_DELETE_FAILED']:
+      console.log(action.message)
+      return state
+
     default:
       return state    
   }

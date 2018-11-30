@@ -5,8 +5,6 @@ import watchAlbums, { saveAlbum } from './album_saga'
 export default function* sagas() {
 	yield all([
 		watchCategories(),
-    saveCategory(),
-    watchAlbums(),
-    saveAlbum()
+    watchAlbums()
 	])
 }

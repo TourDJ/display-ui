@@ -6,7 +6,7 @@ const categoryReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case categoryType['CATEGORY_ALL_SUCCEEDED']:
-    	data = action.payload['data']
+    	data = action.payload && action.payload['data']
       return [
       	...state,
       	...data
@@ -17,7 +17,7 @@ const categoryReducer = (state = initialState, action) => {
       return state
 
     case categoryType['CATEGORY_SAVE_SUCCEEDED']:
-      data = action.payload['data']
+      data = action.payload
       return [
         ...state,
         ...data

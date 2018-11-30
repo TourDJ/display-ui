@@ -12,10 +12,8 @@ function* retrievalCategories() {
 }
 
 //Save category effect
-export function* saveCategory() {
+function* saveCategory(action) {
   try {
-    const action = yield take(categoryType['CATEGORY_SAVE'])
-
     let result = yield call(addCategory, action.category)
     let data
     if(result.statusCode == 200)
@@ -29,4 +27,5 @@ export function* saveCategory() {
 
 export default function* watchCategories() {
   yield takeEvery(categoryType['CATEGORY_ALL_GET'], retrievalCategories) 
+  yield takeEvery(categoryType['CATEGORY_SAVE'], saveCategory)
 }

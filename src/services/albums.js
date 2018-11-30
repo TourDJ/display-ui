@@ -19,3 +19,14 @@ export async function getCategoryAlbums(category) {
   let result = request(`${constant.service_url}/album?category=${category}`)
   return result
 }
+
+//Delte a album
+export async function minusAlbum(key) {
+  let result = request(`${constant.service_url}/album/delete`, {
+    method: 'POST',
+    body: {
+      key: key
+    }
+  })
+  return result
+}
