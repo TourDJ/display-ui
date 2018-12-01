@@ -6,8 +6,8 @@ import {
   Card,  
   Divider,
   Form,  
-  Icon, 
-  Tabs, 
+  Icon, List, 
+  Tabs, Tooltip,
   Tag, Col, Row, Popconfirm, message 
 } from 'antd'
 import CreateCategoryForm from './CreateCategoryForm'
@@ -15,7 +15,6 @@ import CreateAlbumForm from './CreateAlbumForm'
 import styles from './home.less'
 import { categoryType, albumType } from '../../actions/actionTypes'
 import '../../utils/constant'
-
 const TabPane = Tabs.TabPane
 const { Meta } = Card
 
@@ -32,7 +31,6 @@ class Home extends PureComponent {
       activeTab: -1,
     }
     this.setAlbum = this.setAlbum.bind(this)
-    this.editAlbum = this.editAlbum.bind(this)
 	}
 
 	componentDidMount() {
@@ -156,6 +154,7 @@ class Home extends PureComponent {
     
   }
 
+  //Delete album confirm
   confirmDelete = (key) => {
     this.props.dispatch({
       type: albumType['ALBUM_DELETE'], 
@@ -163,20 +162,20 @@ class Home extends PureComponent {
     })
   }
 
-  editAlbum = () => {
-
-  }
-
-  cardChange = (e) => {
-    console.log(e)
+  //Edit album, add, modify, delete picture
+  editAlbum = (key) => {
+    this.props.history.push(`/picture/${key}`)
   }
 
 	render() {
+    const noCategory = ['没有分类']
+    const noAlbum = ['没有相册']
+
 		return (
 		  <div>
         <div style={{ marginBottom: 16 }}>
           <Button icon="appstore" className={styles.btn} onClick={this.showCategoryModal}>新建分类</Button>
-          <Button type="primary" className={styles.btn} icon="picture" onClick={this.showAlbumModal}>新建相册</Button>
+          <Button type="primary" className={styles.btn} icon="hdd" onClick={this.showAlbumModal}>新建相册</Button>
           <CreateCategoryForm
             wrappedComponentRef={this.saveCategoryFormRef}
             visible={this.state.categoryVisible}
@@ -190,47 +189,68 @@ class Home extends PureComponent {
 	          onCreate={this.albumHandleCreate}
             activeKey={this.state.activeTab}
 	        />
-        </div>		    
-        <Tabs onChange={this.tabCallback} type="card">
-          {
-            this.state.panes.map(pane => (
-              <TabPane tab={pane.name} key={pane._key}>
-                <div style={{marginBottom: 10}}>
-                  <Tag color="#108ee9">{pane.description}</Tag>
-                </div>
-                <Divider />
-                {
-                  this.state.albums.map((album, index) => {
-                    if(!album.cover) 
-                      album.cover = {filePath: "/"}
+        </div>	
+        {
+          this.state.panes.length > 0 ?
+          <Tabs onChange={this.tabCallback} type="card">
+            {     
+              this.state.panes.map(pane => (
+                <TabPane tab={pane.name} key={pane._key}>
+                  <div style={{marginBottom: 10}}>
+                    <Tag color="#108ee9">{pane.description}</Tag>
+                  </div>
+                  <Divider />
+                  {
+                    this.state.albums.length > 0 ?
+                    this.state.albums.map((album, index) => {
+                      if(!album.cover) 
+                        album.cover = {filePath: "/"}
 
-                    return (
-                      <Col key={album._key} span={6} xs={24} sm={12} md={8} lg={6} xl={6}>
-                        <Card
-                          style={{ width: 300, marginBottom: 20 }}  onTabChange={this.cardChange}
-                          cover={<img alt="example" src={`${constant.service_url}${album.cover.filepath}`} />}
-                          actions={[
-                            <Icon type="setting" theme="filled" onClick={this.setAlbum} />,
-                            <Popconfirm title="确定要删除该相册吗?" okText="确定" cancelText="取消"
-                                  onConfirm={() => this.confirmDelete(album._key)}> 
-                              <Icon type="delete" theme="filled" />
-                            </Popconfirm>, 
-                            <Icon type="edit" theme="filled" onClick={() => this.editAlbum()} />
-                          ]}
-                        >
-                          <Meta
-                            title={album.title}
-                            description={album.description}
-                          />
-                        </Card>
-                      </Col>
-                    )
-                  })
-                }
-              </TabPane>
-            ))
-          }
-			  </Tabs>		    
+                      return (
+                        <Col key={album._key} span={6} xs={24} sm={12} md={8} lg={6} xl={6}>
+                          <Card
+                            style={{ width: 300, marginBottom: 20 }}
+                            cover={<img alt="example" src={`${constant.service_url}${album.cover.filepath}`} />}
+                            actions={[
+                              <Tooltip title='相册编辑'>
+                                <Icon type="setting" theme="filled" onClick={this.setAlbum} />
+                              </Tooltip>,
+                              <Tooltip title='相册删除'>
+                                <Popconfirm title="确定要删除该相册吗?" 
+                                      okText="确定" cancelText="取消"
+                                      onConfirm={() => this.confirmDelete(album._key)}> 
+                                  <Icon type="delete" theme="filled" />
+                                </Popconfirm>
+                              </Tooltip>, 
+                              <Tooltip title='照片管理'>
+                                <Icon type="edit" theme="filled" onClick={() => this.editAlbum(album._key)} />
+                              </Tooltip>
+                            ]}
+                          >
+                            <Meta
+                              title={album.title}
+                              description={album.description}
+                            />
+                          </Card>
+                        </Col>
+                      )
+                    })
+                    : <List style={{width:'10%', marginLeft: '45%'}}
+                        itemLayout="horizontal"
+                        dataSource={noAlbum}
+                        renderItem={item => (<List.Item>{item}</List.Item>)}
+                      />
+                  }
+                </TabPane>
+              ))
+            }            
+          </Tabs>
+          : <List style={{width:'10%', marginLeft: '45%'}}
+              itemLayout="horizontal"
+              dataSource={noCategory}
+              renderItem={item => (<List.Item>{item}</List.Item>)}
+            />
+        }	    
 		  </div>
 		)
 	}

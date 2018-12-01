@@ -14,8 +14,7 @@ import { connect } from 'react-redux'
 import { getBase64, checkFile } from '../../utils/tool_file'
 import '../../utils/constant'
 
-const FormItem = Form.Item
-const Option = Select.Option
+const { TextArea } = Input;
 
 function beforeUpload(file) {
   let fileResult = checkFile(file)
@@ -25,19 +24,12 @@ function beforeUpload(file) {
   return fileResult
 }
 
-function categoryChange(value) {
-  
-}
-
-const CreateAlbumForm = Form.create()(
-  class AlbumForm extends React.Component {
+const CreatePictureForm = Form.create()(
+  class PictureForm extends React.Component {
     constructor(props) {
       super(props)
       this.state = {
-        loading: false,
-        imageUrl: null,
-        categoryOptions: [],
-        selectTab: {}
+
       }
     }
 
@@ -46,88 +38,18 @@ const CreateAlbumForm = Form.create()(
     }
 
     componentDidUpdate(prevProps) {
-      //Use catetores wrap select options
-      if(this.props.category.length != prevProps.category.length) {
-        let categories = this.props.category
-        this.getCategoties(categories)
-      }
-      
-      //When change the tab, also change the default seleted 
-      //item for category select
-      if(this.props.activeKey != prevProps.activeKey) {
-        this.changeSelectTab(this.props.activeKey, this.props.category)
-      }
+
     }
 
-    changeSelectTab(activeKey, category) {
-      let tempTab = {}
-      if(category) {
-        category.forEach(function(cat){
-          if(cat && cat._key == activeKey) {
-            tempTab = {key: cat._key, label: cat.name}
-          }
-        })
-        this.setState({
-          selectTab: tempTab
-        })
-      }
-    }
-
-    getCategoties(categories) {
-      const categoryDatas = []
-      const _this = this
-      categories.map((category) => {
-        return(
-          categoryDatas.push(
-            <Select.Option value={category._key} key={category._key}>
-              {category.name}
-            </Select.Option>
-          ),
-          _this.setState({
-            categoryOptions: categoryDatas,
-          })
-        )
-      })
-    }
-
-    handleChange = (info) => {
-      if (info.file.status === 'uploading') {
-        this.setState({ loading: true })
-        return
-      }
-      if (info.file.status === 'done') {
-        // Get this url from response in real world.
-        getBase64(info.file.originFileObj, imageUrl => this.setState({
-          imageUrl,
-          loading: false,
-        }))
-      }
-    }
 
     render() {
       const { visible, onCancel, onCreate, form } = this.props
       const { getFieldDecorator } = form
-      const uploadButton = (
-        <div>
-          <Icon type={this.state.loading ? 'loading' : 'plus'} />
-          <div className="ant-upload-text">Upload</div>
-        </div>
-      )
-      const imageUrl = this.state.imageUrl
-      const coverProps = {
-        action: `${constant.service_url}/upload?kind=cover`,
-        headers:{method:'POST'},
-        multiple: false,
-        name: "cover",
-        className: "avatar-uploader",
-        listType: "picture-card",
-        showUploadList: false,
-      }
     
       return (
         <Modal
           visible={visible}
-          title="Create a new album"
+          title="Add a photo"
           okText="Create"
           onCancel={onCancel}
           onOk={onCreate}
@@ -173,7 +95,7 @@ const CreateAlbumForm = Form.create()(
             </FormItem>
 
             <FormItem label="Description">
-              {getFieldDecorator('description')(<Input type="textarea" />)}
+              {getFieldDecorator('description')(<TextArea rows={4} />)}
             </FormItem>
 
             <FormItem label="Privacy" className="collection-create-form_last-form-item">
@@ -194,9 +116,9 @@ const CreateAlbumForm = Form.create()(
 )
 
 const mapStateToProps = state => ({
-  category: state.category
+  
 })
 
 export default connect(
   mapStateToProps
-)(CreateAlbumForm)
+)(CreatePictureForm)

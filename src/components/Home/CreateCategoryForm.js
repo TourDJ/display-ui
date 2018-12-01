@@ -44,8 +44,8 @@ const CreateCategoryForm = Form.create()(
               )}
             </FormItem>
 
-            <FormItem label="Sort">
-              {getFieldDecorator('sort')(
+            <FormItem label="Order">
+              {getFieldDecorator('order')(
                 <InputNumber min={1} max={10} />
               )}
             </FormItem>

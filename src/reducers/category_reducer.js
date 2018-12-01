@@ -1,4 +1,5 @@
 import { categoryType } from '../actions/actionTypes'
+
 const initialState = []
 
 const categoryReducer = (state = initialState, action) => {

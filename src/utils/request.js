@@ -1,6 +1,7 @@
 import fetch from 'node-fetch'
 import { notification } from 'antd'
 import hash from 'hash.js'
+import '../utils/constant'
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -118,7 +119,7 @@ export default function request(url, option) {
       sessionStorage.removeItem(`${hashcode}:timestamp`)
     }
   }
-  return fetch(url, newOptions)
+  return fetch(`${constant.service_url}${url}`, newOptions)
     .then(checkStatus)
     .then(response => cachedSave(response, hashcode))
     .then(response => {

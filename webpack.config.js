@@ -74,4 +74,10 @@ module.exports = {
       'node_modules',
     ],
   },
+  devServer: {
+    proxy: [{
+      context: ['/category', '/album'],
+      target: 'http://192.168.0.103:8020' 
+    }]
+  }
 }
