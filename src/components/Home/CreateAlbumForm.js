@@ -11,7 +11,7 @@ import {
   Upload
 } from 'antd'
 import { connect } from 'react-redux'
-import { getBase64, checkFile } from '../../utils/tool_file'
+import { getBase64, checkFile } from '../../utils/uploadFile'
 import '../../utils/constant'
 
 const FormItem = Form.Item

@@ -1,6 +1,6 @@
-import { pictureType } from './actionTypes'
+import { photoType } from './actionTypes'
 
-export const pictureGet = (key) => ({
-  type: pictureType['PICTURE_GET'],
+export const photoGet = (key) => ({
+  type: photoType['PHOTO_GET'],
   album: key
 })

@@ -18,3 +18,22 @@ export function checkFile(file) {
 
   return isJPG && isLt2M
 }
+
+
+//re-organize cover object
+export const parseUpload = (upload) => {
+  let file = upload ? upload.file : null,
+      cover
+  if(file && file.status === "done") {
+    let response = file.response
+    cover = {
+      filename: response.data ? response.data.realName : "",
+      filepath: response.data ? response.data.filePath : "",
+      lastModified: file.lastModified,
+      size: file.size,
+      type: file.type,
+      uid: file.uid
+    }
+  }
+  return cover
+}

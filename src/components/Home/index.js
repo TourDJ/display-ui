@@ -14,7 +14,10 @@ import CreateCategoryForm from './CreateCategoryForm'
 import CreateAlbumForm from './CreateAlbumForm'
 import styles from './home.less'
 import { categoryType, albumType } from '../../actions/actionTypes'
+import { parseUpload } from '../../utils/uploadFile'
 import '../../utils/constant'
+import locale from '../../locales/zh'
+
 const TabPane = Tabs.TabPane
 const { Meta } = Card
 
@@ -111,10 +114,8 @@ class Home extends PureComponent {
       }
 
       let _category = values.category
-
       values.category = _category.key
-      values.cover = this.parseCover(values.cover)
-      delete values.upload
+      values.cover = parseUpload(values.cover)
       console.log('Received values of album form: ', values)
 
       this.props.saveAlbum(values, this.state.activeTab)
@@ -122,24 +123,6 @@ class Home extends PureComponent {
       form.resetFields()
       this.setState({ albumVisible: false })
     })
-  }
-
-  //re-organize cover object
-  parseCover = (upload) => {
-    let file = upload ? upload.file : null,
-        cover
-    if(file && file.status === "done") {
-      let response = file.response
-      cover = {
-        filename: response.data ? response.data.realName : "",
-        filepath: response.data ? response.data.filePath : "",
-        lastModified: file.lastModified,
-        size: file.size,
-        type: file.type,
-        uid: file.uid
-      }
-    }
-    return cover
   }
 
 	tabCallback = (key) => {
@@ -162,9 +145,9 @@ class Home extends PureComponent {
     })
   }
 
-  //Edit album, add, modify, delete picture
+  //Edit album, add, modify, delete photo
   editAlbum = (key) => {
-    this.props.history.push(`/picture/${key}`)
+    this.props.history.push(`/photo/${key}`)
   }
 
 	render() {

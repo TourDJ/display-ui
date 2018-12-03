@@ -1,13 +1,15 @@
 import { combineReducers } from 'redux'
 import { connectRouter } from 'connected-react-router'
-import categoryReducer from './category_reducer'
-import albumReducer from './album_reducer'
-import pictureReducer from './picture_reducer'
+import categoryReducer from './categoryReducer'
+import albumReducer from './albumReducer'
+import photoReducer from './photoReducer'
+import photoStateReducer from './photoStateReducer'
 
 const rootReducer = (history) => combineReducers({
   category: categoryReducer,
   albums: albumReducer,
-  pictures: pictureReducer,
+  photos: photoReducer,
+  photoState: photoStateReducer,
   router: connectRouter(history)
 })
 

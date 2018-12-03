@@ -1,12 +1,12 @@
 import { all } from 'redux-saga/effects'
-import watchCategories from './category_saga'
-import watchAlbums from './album_saga'
-import watchPictures from './picture_saga'
+import watchCategories from './categorySaga'
+import watchAlbums from './albumSaga'
+import watchPhotos from './photoSaga'
 
 export default function* sagas() {
 	yield all([
 		watchCategories(),
     watchAlbums(),
-    watchPictures(),
+    watchPhotos(),
 	])
 }
