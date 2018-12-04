@@ -133,6 +133,10 @@ class Home extends PureComponent {
     })
 	}
 
+  photoView = (e, key) => {
+    this.props.history.push(`/photo/view/${key}`)
+  }
+
   setAlbum = (e) => {
     
   }
@@ -192,8 +196,9 @@ class Home extends PureComponent {
                       return (
                         <Col key={album._key} span={6} xs={24} sm={12} md={8} lg={6} xl={6}>
                           <Card
+                            hoverable
                             style={{ width: 300, marginBottom: 20 }}
-                            cover={<img alt="example" src={`${constant.service_url}${album.cover.filepath}`} />}
+                            cover={<img alt="example" src={`${constant.service_url}${album.cover.filepath}`} onClick={(e) => this.photoView(e, album._key)} />}
                             actions={[
                               <Tooltip title='相册编辑'>
                                 <Icon type="setting" theme="filled" onClick={this.setAlbum} />

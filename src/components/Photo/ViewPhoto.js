@@ -1,23 +1,17 @@
 import React , { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { 
-  Avatar,
-  Button,
-  Card,  
-  Divider,
-  Form,  
-  Icon, 
-  Tabs, List,
-  Tag, Col, Row, Popconfirm, message 
+  Card, 
+  Divider, 
+  List, 
+  Col,
+  Icon
 } from 'antd'
 import { photoGet } from '../../actions'
-import { photoType } from '../../actions/actionTypes'
-import '../../utils/constant'
-import styles from './photo.less'
 
 const { Meta } = Card;
 
-class Photo extends PureComponent {
+class ViewPhoto extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -39,20 +33,12 @@ class Photo extends PureComponent {
     }
   }
 
-  addPhoto() {
-    this.props.history.push('/photo/add', {albumKey: this.state.albumKey})
-  }
-
   render() {
     const { match } = this.props
     const noPhoto = ['没有照片']
 
     return (
       <div>
-        <div style={{ marginBottom: 16 }}>
-          <Button type="primary" icon="photo" className={styles.btn} 
-              onClick={this.addPhoto.bind(this)}>添加照片</Button>
-        </div>
         <Divider />
         {
           this.state.pics.length > 0 ?
@@ -61,13 +47,15 @@ class Photo extends PureComponent {
               <Col key={pic._key} span={24} xs={24} sm={24} md={24} lg={24} xl={24}>
                 <Card
                   style={{ width: '100%', marginBottom: 20 }}
-                  title="Card title" bordered={false}
+                  title={pic.title} bordered={false}
+                  actions={[<Icon type="like" />, <Icon type="dislike" />]}
                 >
                   <img src={`${constant.service_url}${pic.photo.filepath}`} width="100%" />
                   <Meta
-      title="Europe Street beat"
-      description="www.instagram.com"
-    />
+                    style={{marginTop:'10px'}}
+                    title={`${pic.place}/${pic.date}`}
+                    description={pic.description}
+                  />
                 </Card>
               </Col>
             )
@@ -80,7 +68,7 @@ class Photo extends PureComponent {
         }
       </div>
     )   
-  }
+  }  
 }
 
 const mapStateToProps = state => ({
@@ -94,4 +82,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Photo)
+)(ViewPhoto)
