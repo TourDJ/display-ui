@@ -9,7 +9,6 @@ const categoryReducer = (state = initialState, action) => {
     case categoryType['CATEGORY_ALL_SUCCEEDED']:
     	data = action.payload && action.payload['data']
       return [
-      	...state,
       	...data
       ]
 

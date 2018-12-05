@@ -28,36 +28,21 @@ class Home extends PureComponent {
     this.state = {
       categoryVisible: false,
     	albumVisible: false,
-      panes: [],
-      albums: [],
-      times: 0, //Nothing, just for update
       activeTab: -1,
     }
     this.setAlbum = this.setAlbum.bind(this)
 	}
 
 	componentDidMount() {
-		let getCategories = this.props.getCategories
-    getCategories()
+    this.props.getCategories()
 	}
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     //Initial loading categories
     if(this.props.category.length != prevProps.category.length) {
-      let category = this.props.category
-      this.setState({
-        panes: category
-      })
-      this.tabCallback(category[0]._key)
+      this.tabCallback(this.props.category[0]._key)
     }
 
-    //When add a album in category
-    if(this.props.albums.length != prevProps.albums.length) {
-      this.setState((state, props) => ({
-        albums: this.props.albums,
-        times: state.times + 1
-      })) 
-    }
   }
 
   //Category form
@@ -178,23 +163,23 @@ class Home extends PureComponent {
 	        />
         </div>	
         {
-          this.state.panes.length > 0 ?
+          this.props.category.length > 0 ?
           <Tabs onChange={this.tabCallback} type="card">
             {     
-              this.state.panes.map(pane => (
+              this.props.category.map(pane => (
                 <TabPane tab={pane.name} key={pane._key}>
                   <div style={{marginBottom: 10}}>
                     <Tag color="#108ee9">{pane.description}</Tag>
                   </div>
                   <Divider />
                   {
-                    this.state.albums.length > 0 ?
-                    this.state.albums.map((album, index) => {
+                    this.props.albums.length > 0 ?
+                    this.props.albums.map((album, index) => {
                       if(!album.cover) 
                         album.cover = {filePath: "/"}
 
                       return (
-                        <Col key={album._key} span={6} xs={24} sm={12} md={8} lg={6} xl={6}>
+                        <Col key={album._key} xs={24} sm={12} md={8} lg={6} xl={6}>
                           <Card
                             hoverable
                             style={{ width: 300, marginBottom: 20 }}

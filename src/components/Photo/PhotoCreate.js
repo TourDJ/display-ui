@@ -27,8 +27,8 @@ function beforeUpload(file) {
   return fileResult
 }
 
-const CreatePhotoForm = Form.create()(
-  class PhotoForm extends React.Component {
+const PhotoCreate = Form.create()(
+  class PhotoCreateForm extends React.Component {
     constructor(props) {
       super(props)
       this.state = {
@@ -212,4 +212,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CreatePhotoForm)
+)(PhotoCreate)
