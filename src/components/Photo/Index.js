@@ -6,49 +6,74 @@ import {
   Card,  
   Divider,
   Form,  
-  Icon, 
+  Modal, Icon, 
   Tabs, List,
   Tag, Col, Row, Popconfirm, message,
-  Tooltip
+  Tooltip, Input
 } from 'antd'
 import { photoGet } from '../../actions'
 import { photoType } from '../../actions/actionTypes'
 import '../../utils/constant'
 import styles from './photo.less'
 
-const { Meta } = Card;
+const { Meta } = Card
+const { TextArea } = Input
 
 class Photo extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      albumKey: this.props.match.params.key,
-      pics: []
+      visible: false,
     }
   }
 
   componentDidMount() {
-    const { dispatch } = this.props
-    dispatch(photoGet(this.state.albumKey))
+    const { match } = this.props
+    this.props.dispatch(photoGet(match.params.key))
   }
 
   componentDidUpdate(prevProps) {
+    console.log(prevProps)
+    console.log(this.props)
     if(prevProps.photos.length != this.props.photos.length) {
-      this.setState({
-        pics: this.props.photos
-      })
+
     }
   }
 
   addPhoto() {
-    this.props.history.push('/photo/add', {albumKey: this.state.albumKey})
+    const { match } = this.props
+    this.props.history.push('/photo/add', {albumKey: match.params.key})
+  }
+
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  }
+
+  handleOk = (e) => {
+
+    this.setState({
+      visible: false,
+    });
+  }
+
+  handleCancel = (e) => {
+    this.setState({
+      visible: false,
+    });
+  }
+
+  //Edit photo's description
+  editPhoto = (key) => {
+    this.showModal()
   }
 
   //Delete photo confirm
   confirmDelete = (key) => {
     this.props.dispatch({
-      // type: albumType['ALBUM_DELETE'], 
-      // key: key
+      type: photoType['PHOTO_DELETE'], 
+      key: key
     })
   }
 
@@ -61,20 +86,31 @@ class Photo extends PureComponent {
         <div style={{ marginBottom: 16 }}>
           <Button type="primary" icon="photo" className={styles.btn} 
               onClick={this.addPhoto.bind(this)}>添加照片</Button>
+          <Modal
+            title="Basic Modal"
+            visible={this.state.visible}
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+          >
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+          </Modal>
         </div>
         <Divider />
+        <Row>
         {
-          this.state.pics.length > 0 ?
-          this.state.pics.map(pic => {
+          this.props.photos.length > 0 ?
+          this.props.photos.map(pic => {
             return (
-              <Row gutter={16}>
               <Col key={pic._key} xs={24} sm={12} md={8} lg={6} xl={6}>
                 <Card
-                  style={{ width: '100%', marginBottom: 20 }}
+                  className={styles.photoEditCard}
+                  title={`${pic.title}`}
                   cover={<img src={`${constant.service_url}${pic.photo.filepath}`} width="100%" />}
                   actions={[
                     <Tooltip title='照片编辑'>
-                      <Icon type="setting" theme="filled" onClick={this.setAlbum} />
+                      <Icon type="setting" theme="filled" onClick={() => this.editPhoto(pic._key)} />
                     </Tooltip>,
                     <Tooltip title='照片删除'>
                       <Popconfirm title="确定要删除该照片吗?" 
@@ -85,14 +121,10 @@ class Photo extends PureComponent {
                     </Tooltip>
                   ]}                  
                 >
-                  
-                  <Meta
-                    title={`${pic.title}`}
-                    description={`${pic.description}`}
-                  />
+                  <Meta className={styles.photoEditDiv} 
+                        description={pic.description}/>
                 </Card>
               </Col>
-              </Row>
             )
           })
           : <List style={{width:'10%', marginLeft: '45%'}}
@@ -101,6 +133,7 @@ class Photo extends PureComponent {
               renderItem={item => (<List.Item>{item}</List.Item>)}
             />
         }
+        </Row>
       </div>
     )   
   }

@@ -16,3 +16,13 @@ export async function savePhoto(photo, album) {
   })
   return result
 }
+
+export async function deletePhoto(key) {
+  let result = request(`/photo/delete`, {
+    method: 'DELETE',
+    body: {
+      key
+    }
+  })
+  return result
+}

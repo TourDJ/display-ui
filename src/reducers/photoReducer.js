@@ -26,6 +26,17 @@ const photoReducer = (state = initialState, action) => {
       console.log(action.message)
       return state
 
+    case photoType['PHOTO_DELETE_SUCCEEDED']:
+      data = action.payload
+      let newPhoto = state.filter(photo => photo._key != data._key)
+      return [
+        ...newPhoto
+      ]
+
+    case photoType['PHOTO_DELETE_FAILED']:
+      console.log(action.message)
+      return state
+
     case photoType['PHOTO_VIEW']:
 
       return state
