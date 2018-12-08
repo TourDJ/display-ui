@@ -1,16 +1,21 @@
 import React , { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { 
+  Avatar,
   Card, 
   Divider, 
   List, 
   Col,
-  Icon
+  Icon,
+  Row,
+  Rate
 } from 'antd'
+import PhotoHead from './PhotoHead'
+import PhotoFoot from './PhotoFoot'
 import { photoGet } from '../../actions'
 import styles from './photo.less'
 
-const { Meta } = Card;
+const { Meta } = Card
 
 class ViewPhoto extends PureComponent {
   constructor(props) {
@@ -37,8 +42,8 @@ class ViewPhoto extends PureComponent {
 
     return (
       <div>
-        <div className={styles.photoViewHead}><strong>{state.name}</strong></div>
-        <Divider />
+        <PhotoHead icon="bars" title={state.name} history={this.props.history} />
+        <Row>
         {
           this.props.photos.length > 0 ?
           this.props.photos.map(pic => {
@@ -46,7 +51,7 @@ class ViewPhoto extends PureComponent {
               <Col key={pic._key} span={24} xs={24} sm={24} md={24} lg={24} xl={24}>
                 <Card
                   extra={`${pic.place}/${pic.date}`}
-                  style={{ width: '100%', marginBottom: 20 }}
+                  style={{ width: '100%', marginBottom: 5 }}
                   title={<span className={styles.photoTitle}>{pic.title}</span>} bordered={false}
                   actions={[<Icon type="like" />, <Icon type="dislike" />]}
                 >
@@ -65,6 +70,8 @@ class ViewPhoto extends PureComponent {
               renderItem={item => (<List.Item>{item}</List.Item>)}
             />
         }
+        </Row>
+        <PhotoFoot photos={this.props.photos} />
       </div>
     )   
   }  

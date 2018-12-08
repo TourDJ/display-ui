@@ -13,7 +13,7 @@ import {
 import CreateCategoryForm from './CreateCategoryForm'
 import CreateAlbumForm from './CreateAlbumForm'
 import styles from './home.less'
-import { categoryType, albumType } from '../../actions/actionTypes'
+import { categoryType, albumType, tabType } from '../../actions/actionTypes'
 import { parseUpload } from '../../utils/uploadFile'
 import '../../utils/constant'
 import locale from '../../locales/zh'
@@ -28,7 +28,7 @@ class Home extends PureComponent {
     this.state = {
       categoryVisible: false,
     	albumVisible: false,
-      activeTab: -1,
+      // activeTab: -1,
     }
     this.setAlbum = this.setAlbum.bind(this)
 	}
@@ -50,6 +50,7 @@ class Home extends PureComponent {
     this.categoryFormRef = categoryFormRef
   }
 
+  //显示新建分类窗口
   showCategoryModal = () => {
     const form = this.categoryFormRef.props.form
     form.resetFields()
@@ -103,7 +104,7 @@ class Home extends PureComponent {
       values.cover = parseUpload(values.cover)
       console.log('Received values of album form: ', values)
 
-      this.props.saveAlbum(values, this.state.activeTab)
+      this.props.saveAlbum(values, this.props.tabKey)
 
       form.resetFields()
       this.setState({ albumVisible: false })
@@ -111,11 +112,16 @@ class Home extends PureComponent {
   }
 
 	tabCallback = (key) => {
+    const {dispatch} = this.props
 	  console.log("Current tab's key is: ", key)
-    this.props.getAlbums(key)
-    this.setState({
-      activeTab: key
+    dispatch({
+        type: tabType['TAB_KEY'], 
+        key: key
     })
+    this.props.getAlbums(key)
+    // this.setState({
+    //   activeTab: key
+    // })
 	}
 
   setAlbum = (e) => {
@@ -161,12 +167,12 @@ class Home extends PureComponent {
 	          visible={this.state.albumVisible}
 	          onCancel={this.albumHandleCancel}
 	          onCreate={this.albumHandleCreate}
-            activeKey={this.state.activeTab}
+            activeKey={this.props.tabKey}
 	        />
         </div>	
         {
           this.props.category.length > 0 ?
-          <Tabs onChange={this.tabCallback} type="card">
+          <Tabs onChange={this.tabCallback} type="card" activeKey={this.props.tabKey}>
             {     
               this.props.category.map(pane => (
                 <TabPane tab={pane.name} key={pane._key}>
@@ -233,7 +239,8 @@ class Home extends PureComponent {
 
 const mapStateToProps = state => ({
   category: state.category,
-  albums: state.albums
+  albums: state.albums,
+  tabKey: state.tabKey,
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -253,10 +260,10 @@ const mapDispatchToProps = dispatch => ({
     category: category
   }),
 
-  saveAlbum: (album, activeTab) => dispatch({
+  saveAlbum: (album, tabKey) => dispatch({
     type: albumType['ALBUM_SAVE'], 
     album: album,
-    activeTab: activeTab
+    tabKey: tabKey
   })
 
 })

@@ -43,3 +43,6 @@ export const photoType = {
   PHOTO_FAILE_STATE: 'PHOTO_FAILE_STATE'
 }
 
+export const tabType = {
+  TAB_KEY: 'TAB_KEY'
+}

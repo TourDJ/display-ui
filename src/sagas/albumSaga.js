@@ -20,7 +20,7 @@ function* getAlbumsByCategory(action) {
 function* saveAlbum(action) {
   let data
   try {
-    let result = yield call(addAlbum, action.album, action.activeTab)
+    let result = yield call(addAlbum, action.album, action.tabKey)
     if(result.statusCode == 200)
       data = result.data
 

@@ -57,9 +57,9 @@ const photoReducer = (state = initialState, action) => {
       console.log(action.message)
       return state
 
-    case photoType['PHOTO_VIEW']:
+    // case photoType['PHOTO_VIEW']:
 
-      return state
+    //   return state
 
     default:
       return state

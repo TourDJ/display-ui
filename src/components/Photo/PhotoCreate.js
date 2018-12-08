@@ -1,4 +1,5 @@
 import React , { PureComponent } from 'react'
+import { connect } from 'react-redux'
 import { 
   Button,
   Form,
@@ -10,7 +11,7 @@ import {
   Select, Row, Col,
   Upload, DatePicker
 } from 'antd'
-import { connect } from 'react-redux'
+import PhotoHead from './PhotoHead'
 import { photoType } from '../../actions/actionTypes'
 import { getBase64, checkFile, parseUpload } from '../../utils/uploadFile'
 import dateUtils from '../../utils/dateUtils'
@@ -114,6 +115,7 @@ const PhotoCreate = Form.create()(
 
       return (
         <div> 
+          <PhotoHead icon="bar-chart" title="添加照片" history={this.props.history} />
           <Form layout="vertical" onSubmit={this.handleSubmit}>
             <Row type="flex" justify="center">
               <Col span={12}>

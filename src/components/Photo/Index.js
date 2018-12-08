@@ -11,6 +11,7 @@ import {
   Tooltip, Input,
   Pagination
 } from 'antd'
+import PhotoHead from './PhotoHead'
 import PhotoEdit from './PhotoEdit'
 import { photoGet } from '../../actions'
 import { photoType } from '../../actions/actionTypes'
@@ -111,6 +112,7 @@ class Photo extends PureComponent {
 
     return (
       <div>
+        <PhotoHead icon="setting" title="照片管理" history={this.props.history} />
         <div style={{ marginBottom: 16 }}>
           <Button type="primary" icon="photo" className={styles.btn} 
               onClick={this.addPhoto.bind(this)}>添加照片</Button>
@@ -122,7 +124,6 @@ class Photo extends PureComponent {
             photo={this.state.currPhoto}
           />
         </div>
-        <Divider />
         <Row>
         {
           this.props.photos.length > 0 ?
