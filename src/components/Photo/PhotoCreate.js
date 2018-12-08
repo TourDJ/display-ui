@@ -35,23 +35,20 @@ const PhotoCreate = Form.create()(
         loading: false,
         uploading: false,
         imageUrl: null,
-        albumKey: -1
       }
     }
 
     componentDidMount() {
-      let _location = this.props.history.location
-      this.setState({
-        albumKey: _location.state.albumKey
-      })
+
     }
 
     componentDidUpdate(prevProps) {
       //When add a photo, see the result
       if(this.props.photoState != 0) {
+        const { history: {location} } = this.props
         if(this.props.photoState == 1) {
           this.props.form.resetFields()
-          message.success('保存成功', () => {this.props.history.push(`/photo/${this.state.albumKey}`)})
+          message.success('保存成功', () => {this.props.history.push(`/photo/${location.state.albumKey}`)})
         } else if(this.props.photoState == -1) {
           message.error("保存失败")
         }
@@ -75,6 +72,7 @@ const PhotoCreate = Form.create()(
 
     handleSubmit = (e) => {
       const form = this.props.form
+      const { history: {location} } = this.props
       e.preventDefault()
       form.validateFields((err, values) => {
         if (err) {
@@ -86,7 +84,7 @@ const PhotoCreate = Form.create()(
         // delete values.upload
         console.log('Received values of photo form: ', values)
 
-        this.props.savePhoto(values, this.state.albumKey)
+        this.props.savePhoto(values, location.state.albumKey)
       })
     }
 
@@ -95,7 +93,7 @@ const PhotoCreate = Form.create()(
     }
 
     render() {
-      const { visible, onCancel, onCreate, form } = this.props
+      const { visible, onCancel, onCreate, form, history: {location} } = this.props
       const { getFieldDecorator } = form
       const uploadButton = (
         <div>
@@ -105,7 +103,7 @@ const PhotoCreate = Form.create()(
       )
       const imageUrl = this.state.imageUrl
       const coverProps = {
-        action: `${constant.service_url}/upload?kind=photo-${this.state.albumKey}`,
+        action: `${constant.service_url}/upload?kind=photo-${location.state.albumKey}`,
         headers:{method:'POST'},
         multiple: false,
         name: "photo",

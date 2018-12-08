@@ -8,6 +8,7 @@ import {
   Icon
 } from 'antd'
 import { photoGet } from '../../actions'
+import styles from './photo.less'
 
 const { Meta } = Card;
 
@@ -15,45 +16,43 @@ class ViewPhoto extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      albumKey: this.props.match.params.key,
-      pics: []
+
     }
   }
 
   componentDidMount() {
-    const { dispatch } = this.props
-    dispatch(photoGet(this.state.albumKey))
+    const { match, dispatch } = this.props
+    dispatch(photoGet(match.params.key))
   }
 
   componentDidUpdate(prevProps) {
     if(prevProps.photos.length != this.props.photos.length) {
-      this.setState({
-        pics: this.props.photos
-      })
+
     }
   }
 
   render() {
-    const { match } = this.props
+    const { history: {location: {state}} } = this.props
     const noPhoto = ['没有照片']
 
     return (
       <div>
+        <div className={styles.photoViewHead}><strong>{state.name}</strong></div>
         <Divider />
         {
-          this.state.pics.length > 0 ?
-          this.state.pics.map(pic => {
+          this.props.photos.length > 0 ?
+          this.props.photos.map(pic => {
             return (
               <Col key={pic._key} span={24} xs={24} sm={24} md={24} lg={24} xl={24}>
                 <Card
+                  extra={`${pic.place}/${pic.date}`}
                   style={{ width: '100%', marginBottom: 20 }}
-                  title={pic.title} bordered={false}
+                  title={<span className={styles.photoTitle}>{pic.title}</span>} bordered={false}
                   actions={[<Icon type="like" />, <Icon type="dislike" />]}
                 >
                   <img src={`${constant.service_url}${pic.photo.filepath}`} width="100%" />
                   <Meta
                     style={{marginTop:'10px'}}
-                    title={`${pic.place}/${pic.date}`}
                     description={pic.description}
                   />
                 </Card>

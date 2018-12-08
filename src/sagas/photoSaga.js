@@ -1,6 +1,6 @@
 import { takeEvery, take, call, put } from 'redux-saga/effects'
 import { photoType } from '../actions/actionTypes'
-import { getAlbumPhotos, savePhoto, deletePhoto } from  '../services/photos'
+import { getAlbumPhotos, savePhoto, deletePhoto, updatePhoto } from  '../services/photos'
 
 //Get some album's all photos
 function* getPhotoByAlbum(action) {
@@ -32,7 +32,22 @@ function* savePhotoWithAlbum(action) {
   }
 }
 
-//Delete photo
+//Update photo by key
+function* updatePhotoByKey(action) {
+  try {
+    let data
+    let result = yield call(updatePhoto, action.photo)
+
+    if(result.statusCode == 200)
+      data = result.data
+
+    yield put({type: photoType['PHOTO_UPDATE_SUCCEEDED'], payload: data})
+  } catch (e) {
+    yield put({type: photoType['PHOTO_UPDATE_FAILED'], message: e.message})
+  }
+}
+
+//Delete photo by key
 function* deletePhotoByKey(action) {
   try {
     let data
@@ -52,5 +67,6 @@ function* deletePhotoByKey(action) {
 export default function* watchPhotos() {
   yield takeEvery(photoType['PHOTO_GET'], getPhotoByAlbum) 
   yield takeEvery(photoType['PHOTO_SAVE'], savePhotoWithAlbum)
+  yield takeEvery(photoType['PHOTO_UPDATE'], updatePhotoByKey)
   yield takeEvery(photoType['PHOTO_DELETE'], deletePhotoByKey)
 }

@@ -118,12 +118,19 @@ class Home extends PureComponent {
     })
 	}
 
-  photoView = (e, key) => {
-    this.props.history.push(`/photo/view/${key}`)
-  }
-
   setAlbum = (e) => {
     
+  }
+
+  photoView = (e, album) => {
+    const key = album._key
+    const name = album.title
+    this.props.history.push(`/album/photo/view/${key}`, {name: name})
+  }
+
+  //Edit album, add, modify, delete photo
+  photoEdit = (key) => {
+    this.props.history.push(`/album/photo/${key}`)
   }
 
   //Delete album confirm
@@ -132,11 +139,6 @@ class Home extends PureComponent {
       type: albumType['ALBUM_DELETE'], 
       key: key
     })
-  }
-
-  //Edit album, add, modify, delete photo
-  editAlbum = (key) => {
-    this.props.history.push(`/photo/${key}`)
   }
 
 	render() {
@@ -183,7 +185,7 @@ class Home extends PureComponent {
                           <Card
                             hoverable
                             style={{ width: 300, marginBottom: 20 }}
-                            cover={<img alt="example" src={`${constant.service_url}${album.cover.filepath}`} onClick={(e) => this.photoView(e, album._key)} />}
+                            cover={<img alt="example" src={`${constant.service_url}${album.cover.filepath}`} onClick={(e) => this.photoView(e, album)} />}
                             actions={[
                               <Tooltip title='相册编辑'>
                                 <Icon type="setting" theme="filled" onClick={this.setAlbum} />
@@ -196,7 +198,7 @@ class Home extends PureComponent {
                                 </Popconfirm>
                               </Tooltip>, 
                               <Tooltip title='照片管理'>
-                                <Icon type="edit" theme="filled" onClick={() => this.editAlbum(album._key)} />
+                                <Icon type="edit" theme="filled" onClick={() => this.photoEdit(album._key)} />
                               </Tooltip>
                             ]}
                           >

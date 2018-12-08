@@ -5,25 +5,32 @@ import {
   Button,
   Card,  
   Divider,
-  Form,  
   Modal, Icon, 
   Tabs, List,
   Tag, Col, Row, Popconfirm, message,
-  Tooltip, Input
+  Tooltip, Input,
+  Pagination
 } from 'antd'
+import PhotoEdit from './PhotoEdit'
 import { photoGet } from '../../actions'
 import { photoType } from '../../actions/actionTypes'
-import '../../utils/constant'
+// import '../../utils/constant'
+import dateUtils from '../../utils/dateUtils'
 import styles from './photo.less'
 
 const { Meta } = Card
-const { TextArea } = Input
+
+function onShowSizeChange(current, pageSize) {
+  console.log(current, pageSize)
+}
 
 class Photo extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
       visible: false,
+      currPhoto: {},
+      current: 1
     }
   }
 
@@ -33,8 +40,6 @@ class Photo extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    console.log(prevProps)
-    console.log(this.props)
     if(prevProps.photos.length != this.props.photos.length) {
 
     }
@@ -45,28 +50,41 @@ class Photo extends PureComponent {
     this.props.history.push('/photo/add', {albumKey: match.params.key})
   }
 
-  showModal = () => {
+  showModal = (photo) => {
     this.setState({
       visible: true,
-    });
+      currPhoto: photo
+    })
   }
 
-  handleOk = (e) => {
+  handleOk = () => {
+    const form = this.photoFormRef.props.form
+    form.validateFields((err, values) => {
+      if (err) {
+        return
+      }
 
-    this.setState({
-      visible: false,
-    });
+      values.key = this.state.currPhoto._key
+      values.date = dateUtils.date2String(new Date(values.date), false)
+      // delete values.upload
+      console.log('Received values of photo form: ', values)
+
+      this.props.updatePhoto(values)
+      this.setState({
+        visible: false,
+      })
+    })
   }
 
   handleCancel = (e) => {
     this.setState({
       visible: false,
-    });
+    })
   }
 
   //Edit photo's description
-  editPhoto = (key) => {
-    this.showModal()
+  editPhoto = (photo) => {
+    this.showModal(photo)
   }
 
   //Delete photo confirm
@@ -77,8 +95,18 @@ class Photo extends PureComponent {
     })
   }
 
+  //Photo edit form
+  editPhotoFormRef = (photoFormRef) => {
+    this.photoFormRef = photoFormRef
+  }
+
+  pageChange = (page) => {
+    this.setState({
+      current: page,
+    })
+  }
+
   render() {
-    const { match } = this.props
     const noPhoto = ['没有照片']
 
     return (
@@ -86,16 +114,13 @@ class Photo extends PureComponent {
         <div style={{ marginBottom: 16 }}>
           <Button type="primary" icon="photo" className={styles.btn} 
               onClick={this.addPhoto.bind(this)}>添加照片</Button>
-          <Modal
-            title="Basic Modal"
+          <PhotoEdit 
+            wrappedComponentRef={this.editPhotoFormRef}
             visible={this.state.visible}
-            onOk={this.handleOk}
             onCancel={this.handleCancel}
-          >
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-          </Modal>
+            onCreate={this.handleOk}
+            photo={this.state.currPhoto}
+          />
         </div>
         <Divider />
         <Row>
@@ -107,18 +132,15 @@ class Photo extends PureComponent {
                 <Card
                   className={styles.photoEditCard}
                   title={`${pic.title}`}
+                  extra={`${pic.place}/${pic.date}`}
                   cover={<img src={`${constant.service_url}${pic.photo.filepath}`} width="100%" />}
                   actions={[
-                    <Tooltip title='照片编辑'>
-                      <Icon type="setting" theme="filled" onClick={() => this.editPhoto(pic._key)} />
-                    </Tooltip>,
-                    <Tooltip title='照片删除'>
-                      <Popconfirm title="确定要删除该照片吗?" 
-                            okText="确定" cancelText="取消"
-                            onConfirm={() => this.confirmDelete(pic._key)}> 
-                        <Icon type="delete" theme="filled" />
-                      </Popconfirm>
-                    </Tooltip>
+                    <Icon type="setting" theme="filled" onClick={() => this.editPhoto(pic)} />,
+                    <Popconfirm title="确定要删除该照片吗?" 
+                          okText="确定" cancelText="取消"
+                          onConfirm={() => this.confirmDelete(pic._key)}> 
+                      <Icon type="delete" theme="filled" />
+                    </Popconfirm>
                   ]}                  
                 >
                   <Meta className={styles.photoEditDiv} 
@@ -127,12 +149,21 @@ class Photo extends PureComponent {
               </Col>
             )
           })
-          : <List style={{width:'10%', marginLeft: '45%'}}
+          : <List className={styles.photoNoData}
               itemLayout="horizontal"
               dataSource={noPhoto}
               renderItem={item => (<List.Item>{item}</List.Item>)}
             />
         }
+        </Row>
+        <Row>
+          <Pagination 
+            className={styles.page}
+            current={this.state.current} 
+            pageSize={20}
+            total={this.props.photos.length}
+            showTotal={(total, range) => `总共 ${total} 条记录`}
+            onChange={this.pageChange} />
         </Row>
       </div>
     )   
@@ -144,7 +175,12 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  dispatch: dispatch
+  dispatch: dispatch,
+
+  updatePhoto: (photo) => dispatch({
+    type: photoType['PHOTO_UPDATE'],
+    photo
+  })
 })  
 
 export default connect(

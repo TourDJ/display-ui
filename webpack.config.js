@@ -75,8 +75,12 @@ module.exports = {
     ],
   },
   devServer: {
+    headers: { 
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
+    },
     proxy: [{
-      context: ['/category', '/album'],
+      context: ['/category', '/album', '/photo'],
       target: 'http://192.168.0.103:8020' 
     }]
   }

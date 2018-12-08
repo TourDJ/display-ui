@@ -10,9 +10,9 @@ const BasicRoute = (
   <Switch>
     <Route exact path="/" component={Home} />
     <Route exact path="/index" component={Home} />
-    <Route path="/photo/:key(\d+)" component={Photo} />
+    <Route path="/album/photo/:key(\d+)" component={Photo} />
+    <Route path="/album/photo/view/:key(\d+)" component={PhotoView} />
     <Route path="/photo/add" component={PhotoCreate} />
-    <Route path="/photo/view/:key(\d+)" component={PhotoView} />
     <Route component={NoMatch} />
   </Switch>
 )

@@ -1,7 +1,8 @@
 import request from '../utils/request'
+const fetch = require('node-fetch');
 
 export async function getAlbumPhotos(album) {
-  return request(`/photo/${album}`, {
+  return request(`/album/photo/${album}`, {
     method: 'GET'
   })
 }
@@ -12,6 +13,16 @@ export async function savePhoto(photo, album) {
     body: {
       photo,
       album
+    }
+  })
+  return result
+}
+
+export async function updatePhoto(photo) {
+  let result = request(`/photo/update`, {
+    method: 'PUT',
+    body: {
+      photo
     }
   })
   return result
