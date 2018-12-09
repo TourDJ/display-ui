@@ -11,7 +11,7 @@ import {
   Tag, Col, Row, Popconfirm, message 
 } from 'antd'
 import CreateCategoryForm from './CreateCategoryForm'
-import CreateAlbumForm from './CreateAlbumForm'
+import AlbumCreate from '../Album/AlbumCreate'
 import styles from './home.less'
 import { categoryType, albumType, tabType } from '../../actions/actionTypes'
 import { parseUpload } from '../../utils/uploadFile'
@@ -27,10 +27,7 @@ class Home extends PureComponent {
 		super(props)
     this.state = {
       categoryVisible: false,
-    	albumVisible: false,
-      // activeTab: -1,
     }
-    this.setAlbum = this.setAlbum.bind(this)
 	}
 
 	componentDidMount() {
@@ -77,40 +74,6 @@ class Home extends PureComponent {
     })
   }
 
-  //Album form
-  saveAlbumFormRef = (albumFormRef) => {
-    this.albumFormRef = albumFormRef
-  }
-
-	showAlbumModal = () => {
-    const form = this.albumFormRef.props.form
-    form.resetFields()
-    this.setState({ albumVisible: true })
-  }
-
-  albumHandleCancel = () => {
-    this.setState({ albumVisible: false })
-  }
-
-  albumHandleCreate = () => {
-    const form = this.albumFormRef.props.form
-    form.validateFields((err, values) => {
-      if (err) {
-        return
-      }
-
-      let _category = values.category
-      values.category = _category.key
-      values.cover = parseUpload(values.cover)
-      console.log('Received values of album form: ', values)
-
-      this.props.saveAlbum(values, this.props.tabKey)
-
-      form.resetFields()
-      this.setState({ albumVisible: false })
-    })
-  }
-
 	tabCallback = (key) => {
     const {dispatch} = this.props
 	  console.log("Current tab's key is: ", key)
@@ -119,22 +82,30 @@ class Home extends PureComponent {
         key: key
     })
     this.props.getAlbums(key)
-    // this.setState({
-    //   activeTab: key
-    // })
 	}
 
-  setAlbum = (e) => {
-    
+  //Create album
+  createAlbum = (key) => {
+    this.props.history.push(`/album/add`, {
+      categoryKey: key
+    })
   }
 
+  //Edit album
+  editAlbum = (album) => {
+     this.props.history.push(`/album/edit`, {
+      album: album
+    })   
+  }
+
+  //
   photoView = (e, album) => {
     const key = album._key
     const name = album.title
     this.props.history.push(`/album/photo/view/${key}`, {name: name})
   }
 
-  //Edit album, add, modify, delete photo
+  //Add, modify, delete photo
   photoEdit = (key) => {
     this.props.history.push(`/album/photo/${key}`)
   }
@@ -155,20 +126,13 @@ class Home extends PureComponent {
 		  <div>
         <div style={{ marginBottom: 16 }}>
           <Button icon="appstore" className={styles.btn} onClick={this.showCategoryModal}>新建分类</Button>
-          <Button type="primary" className={styles.btn} icon="hdd" onClick={this.showAlbumModal}>新建相册</Button>
+          <Button type="primary" className={styles.btn} icon="hdd" onClick={() => this.createAlbum(this.props.tabKey)}>新建相册</Button>
           <CreateCategoryForm
             wrappedComponentRef={this.saveCategoryFormRef}
             visible={this.state.categoryVisible}
             onCancel={this.categoryHandleCancel}
             onCreate={this.categoryHandleCreate}
           />
-          <CreateAlbumForm
-	          wrappedComponentRef={this.saveAlbumFormRef}
-	          visible={this.state.albumVisible}
-	          onCancel={this.albumHandleCancel}
-	          onCreate={this.albumHandleCreate}
-            activeKey={this.props.tabKey}
-	        />
         </div>	
         {
           this.props.category.length > 0 ?
@@ -194,7 +158,7 @@ class Home extends PureComponent {
                             cover={<img alt="example" src={`${constant.service_url}${album.cover.filepath}`} onClick={(e) => this.photoView(e, album)} />}
                             actions={[
                               <Tooltip title='相册编辑'>
-                                <Icon type="setting" theme="filled" onClick={this.setAlbum} />
+                                <Icon type="setting" theme="filled" onClick={() => this.editAlbum(album)} />
                               </Tooltip>,
                               <Tooltip title='相册删除'>
                                 <Popconfirm title="确定要删除该相册吗?" 
@@ -258,12 +222,6 @@ const mapDispatchToProps = dispatch => ({
   getAlbums: (category) => dispatch({
     type: albumType['ALBUM_GET'],
     category: category
-  }),
-
-  saveAlbum: (album, tabKey) => dispatch({
-    type: albumType['ALBUM_SAVE'], 
-    album: album,
-    tabKey: tabKey
   })
 
 })

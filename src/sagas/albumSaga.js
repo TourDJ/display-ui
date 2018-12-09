@@ -25,8 +25,10 @@ function* saveAlbum(action) {
       data = result.data
 
     yield put({type: albumType['ALBUM_SAVE_SUCCEEDED'], payload: data})
+    yield put({type: albumType['ALBUM_SUCCEES_STATE']})
   } catch (e) {
     yield put({type: albumType['ALBUM_SAVE_FAILED'], message: e.message})
+    yield put({type: albumType['ALBUM_FAILE_STATE']})
   }
 }
 

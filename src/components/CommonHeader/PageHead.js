@@ -6,9 +6,9 @@ import {
   Icon,
   Divider
 } from 'antd'
-import styles from './photo.less'
+import styles from './index.less'
 
-class PhotoHead extends PureComponent {
+class PageHead extends PureComponent {
 
   handleBack(obj, e) {
     const { history } = this.props
@@ -19,7 +19,7 @@ class PhotoHead extends PureComponent {
 
   render() {
     return (
-      <Row className={styles.photoViewHead}>
+      <Row className={styles.pageHead}>
         <Row>
           <Col span={20}>
             <Icon type={this.props.icon} />&nbsp;
@@ -38,4 +38,4 @@ class PhotoHead extends PureComponent {
   }
 }
 
-export default PhotoHead
+export default PageHead

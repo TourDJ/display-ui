@@ -6,19 +6,19 @@ import {
   Icon,
   message,
   Input,
-  Modal,
+  Row, Col,
   Radio,
-  Select, Row, Col,
-  Upload, DatePicker
+  Select,
+  Upload
 } from 'antd'
 import PageHead from '../CommonHeader/PageHead'
-import { photoType } from '../../actions/actionTypes'
-import { getBase64, checkFile, parseUpload } from '../../utils/uploadFile'
-import dateUtils from '../../utils/dateUtils'
-import '../../utils/constant'
+import { parseUpload } from '../../utils/uploadFile'
+import { albumType } from '../../actions/actionTypes'
+import { getBase64, checkFile } from '../../utils/uploadFile'
+// import '../../utils/constant'
 
-const { TextArea } = Input
 const FormItem = Form.Item
+const Option = Select.Option
 
 function beforeUpload(file) {
   let fileResult = checkFile(file)
@@ -28,36 +28,80 @@ function beforeUpload(file) {
   return fileResult
 }
 
-const PhotoCreate = Form.create()(
-  class PhotoCreateForm extends React.Component {
+function categoryChange(value) {
+  
+}
+
+const AlbumCreate = Form.create()(
+  class AlbumCreateForm extends React.Component {
     constructor(props) {
       super(props)
       this.state = {
         loading: false,
         uploading: false,
         imageUrl: null,
+        categoryOptions: [],
+        selectTab: null
       }
     }
 
     componentDidMount() {
+      const { history: { location}} = this.props
+      //Use catetores wrap select options
+      this.getCategotySelect(this.props.category)
 
+      //When change the tab, also change the default seleted 
+      //item for category select
+      this.changeSelectTab(location.state.categoryKey, this.props.category)
     }
 
     componentDidUpdate(prevProps) {
-      //When add a photo, see the result
-      if(this.props.photoState != 0) {
-        const { history: {location} } = this.props
-        if(this.props.photoState == 1) {
+
+      //When add a album, see the result
+      if(this.props.albumState != 0) {
+        if(this.props.albumState == 1) {
           this.props.form.resetFields()
-          message.success('保存成功', () => {this.props.history.push(`/album/photo/${location.state.albumKey}`)})
-        } else if(this.props.photoState == -1) {
+          message.success('保存成功', () => {this.props.history.push(`/`)})
+        } else if(this.props.albumState == -1) {
           message.error("保存失败")
         }
-        this.props.dispatch({type: photoType['PHOTO_INITIAL_STATE']})
+        this.props.dispatch({type: albumType['ALBUM_INITIAL_STATE']})
       }
     }
 
-    handleChange = (info) => {
+    changeSelectTab(activeKey, category) {
+      let tempTab = {}
+
+      if(category) {
+        category.forEach(function(cat){
+          if(cat && cat._key == activeKey) {
+            tempTab = {key: cat._key, label: cat.name}
+          }
+        })
+        this.setState({
+          selectTab: tempTab
+        })
+      }
+    }
+
+    getCategotySelect(categories) {
+      const categoryDatas = []
+      const _this = this
+      categories.map((category) => {
+        return(
+          categoryDatas.push(
+            <Select.Option value={category._key} key={category._key}>
+              {category.name}
+            </Select.Option>
+          ),
+          _this.setState({
+            categoryOptions: categoryDatas,
+          })
+        )
+      })
+    }
+
+    uploadChange = (info) => {
       if (info.file.status === 'uploading') {
         this.setState({ uploading: true })
         return
@@ -80,18 +124,14 @@ const PhotoCreate = Form.create()(
           return
         }
 
-        values.photo = parseUpload(values.photo)
-        values.date = dateUtils.date2String(new Date(values.date), false)
-        // delete values.upload
-        console.log('Received values of photo form: ', values)
+        let _category = values.category
+        values.category = _category.key
+        values.cover = parseUpload(values.cover)
+        console.log('Received values of album form: ', values)
 
-        this.props.savePhoto(values, location.state.albumKey)
+        this.props.saveAlbum(values, this.props.tabKey)
       })
     }
-
-    // handleBack(obj, e) {
-    //   this.props.history.go(-1)
-    // }
 
     render() {
       const { form, history: {location} } = this.props
@@ -104,18 +144,18 @@ const PhotoCreate = Form.create()(
       )
       const imageUrl = this.state.imageUrl
       const coverProps = {
-        action: `${constant.service_url}/upload?kind=photo-${location.state.albumKey}`,
+        action: `${constant.service_url}/upload?kind=cover`,
         headers:{method:'POST'},
         multiple: false,
-        name: "photo",
+        name: "cover",
         className: "avatar-uploader",
         listType: "picture-card",
         showUploadList: false,
       }
-
+    
       return (
-        <div> 
-          <PageHead icon="bar-chart" title="添加照片" history={this.props.history} />
+        <div>
+          <PageHead icon="setting" title="添加相册" history={this.props.history} />
           <Form layout="vertical" onSubmit={this.handleSubmit}>
             <Row type="flex" justify="center">
               <Col span={12}>
@@ -127,41 +167,40 @@ const PhotoCreate = Form.create()(
                   )}
                 </FormItem>
 
-                <FormItem label="Place" style={{width: '140px'}}>
-                  {getFieldDecorator('place', {
+                <FormItem label="Category">
+                  {getFieldDecorator('category', {
                     rules: [{ required: true, message: 'Select a category!' }],
-                    initialValue: this.state.selectTab,
+                    initialValue: this.state.selectTab && this.state.selectTab.key ? 
+                                  this.state.selectTab : {key: '', label: ''},
                   })(
-                    <Input placeholder="the place..." />
+                    <Select
+                        showSearch
+                        style={{ width: 200 }}
+                        placeholder="Select a person"
+                        labelInValue
+                        optionFilterProp="children"
+                        onChange={categoryChange}
+                        filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                      >
+                        {this.state.categoryOptions}
+                      </Select>
                   )}
                 </FormItem>
 
-                <FormItem label="Date">
-                  {getFieldDecorator('date', {
-                    rules: [{ required: true, message: 'Select a category!' }],
-                    initialValue: this.state.selectTab,
-                  })(
-                    <DatePicker />
-                  )}
-                </FormItem>
-
-                <FormItem label="Photo">
-                  {getFieldDecorator('photo', {
+                <FormItem label="Cover">
+                  {getFieldDecorator('cover', {
                     rules: [{ required: true, message: 'Please select a cover!' }],
                   })(
                     <Upload {...coverProps}
-                      beforeUpload={beforeUpload} onChange={this.handleChange}>
-                      {
-                        imageUrl ? 
-                          <img src={imageUrl} style={{maxWidth:'400px'}} alt="cover" /> 
-                        : uploadButton
-                      }
+                      beforeUpload={beforeUpload} onChange={this.uploadChange}>
+                      {imageUrl ? <img src={imageUrl} style={{maxWidth:'400px'}} alt="cover" /> 
+                      : uploadButton}
                     </Upload>
                   )}
                 </FormItem>
 
                 <FormItem label="Description">
-                  {getFieldDecorator('description')(<TextArea rows={8} />)}
+                  {getFieldDecorator('description')(<Input type="textarea" />)}
                 </FormItem>
 
                 <FormItem label="Privacy" className="collection-create-form_last-form-item">
@@ -174,7 +213,6 @@ const PhotoCreate = Form.create()(
                     </Radio.Group>
                   )}
                 </FormItem>
-             
               </Col>
             </Row>
             <Row type="flex" justify="start">
@@ -183,33 +221,32 @@ const PhotoCreate = Form.create()(
                   loading={this.state.loading}>
                   保存
                 </Button>
-{/*                <Button htmlType="button" onClick={this.handleBack.bind(this)}>
-                  返回
-                </Button>*/}
               </Col>
             </Row>
           </Form>
         </div>
+
       )
     }
   }
 )
 
 const mapStateToProps = state => ({
-  photoState: state.photoState
+  category: state.category,
+  albumState: state.albumState
 })
 
 const mapDispatchToProps = dispatch => ({
-  dispatch,
+  dispatch: dispatch,
 
-  savePhoto: (photo, album) => dispatch({
-    type: photoType['PHOTO_SAVE'],
-    photo,
-    album
+  saveAlbum: (album, tabKey) => dispatch({
+    type: albumType['ALBUM_SAVE'], 
+    album: album,
+    tabKey: tabKey
   })
 })
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PhotoCreate)
+)(AlbumCreate)

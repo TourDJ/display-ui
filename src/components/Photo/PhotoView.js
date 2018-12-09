@@ -10,7 +10,7 @@ import {
   Row,
   Rate
 } from 'antd'
-import PhotoHead from './PhotoHead'
+import PageHead from '../CommonHeader/PageHead'
 import PhotoFoot from './PhotoFoot'
 import { photoGet } from '../../actions'
 import styles from './photo.less'
@@ -42,7 +42,7 @@ class ViewPhoto extends PureComponent {
 
     return (
       <div>
-        <PhotoHead icon="bars" title={state.name} history={this.props.history} />
+        <PageHead icon="bars" title={state.name} history={this.props.history} />
         <Row>
         {
           this.props.photos.length > 0 ?
