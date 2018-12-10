@@ -33,6 +33,8 @@ const photoReducer = (state = initialState, action) => {
       newPhoto = state.map(photo => {
         if(photo._key == data._key)
           return data
+        else
+          return photo
       })
       return [
         ...newPhoto

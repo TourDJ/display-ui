@@ -43,19 +43,12 @@ const AlbumEdit = Form.create()(
         imageUrl: null,
         categoryOptions: [],
         selectTab: null,
-        // fileList: [],
       }
     }
 
     componentDidMount() {
       const { history: { location}} = this.props
       const { album } = location.state
-      // const _fileList = []
-      // _fileList.push({
-      //   name: album.cover.filename,
-      //   uid: album.cover.uid,
-      //   url: `${constant.service_url}${album.cover.filepath}`
-      // })
 
       //Use catetores wrap select options
       const categoryDatas = this.getCategotySelect(this.props.category)
@@ -119,8 +112,8 @@ const AlbumEdit = Form.create()(
         this.setState({ uploading: true })
         return
       }
-      if (info.file.status === 'done') {
 
+      if (info.file.status === 'done') {
         // Get this url from response in real world.
         getBase64(info.file.originFileObj, imageUrl => this.setState({
           imageUrl,
@@ -129,9 +122,8 @@ const AlbumEdit = Form.create()(
       }
     }
 
-    handleSubmit = (e) => {
+    handleSubmit = (e, album) => {
       const form = this.props.form
-      const { history: {location} } = this.props
       e.preventDefault()
       form.validateFields((err, values) => {
         if (err) {
@@ -140,17 +132,19 @@ const AlbumEdit = Form.create()(
 
         let _category = values.category
         values.category = _category.key
+        values.key = album._key
         values.cover = parseUpload(values.cover)
+        if(values.cover === undefined)
+          values.cover = album.cover
         console.log('Received values of album form: ', values)
 
-        this.props.saveAlbum(values, this.props.tabKey)
+        this.props.updateAlbum(values)
       })
     }
 
     render() {
       const { form, history: {location} } = this.props
       const { album } = location.state
-      // const { fileList } = this.state
       const { getFieldDecorator } = form
       const uploadButton = (
         <div>
@@ -172,7 +166,7 @@ const AlbumEdit = Form.create()(
       return (
         <div>
           <PageHead icon="setting" title="相册管理" history={this.props.history} />
-          <Form layout="vertical" onSubmit={this.handleSubmit}>
+          <Form layout="vertical" onSubmit={(e) => this.handleSubmit(e, album)}>
             <Row type="flex" justify="center">
               <Col span={12}>
                 <FormItem label="Title">
@@ -188,7 +182,7 @@ const AlbumEdit = Form.create()(
                   {getFieldDecorator('category', {
                     rules: [{ required: true, message: 'Select a category!' }],
                     initialValue: album ? 
-                            {key: album._key, label: (this.props.category.filter(cat => (
+                            {key: album.category, label: (this.props.category.filter(cat => (
                               cat._key == album.category
                             )))[0].name}
                             : {key: '', label: ''},
@@ -210,10 +204,10 @@ const AlbumEdit = Form.create()(
                 <FormItem label="Cover">
                   {getFieldDecorator('cover', {
                     rules: [{ required: true, message: 'Please select a cover!' }],
+                    initialValue: imageUrl,
                   })(
                     <Upload {...uploadProps}
                       beforeUpload={beforeUpload} onChange={this.uploadChange}
-                      onPreview={this.handlePreview}
                     >
                       {
                         imageUrl ? 
@@ -266,10 +260,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   dispatch: dispatch,
 
-  saveAlbum: (album, tabKey) => dispatch({
-    type: albumType['ALBUM_SAVE'], 
-    album: album,
-    tabKey: tabKey
+  updateAlbum: (album) => dispatch({
+    type: albumType['ALBUM_UPDATE'], 
+    album: album
   })
 })
 

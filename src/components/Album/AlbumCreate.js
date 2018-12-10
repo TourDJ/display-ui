@@ -129,7 +129,7 @@ const AlbumCreate = Form.create()(
         values.cover = parseUpload(values.cover)
         console.log('Received values of album form: ', values)
 
-        this.props.saveAlbum(values, this.props.tabKey)
+        this.props.saveAlbum(values)
       })
     }
 
@@ -239,10 +239,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   dispatch: dispatch,
 
-  saveAlbum: (album, tabKey) => dispatch({
+  saveAlbum: (album) => dispatch({
     type: albumType['ALBUM_SAVE'], 
-    album: album,
-    tabKey: tabKey
+    album: album
   })
 })
 

@@ -1,7 +1,7 @@
 import { albumType } from '../actions/actionTypes'
 
 const albumReducer = (state = [], action) => {
-  let data, newData
+  let data, newAlbum
 
   switch (action.type) {
 
@@ -20,16 +20,31 @@ const albumReducer = (state = [], action) => {
         ...data
       ]
 
+    //Update an album success,
+    //then change the current albums with it
+    case albumType['ALBUM_UPDATE_SUCCEEDED']:
+      data = action.payload
+      newAlbum = state.map(album => {
+        if(album._key == data._key)
+          return data
+        else
+          return album
+      })
+      return [
+        ...newAlbum
+      ]
+
     //Delete album success
     //Return new albums except the current remove one
     case albumType['ALBUM_DELETE_SUCCEEDED']:
       data = action.payload
-      newData = state.filter(album => album._key != data._key)
-      return [...newData]
+      newAlbum = state.filter(album => album._key != data._key)
+      return [...newAlbum]
 
     //Get or save or delete album(s) failed
     case albumType['ALBUM_GET_FAILED']:
     case albumType['ALBUM_SAVE_FAILED']:
+    case albumType['ALBUM_UPDATE_FAILED']:
     case albumType['ALBUM_DELETE_FAILED']:
       console.log(action.message)
       return state

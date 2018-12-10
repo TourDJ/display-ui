@@ -8,7 +8,8 @@ import {
   Form,  
   Icon, List, 
   Tabs, Tooltip,
-  Tag, Col, Row, Popconfirm, message 
+  Tag, Col, Row, Popconfirm, message,
+  Pagination
 } from 'antd'
 import CreateCategoryForm from './CreateCategoryForm'
 import AlbumCreate from '../Album/AlbumCreate'
@@ -27,6 +28,7 @@ class Home extends PureComponent {
 		super(props)
     this.state = {
       categoryVisible: false,
+      current: 1,
     }
 	}
 
@@ -40,6 +42,12 @@ class Home extends PureComponent {
       this.tabCallback(this.props.category[0]._key)
     }
 
+  }
+
+  pageChange = (page) => {
+    this.setState({
+      current: page,
+    })
   }
 
   //Category form
@@ -134,6 +142,7 @@ class Home extends PureComponent {
             onCreate={this.categoryHandleCreate}
           />
         </div>	
+        <Row>
         {
           this.props.category.length > 0 ?
           <Tabs onChange={this.tabCallback} type="card" activeKey={this.props.tabKey}>
@@ -195,7 +204,16 @@ class Home extends PureComponent {
               dataSource={noCategory}
               renderItem={item => (<List.Item>{item}</List.Item>)}
             />
-        }	    
+        }
+        </Row>
+        <Row>
+          <Pagination 
+            current={this.state.current} 
+            pageSize={20}
+            total={this.props.albums.length}
+            showTotal={(total, range) => `总共 ${total} 条记录`}
+            onChange={this.pageChange} />
+        </Row>	    
 		  </div>
 		)
 	}
