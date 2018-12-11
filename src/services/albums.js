@@ -34,7 +34,7 @@ export async function editAlbum(album) {
 //Delte a album
 export async function removeAlbum(key) {
   const result = request(`/album/delete`, {
-    method: 'POST',
+    method: 'DELETE',
     body: {
       key: key
     }

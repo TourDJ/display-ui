@@ -52,3 +52,7 @@ export const photoType = {
 export const tabType = {
   TAB_KEY: 'TAB_KEY'
 }
+
+export const breadType = {
+  BREAD_CRUMB: 'BREAD_CRUMB'
+}

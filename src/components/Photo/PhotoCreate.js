@@ -36,11 +36,15 @@ const PhotoCreate = Form.create()(
         loading: false,
         uploading: false,
         imageUrl: null,
+        albumKey: -1
       }
     }
 
     componentDidMount() {
-
+      const { history: {location} } = this.props
+      this.setState({
+        albumKey: location.state.albumKey
+      })
     }
 
     componentDidUpdate(prevProps) {
@@ -49,7 +53,7 @@ const PhotoCreate = Form.create()(
         const { history: {location} } = this.props
         if(this.props.photoState == 1) {
           this.props.form.resetFields()
-          message.success('保存成功', () => {this.props.history.push(`/album/photo/${location.state.albumKey}`)})
+          message.success('保存成功', () => {this.props.history.push(`/album/photo/${this.state.albumKey}`)})
         } else if(this.props.photoState == -1) {
           message.error("保存失败")
         }
@@ -88,10 +92,6 @@ const PhotoCreate = Form.create()(
         this.props.savePhoto(values, location.state.albumKey)
       })
     }
-
-    // handleBack(obj, e) {
-    //   this.props.history.go(-1)
-    // }
 
     render() {
       const { form, history: {location} } = this.props
@@ -183,9 +183,6 @@ const PhotoCreate = Form.create()(
                   loading={this.state.loading}>
                   保存
                 </Button>
-{/*                <Button htmlType="button" onClick={this.handleBack.bind(this)}>
-                  返回
-                </Button>*/}
               </Col>
             </Row>
           </Form>

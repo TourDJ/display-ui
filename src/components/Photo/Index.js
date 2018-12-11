@@ -14,9 +14,6 @@ import {
 import PageHead from '../CommonHeader/PageHead'
 import PhotoEdit from './PhotoEdit'
 import { photoGet } from '../../actions'
-import { photoType } from '../../actions/actionTypes'
-// import '../../utils/constant'
-import dateUtils from '../../utils/dateUtils'
 import styles from './photo.less'
 
 const { Meta } = Card
@@ -51,41 +48,10 @@ class Photo extends PureComponent {
     this.props.history.push('/photo/add', {albumKey: match.params.key})
   }
 
-  showModal = (photo) => {
-    this.setState({
-      visible: true,
-      currPhoto: photo
-    })
-  }
-
-  handleOk = () => {
-    const form = this.photoFormRef.props.form
-    form.validateFields((err, values) => {
-      if (err) {
-        return
-      }
-
-      values.key = this.state.currPhoto._key
-      values.date = dateUtils.date2String(new Date(values.date), false)
-      // delete values.upload
-      console.log('Received values of photo form: ', values)
-
-      this.props.updatePhoto(values)
-      this.setState({
-        visible: false,
-      })
-    })
-  }
-
-  handleCancel = (e) => {
-    this.setState({
-      visible: false,
-    })
-  }
-
   //Edit photo's description
   editPhoto = (photo) => {
-    this.showModal(photo)
+    // this.showModal(photo)
+    this.props.history.push('/photo/edit', {photo: photo})
   }
 
   //Delete photo confirm
@@ -94,11 +60,6 @@ class Photo extends PureComponent {
       type: photoType['PHOTO_DELETE'], 
       key: key
     })
-  }
-
-  //Photo edit form
-  editPhotoFormRef = (photoFormRef) => {
-    this.photoFormRef = photoFormRef
   }
 
   pageChange = (page) => {
@@ -116,13 +77,6 @@ class Photo extends PureComponent {
         <div style={{ marginBottom: 16 }}>
           <Button type="primary" icon="photo" className={styles.btn} 
               onClick={this.addPhoto.bind(this)}>添加照片</Button>
-          <PhotoEdit 
-            wrappedComponentRef={this.editPhotoFormRef}
-            visible={this.state.visible}
-            onCancel={this.handleCancel}
-            onCreate={this.handleOk}
-            photo={this.state.currPhoto}
-          />
         </div>
         <Row>
         {
@@ -176,12 +130,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  dispatch: dispatch,
-
-  updatePhoto: (photo) => dispatch({
-    type: photoType['PHOTO_UPDATE'],
-    photo
-  })
+  dispatch: dispatch
 })  
 
 export default connect(

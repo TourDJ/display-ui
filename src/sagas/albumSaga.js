@@ -53,6 +53,8 @@ function* deleteAlbum(action) {
   let data
   try {
     let result = yield call(removeAlbum, action.key)
+
+    result = JSON.parse(result)
     if(result.statusCode == 200)
       data = result.data
 

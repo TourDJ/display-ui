@@ -8,16 +8,16 @@ import {
   Form,  
   Icon, List, 
   Tabs, Tooltip,
-  Tag, Col, Row, Popconfirm, message,
+  Row, Col, Popconfirm, message,
   Pagination
 } from 'antd'
-import CreateCategoryForm from './CreateCategoryForm'
+import CategoryCreate from './CategoryCreate'
 import AlbumCreate from '../Album/AlbumCreate'
-import styles from './home.less'
 import { categoryType, albumType, tabType } from '../../actions/actionTypes'
 import { parseUpload } from '../../utils/uploadFile'
-import '../../utils/constant'
+import styles from './home.less'
 import locale from '../../locales/zh'
+import '../../utils/constant'
 
 const TabPane = Tabs.TabPane
 const { Meta } = Card
@@ -106,7 +106,7 @@ class Home extends PureComponent {
     })   
   }
 
-  //
+  //View photo
   photoView = (e, album) => {
     const key = album._key
     const name = album.title
@@ -134,8 +134,7 @@ class Home extends PureComponent {
 		  <div>
         <div style={{ marginBottom: 16 }}>
           <Button icon="appstore" className={styles.btn} onClick={this.showCategoryModal}>新建分类</Button>
-          <Button type="primary" className={styles.btn} icon="hdd" onClick={() => this.createAlbum(this.props.tabKey)}>新建相册</Button>
-          <CreateCategoryForm
+          <CategoryCreate
             wrappedComponentRef={this.saveCategoryFormRef}
             visible={this.state.categoryVisible}
             onCancel={this.categoryHandleCancel}
@@ -149,10 +148,20 @@ class Home extends PureComponent {
             {     
               this.props.category.map(pane => (
                 <TabPane tab={pane.name} key={pane._key}>
-                  <div style={{marginBottom: 10}}>
-                    <Tag color="#108ee9">{pane.description}</Tag>
-                  </div>
+                  <Row style={{marginBottom: 10}}>
+                    <Col xs={12}>
+                    <Button type="primary" icon="hdd" className={styles.btn} 
+                        onClick={() => this.createAlbum(this.props.tabKey)}
+                    >
+                      新建相册
+                    </Button>
+                    </Col>
+                    <Col xs={12}>
+                      <strong style={{marginLeft: 10, fontSize: 18}}>“{pane.description}”</strong>
+                    </Col>
+                  </Row>
                   <Divider />
+                  <Row>
                   {
                     this.props.albums.length > 0 ?
                     this.props.albums.map((album, index) => {
@@ -195,6 +204,7 @@ class Home extends PureComponent {
                         renderItem={item => (<List.Item>{item}</List.Item>)}
                       />
                   }
+                  </Row>
                 </TabPane>
               ))
             }            

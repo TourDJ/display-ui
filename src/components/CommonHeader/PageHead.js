@@ -26,7 +26,7 @@ class PageHead extends PureComponent {
             <strong>{this.props.title}</strong>
           </Col>
           <Col span={4}>
-            <Button htmlType="button" type="primary" onClick={this.handleBack.bind(this)}
+            <Button type="primary" ghost htmlType="button" onClick={this.handleBack.bind(this)}
               style={{float: 'right'}}>
               返回
             </Button>

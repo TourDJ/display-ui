@@ -1,4 +1,5 @@
 import React , { PureComponent } from 'react'
+import { connect } from 'react-redux'
 import { 
   Button,
   Modal,
@@ -7,10 +8,13 @@ import {
   Row,
   Col,
   Radio,
-  DatePicker
+  DatePicker,
+  message
 } from 'antd'
 import moment from 'moment'
-import { connect } from 'react-redux'
+import PageHead from '../CommonHeader/PageHead'
+import dateUtils from '../../utils/dateUtils'
+import { photoType } from '../../actions/actionTypes'
 
 const { TextArea } = Input
 const FormItem = Form.Item
@@ -20,33 +24,67 @@ const PhotoEdit = Form.create()(
     constructor(props) {
       super(props)
       this.state = {
-
+        loading: false,
+        albumKey: -1
       }
     }
 
     componentDidMount() {
-      
+      const { history: {location} } = this.props
+      const { photo } = location.state
+      this.setState({
+        albumKey: photo.album
+      })
     }
 
     componentDidUpdate(prevProps) {
+      //When add a photo, see the result
+      if(this.props.photoState != 0) {
+        if(this.props.photoState == 1) {
+          this.props.form.resetFields()
+          message.success('保存成功', () => {this.props.history.push(`/album/photo/${this.state.albumKey}`)})
+        } else if(this.props.photoState == -1) {
+          message.error("保存失败")
+        }
+        this.props.dispatch({type: photoType['PHOTO_INITIAL_STATE']})
+      }
+    }
 
+    handleSubmit = (e) => {
+      const form = this.props.form
+      const { history: {location} } = this.props
+      const { photo } = location.state
+      e.preventDefault()
+      form.validateFields((err, values) => {
+        if (err) {
+          return
+        }
+
+        values.key = photo._key
+        values.album = photo.album
+        values.createTime = photo.createTime
+        values.photo = photo.photo
+        values.status = photo.status
+        values.updateTime = Date.now()
+        values.date = dateUtils.date2String(new Date(values.date), false)
+        // delete values.upload
+        console.log('Received values of photo form: ', values)
+
+        this.props.updatePhoto(values)
+      })
     }
 
     render() {
-      const { visible, photo, onCancel, onCreate, form } = this.props
+      const { visible, onCancel, onCreate, form, history: {location} } = this.props
       const { getFieldDecorator } = form
+      const { photo } = location.state
 
       return (
-        <Modal
-          visible={visible}
-          title="Modify a photo"
-          okText="Create"
-          onCancel={onCancel}
-          onOk={onCreate}
-        >
-          <Form layout="vertical">
+        <div>
+          <PageHead icon="bar-chart" title="编辑照片" history={this.props.history} />
+          <Form layout="vertical" onSubmit={this.handleSubmit}>
             <Row type="flex" justify="center">
-              <Col span={24}>
+              <Col span={12}>
                 <FormItem label="Title">
                   {getFieldDecorator('title', {
                     initialValue: photo.title,
@@ -92,17 +130,34 @@ const PhotoEdit = Form.create()(
                 </FormItem>
               </Col>
             </Row>
+            <Row type="flex" justify="start">
+              <Col span={12} offset={6}>
+                <Button type="primary" style={{marginRight: '20px'}} htmlType="submit"
+                  loading={this.state.loading}>
+                  保存
+                </Button>
+              </Col>
+            </Row>
           </Form>
-        </Modal>            
+        </div>       
       )
     }
   }
 )
 
 const mapStateToProps = state => ({
-  
+  photoState: state.photoState
 })
 
+const mapDispatchToProps = dispatch => ({
+  dispatch: dispatch,
+
+  updatePhoto: (photo) => dispatch({
+    type: photoType['PHOTO_UPDATE'],
+    photo
+  })
+}) 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(PhotoEdit)    

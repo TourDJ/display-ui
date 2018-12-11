@@ -42,8 +42,10 @@ function* updatePhotoByKey(action) {
       data = result.data
 
     yield put({type: photoType['PHOTO_UPDATE_SUCCEEDED'], payload: data})
+    yield put({type: photoType['PHOTO_SUCCEES_STATE']})
   } catch (e) {
     yield put({type: photoType['PHOTO_UPDATE_FAILED'], message: e.message})
+    yield put({type: photoType['PHOTO_FAILE_STATE']})
   }
 }
 

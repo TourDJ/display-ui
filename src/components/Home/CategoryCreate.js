@@ -12,8 +12,8 @@ import { connect } from 'react-redux'
 const FormItem = Form.Item
 const { TextArea } = Input;
 
-const CreateCategoryForm = Form.create()(
-  class AlbumForm extends React.Component {
+const CategoryCreate = Form.create()(
+  class CategoryCreateForm extends React.Component {
 
     render() {
       const { visible, onCancel, onCreate, form } = this.props
@@ -67,4 +67,4 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps
-)(CreateCategoryForm)    
+)(CategoryCreate)    
