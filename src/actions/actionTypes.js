@@ -49,10 +49,14 @@ export const photoType = {
   PHOTO_FAILE_STATE: 'PHOTO_FAILE_STATE'
 }
 
+//Category tab selected type
 export const tabType = {
   TAB_KEY: 'TAB_KEY'
 }
 
+//Bread crumb type
 export const breadType = {
-  BREAD_CRUMB: 'BREAD_CRUMB'
+  BREAD_DUMP: 'BREAD_DUMP',
+  BREAD_PUSH: 'BREAD_PUSH',
+  BREAD_POP: 'BREAD_POP'
 }
