@@ -13,7 +13,8 @@ import {
 } from 'antd'
 import PageHead from '../CommonHeader/PageHead'
 import PhotoEdit from './PhotoEdit'
-import { photoGet } from '../../actions'
+import { breadType, breadSizeType } from '../../actions/actionTypes'
+import { photoGet, crumbDispatch } from '../../actions'
 import styles from './photo.less'
 
 const { Meta } = Card
@@ -45,12 +46,29 @@ class Photo extends PureComponent {
 
   addPhoto() {
     const { match } = this.props
+    crumbDispatch(this.props.dispatch, {
+      breadType: breadType['BREAD_PUSH'], 
+      breadData: {
+        name: '添加照片',
+        path: '/photo/add',
+        active: false
+      }, 
+      breadSizeType: breadSizeType['BREAD_SIZE_ADD']
+    })
     this.props.history.push('/photo/add', {albumKey: match.params.key})
   }
 
   //Edit photo's description
   editPhoto = (photo) => {
-    // this.showModal(photo)
+    crumbDispatch(this.props.dispatch, {
+      breadType: breadType['BREAD_PUSH'], 
+      breadData: {
+        name: '照片编辑',
+        path: '/photo/edit',
+        active: false
+      }, 
+      breadSizeType: breadSizeType['BREAD_SIZE_ADD']
+    })
     this.props.history.push('/photo/edit', {photo: photo})
   }
 

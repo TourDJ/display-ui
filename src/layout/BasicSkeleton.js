@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Layout } from 'antd';
 import CommonHeader from '../components/CommonHeader';
-import Navigator from '../components/CommonHeader/Navigator'
+import NavigatorBar from '../components/CommonHeader/NavigatorBar'
 import logo from '../assets/logo.svg';
 import 'antd/dist/antd.css'
 
@@ -20,19 +20,19 @@ class BasicSkeleton extends Component {
     return (
       <Layout>
           <Header style={{ padding: 0 }}>
-              <CommonHeader
-                logo={logo}
-                user={{
-                  name: 'Jiefang',
-                  avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
-                  userid: '00000001',
-                  notifyCount: 12,
-                }}
-              />
+            <CommonHeader
+              logo={logo}
+              user={{
+                name: 'Jiefang',
+                avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
+                userid: '00000001',
+                notifyCount: 12,
+              }}
+            />
           </Header>
 
           <Content style={{ margin: '24px 24px 0', height: '100%' }}>
-            <Navigator />
+            <NavigatorBar />
 
             <div style={{ background: '#fff', padding: 24, minHeight: 380 }}>
               { children }
@@ -47,4 +47,4 @@ class BasicSkeleton extends Component {
   }
 }
 
-export default BasicSkeleton;
+export default BasicSkeleton

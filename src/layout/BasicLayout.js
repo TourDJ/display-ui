@@ -1,13 +1,17 @@
-import React from 'react'
+import React, { Component } from 'react'
 import BasicSkeleton from './BasicSkeleton'
 import BasicRoute from '../routes/BasicRoute'
 
-const BasicLayout = () => {
-  return (
-    <BasicSkeleton>
-      {BasicRoute}
-    </BasicSkeleton>  
-  )
+class BasicLayout extends Component {
+
+  render() {
+
+    return (
+      <BasicSkeleton bread={this.props.bread}>
+        {BasicRoute}
+      </BasicSkeleton>  
+    )
+  }
 }
 
 export default BasicLayout

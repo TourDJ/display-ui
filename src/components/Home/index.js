@@ -13,7 +13,11 @@ import {
 } from 'antd'
 import CategoryCreate from './CategoryCreate'
 import AlbumCreate from '../Album/AlbumCreate'
-import { categoryType, albumType, tabType } from '../../actions/actionTypes'
+import { 
+  categoryType, albumType, tabType, 
+  breadType, breadSizeType
+} from '../../actions/actionTypes'
+import { crumbDispatch } from '../../actions'
 import { parseUpload } from '../../utils/uploadFile'
 import styles from './home.less'
 import locale from '../../locales/zh'
@@ -42,12 +46,6 @@ class Home extends PureComponent {
       this.tabCallback(this.props.category[0]._key)
     }
 
-  }
-
-  pageChange = (page) => {
-    this.setState({
-      current: page,
-    })
   }
 
   //Category form
@@ -82,18 +80,35 @@ class Home extends PureComponent {
     })
   }
 
-	tabCallback = (key) => {
+  //
+  tabCallback = (key) => {
     const {dispatch} = this.props
-	  console.log("Current tab's key is: ", key)
+    console.log("Current tab's key is: ", key)
     dispatch({
         type: tabType['TAB_KEY'], 
         key: key
     })
     this.props.getAlbums(key)
-	}
+  }
+
+  //
+  pageChange = (page) => {
+    this.setState({
+      current: page,
+    })
+  }
 
   //Create album
   createAlbum = (key) => {
+    crumbDispatch(this.props.dispatch, {
+      breadType: breadType['BREAD_PUSH'],
+      breadData: {
+        name: '添加相册',
+        path: '/album/add',
+        active: false
+      },
+      breadSizeType: breadSizeType['BREAD_SIZE_ADD']
+    })
     this.props.history.push(`/album/add`, {
       categoryKey: key
     })
@@ -101,7 +116,16 @@ class Home extends PureComponent {
 
   //Edit album
   editAlbum = (album) => {
-     this.props.history.push(`/album/edit`, {
+    crumbDispatch(this.props.dispatch, {
+      breadType: breadType['BREAD_PUSH'], 
+      breadData: {
+        name: '相册编辑',
+        path: '/album/edit',
+        active: false
+      }, 
+      breadSizeType: breadSizeType['BREAD_SIZE_ADD']
+    })
+    this.props.history.push(`/album/edit`, {
       album: album
     })   
   }
@@ -110,11 +134,29 @@ class Home extends PureComponent {
   photoView = (e, album) => {
     const key = album._key
     const name = album.title
+    crumbDispatch(this.props.dispatch, {
+      breadType: breadType['BREAD_PUSH'], 
+      breadData: {
+        name: '照片欣赏',
+        path: `/album/photo/view/${key}`,
+        active: false
+      }, 
+      breadSizeType: breadSizeType['BREAD_SIZE_ADD']      
+    })
     this.props.history.push(`/album/photo/view/${key}`, {name: name})
   }
 
   //Add, modify, delete photo
   photoEdit = (key) => {
+    crumbDispatch(this.props.dispatch, {
+      breadType: breadType['BREAD_PUSH'], 
+      breadData: {
+        name: '照片管理',
+        path: `/album/photo/${key}`,
+        active: false
+      }, 
+      breadSizeType: breadSizeType['BREAD_SIZE_ADD']
+    })
     this.props.history.push(`/album/photo/${key}`)
   }
 
@@ -153,7 +195,7 @@ class Home extends PureComponent {
                     <Button type="primary" icon="hdd" className={styles.btn} 
                         onClick={() => this.createAlbum(this.props.tabKey)}
                     >
-                      新建相册
+                      添加相册
                     </Button>
                     </Col>
                     <Col xs={12}>

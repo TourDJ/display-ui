@@ -6,6 +6,8 @@ import albumStateReducer from './albumStateReducer'
 import photoReducer from './photoReducer'
 import photoStateReducer from './photoStateReducer'
 import tabReducer from './tabReducer'
+import breadReducer from './breadReducer'
+import breadSizeReducer from './breadSizeReducer'
 
 const rootReducer = (history) => combineReducers({
   category: categoryReducer,
@@ -14,6 +16,8 @@ const rootReducer = (history) => combineReducers({
   photos: photoReducer,
   photoState: photoStateReducer,
   tabKey: tabReducer,
+  bread: breadReducer,
+  breadSize: breadSizeReducer,
   router: connectRouter(history)
 })
 

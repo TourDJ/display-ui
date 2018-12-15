@@ -56,7 +56,13 @@ export const tabType = {
 
 //Bread crumb type
 export const breadType = {
-  BREAD_DUMP: 'BREAD_DUMP',
+  BREAD_JUMP: 'BREAD_JUMP',
   BREAD_PUSH: 'BREAD_PUSH',
   BREAD_POP: 'BREAD_POP'
+}
+
+export const breadSizeType = {
+  BREAD_SIZE_JUMP: 'BREAD_SIZE_JUMP',
+  BREAD_SIZE_ADD: 'BREAD_SIZE_ADD',
+  BREAD_SIZE_MINUS: 'BREAD_SIZE_MINUS'
 }

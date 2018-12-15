@@ -13,12 +13,12 @@ const BasicRoute = (
   <Switch>
     <Route exact path="/" component={Home} />
     <Route exact path="/index" component={Home} />
-    <Route path="/album/add" component={AlbumCreate} />
-    <Route path="/album/edit" component={AlbumEdit} />
-    <Route path="/album/photo/:key(\d+)" component={Photo} />
-    <Route path="/album/photo/view/:key(\d+)" component={PhotoView} />
-    <Route path="/photo/add" component={PhotoCreate} />
-    <Route path="/photo/edit" component={PhotoEdit} />
+    <Route exact path="/album/add" component={AlbumCreate} />
+    <Route exact path="/album/edit" component={AlbumEdit} />
+    <Route exact path="/album/photo/:key(\d+)" component={Photo} />
+    <Route exact path="/album/photo/view/:key(\d+)" component={PhotoView} />
+    <Route exact path="/photo/add" component={PhotoCreate} />
+    <Route exact path="/photo/edit" component={PhotoEdit} />
     <Route component={NoMatch} />
   </Switch>
 )
