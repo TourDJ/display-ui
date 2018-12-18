@@ -1,9 +1,16 @@
 import { breadSizeType } from '../actions/actionTypes'
+import crumbDefine from '../actions/crumbDefine'
 
-const breadSizeReducer = (state = 1, action) => {
+const initState = crumbDefine['/'].key
+
+const breadSizeReducer = (state = initState, action) => {
   let newState
 
   switch(action.type) {
+
+    case breadSizeType['BREAD_SIZE_SET']:
+      newState = action.payload
+      return newState
 
     case breadSizeType['BREAD_SIZE_ADD']:
       newState = state + 1

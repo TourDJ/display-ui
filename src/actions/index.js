@@ -1,4 +1,5 @@
-import { photoType } from './actionTypes'
+import { photoType, breadSizeType } from './actionTypes'
+import crumbDefine from './crumbDefine'
 
 //
 export const photoGet = (key) => ({
@@ -16,3 +17,11 @@ export const crumbDispatch = (dispatch, crumbSeed) => {
     type: crumbSeed.breadSizeType
   })   
 }
+
+// export const breadSizeDispatch = (dispatch, module) => {
+//   let breadSize = crumbDefine[module].key
+//   dispatch({
+//     type: breadSizeType['BREAD_SIZE_SET'],
+//     payload: breadSize
+//   })
+// }

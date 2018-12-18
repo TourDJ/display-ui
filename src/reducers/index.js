@@ -7,7 +7,8 @@ import photoReducer from './photoReducer'
 import photoStateReducer from './photoStateReducer'
 import tabReducer from './tabReducer'
 import breadReducer from './breadReducer'
-import breadSizeReducer from './breadSizeReducer'
+// import breadSizeReducer from './breadSizeReducer'
+import trackStackReducer from './trackStackReducer'
 
 const rootReducer = (history) => combineReducers({
   category: categoryReducer,
@@ -17,7 +18,8 @@ const rootReducer = (history) => combineReducers({
   photoState: photoStateReducer,
   tabKey: tabReducer,
   bread: breadReducer,
-  breadSize: breadSizeReducer,
+  // breadSize: breadSizeReducer,
+  trackStack: trackStackReducer,
   router: connectRouter(history)
 })
 

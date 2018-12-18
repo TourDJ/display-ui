@@ -15,8 +15,9 @@ import CategoryCreate from './CategoryCreate'
 import AlbumCreate from '../Album/AlbumCreate'
 import { 
   categoryType, albumType, tabType, 
-  breadType, breadSizeType
+  breadType, trackStackType
 } from '../../actions/actionTypes'
+import crumbDefine from '../../actions/crumbDefine'
 import { crumbDispatch } from '../../actions'
 import { parseUpload } from '../../utils/uploadFile'
 import styles from './home.less'
@@ -37,7 +38,20 @@ class Home extends PureComponent {
 	}
 
 	componentDidMount() {
+    const { router, dispatch } = this.props
+    if(router.action == 'PUSH') {
+      dispatch({
+        type: trackStackType['TRACK_STACK_PUSH'],
+        payload: router.location
+      })
+    }
+
+    //Get all categories
     this.props.getCategories()
+    
+    //Set current bread crumb size
+    // breadSizeDispatch(this.props.dispatch, 'home')
+    console.log(this.props)
 	}
 
   componentDidUpdate(prevProps, prevState) {
@@ -60,10 +74,12 @@ class Home extends PureComponent {
     this.setState({ categoryVisible: true })
   }
 
+  //分类窗口取消操作
   categoryHandleCancel = () => {
     this.setState({ categoryVisible: false })
   }
 
+  //分类窗口确定操作
   categoryHandleCreate = () => {
     const form = this.categoryFormRef.props.form
     form.validateFields((err, values) => {
@@ -100,15 +116,15 @@ class Home extends PureComponent {
 
   //Create album
   createAlbum = (key) => {
-    crumbDispatch(this.props.dispatch, {
-      breadType: breadType['BREAD_PUSH'],
-      breadData: {
-        name: '添加相册',
-        path: '/album/add',
-        active: false
-      },
-      breadSizeType: breadSizeType['BREAD_SIZE_ADD']
-    })
+    // crumbDispatch(this.props.dispatch, {
+    //   breadType: breadType['BREAD_PUSH'],
+    //   breadData: {
+    //     name: '添加相册',
+    //     path: '/album/add',
+    //     active: false
+    //   },
+    //   breadSizeType: breadSizeType['BREAD_SIZE_ADD']
+    // })
     this.props.history.push(`/album/add`, {
       categoryKey: key
     })
@@ -147,7 +163,7 @@ class Home extends PureComponent {
   }
 
   //Add, modify, delete photo
-  photoEdit = (key) => {
+  photoManage = (key) => {
     crumbDispatch(this.props.dispatch, {
       breadType: breadType['BREAD_PUSH'], 
       breadData: {
@@ -228,7 +244,7 @@ class Home extends PureComponent {
                                 </Popconfirm>
                               </Tooltip>, 
                               <Tooltip title='照片管理'>
-                                <Icon type="edit" theme="filled" onClick={() => this.photoEdit(album._key)} />
+                                <Icon type="edit" theme="filled" onClick={() => this.photoManage(album._key)} />
                               </Tooltip>
                             ]}
                           >
@@ -275,6 +291,7 @@ const mapStateToProps = state => ({
   category: state.category,
   albums: state.albums,
   tabKey: state.tabKey,
+  router: state.router
 })
 
 const mapDispatchToProps = dispatch => ({

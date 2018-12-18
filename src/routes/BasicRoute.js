@@ -12,7 +12,6 @@ import NoMatch from '../components/NoMatch'
 const BasicRoute = (
   <Switch>
     <Route exact path="/" component={Home} />
-    <Route exact path="/index" component={Home} />
     <Route exact path="/album/add" component={AlbumCreate} />
     <Route exact path="/album/edit" component={AlbumEdit} />
     <Route exact path="/album/photo/:key(\d+)" component={Photo} />

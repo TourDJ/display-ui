@@ -50,10 +50,14 @@ class ViewPhoto extends PureComponent {
             return (
               <Col key={pic._key} span={24} xs={24} sm={24} md={24} lg={24} xl={24}>
                 <Card
-                  extra={`${pic.place}/${pic.date}`}
+                  extra={(
+                    <div>
+                      <Icon type="like" />&nbsp;
+                      <strong>{pic.place}/{pic.date}</strong>
+                    </div>
+                    )}
                   style={{ width: '100%', marginBottom: 5 }}
                   title={<span className={styles.photoTitle}>{pic.title}</span>} bordered={false}
-                  actions={[<Icon type="like" />, <Icon type="dislike" />]}
                 >
                   <img src={`${constant.service_url}${pic.photo.filepath}`} width="100%" />
                   <Meta

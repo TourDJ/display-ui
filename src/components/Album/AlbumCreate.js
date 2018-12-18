@@ -14,6 +14,8 @@ import {
 import PageHead from '../CommonHeader/PageHead'
 import { parseUpload } from '../../utils/uploadFile'
 import { albumType } from '../../actions/actionTypes'
+import crumbDefine from '../../actions/crumbDefine'
+import { breadSizeDispatch } from '../../actions'
 import { getBase64, checkFile } from '../../utils/uploadFile'
 // import '../../utils/constant'
 
@@ -47,12 +49,19 @@ const AlbumCreate = Form.create()(
 
     componentDidMount() {
       const { history: { location}} = this.props
+      const { router } = this.props
       //Use catetores wrap select options
       this.getCategotySelect(this.props.category)
 
       //When change the tab, also change the default seleted 
       //item for category select
       this.changeSelectTab(location.state.categoryKey, this.props.category)
+
+      //Set current bread crumb size
+      // breadSizeDispatch(this.props.dispatch, 'albumCreate')
+      //Record router history
+      console.log(this.props)
+      
     }
 
     componentDidUpdate(prevProps) {
@@ -232,6 +241,7 @@ const AlbumCreate = Form.create()(
 )
 
 const mapStateToProps = state => ({
+  router: state.router,
   category: state.category,
   albumState: state.albumState
 })
