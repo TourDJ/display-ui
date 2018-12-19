@@ -17,6 +17,7 @@ class BasicSkeleton extends Component {
 
   render() {
     const { children, location } = this.props;
+
     return (
       <Layout>
           <Header style={{ padding: 0 }}>

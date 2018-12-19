@@ -15,11 +15,9 @@ import CategoryCreate from './CategoryCreate'
 import AlbumCreate from '../Album/AlbumCreate'
 import { 
   categoryType, albumType, tabType, 
-  breadType, trackStackType
+  trackStackType
 } from '../../actions/actionTypes'
-import crumbDefine from '../../actions/crumbDefine'
-import { crumbDispatch } from '../../actions'
-import { parseUpload } from '../../utils/uploadFile'
+import { trackCurrDispatch, trackDispatch } from '../../actions'
 import styles from './home.less'
 import locale from '../../locales/zh'
 import '../../utils/constant'
@@ -38,20 +36,19 @@ class Home extends PureComponent {
 	}
 
 	componentDidMount() {
-    const { router, dispatch } = this.props
-    if(router.action == 'PUSH') {
-      dispatch({
-        type: trackStackType['TRACK_STACK_PUSH'],
-        payload: router.location
-      })
-    }
+    console.log(this.props)
+    const { history, dispatch } = this.props
+    let _key_ = history.location.key
+    if(!_key_ && history.location.pathname == "/")
+      _key_ = 'home'
+
+    //Track the history
+    trackDispatch(dispatch, history)
+    trackCurrDispatch(dispatch, _key_)
 
     //Get all categories
     this.props.getCategories()
-    
-    //Set current bread crumb size
-    // breadSizeDispatch(this.props.dispatch, 'home')
-    console.log(this.props)
+  
 	}
 
   componentDidUpdate(prevProps, prevState) {
@@ -116,15 +113,6 @@ class Home extends PureComponent {
 
   //Create album
   createAlbum = (key) => {
-    // crumbDispatch(this.props.dispatch, {
-    //   breadType: breadType['BREAD_PUSH'],
-    //   breadData: {
-    //     name: '添加相册',
-    //     path: '/album/add',
-    //     active: false
-    //   },
-    //   breadSizeType: breadSizeType['BREAD_SIZE_ADD']
-    // })
     this.props.history.push(`/album/add`, {
       categoryKey: key
     })
@@ -132,15 +120,6 @@ class Home extends PureComponent {
 
   //Edit album
   editAlbum = (album) => {
-    crumbDispatch(this.props.dispatch, {
-      breadType: breadType['BREAD_PUSH'], 
-      breadData: {
-        name: '相册编辑',
-        path: '/album/edit',
-        active: false
-      }, 
-      breadSizeType: breadSizeType['BREAD_SIZE_ADD']
-    })
     this.props.history.push(`/album/edit`, {
       album: album
     })   
@@ -150,29 +129,11 @@ class Home extends PureComponent {
   photoView = (e, album) => {
     const key = album._key
     const name = album.title
-    crumbDispatch(this.props.dispatch, {
-      breadType: breadType['BREAD_PUSH'], 
-      breadData: {
-        name: '照片欣赏',
-        path: `/album/photo/view/${key}`,
-        active: false
-      }, 
-      breadSizeType: breadSizeType['BREAD_SIZE_ADD']      
-    })
     this.props.history.push(`/album/photo/view/${key}`, {name: name})
   }
 
   //Add, modify, delete photo
   photoManage = (key) => {
-    crumbDispatch(this.props.dispatch, {
-      breadType: breadType['BREAD_PUSH'], 
-      breadData: {
-        name: '照片管理',
-        path: `/album/photo/${key}`,
-        active: false
-      }, 
-      breadSizeType: breadSizeType['BREAD_SIZE_ADD']
-    })
     this.props.history.push(`/album/photo/${key}`)
   }
 

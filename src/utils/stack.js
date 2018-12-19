@@ -12,9 +12,10 @@ class Node {
 class Stack {
   constructor() {
     this.top = null
+    this.curr = null
   }
 
-  //
+  //入栈
   push( item ){
     let node = new Node( item )
 
@@ -24,9 +25,10 @@ class Stack {
     } else {
       this.top = node
     }
+    this.curr = this.top.data.key
   }
 
-  //
+  //出栈
   pop() {
     if( this.top ) {
       let itemToPop = this.top
@@ -38,7 +40,7 @@ class Stack {
     }
   }
 
-  //
+  //栈顶元素
   peek() {
     if( this.top ) {
       return this.top.data
@@ -47,6 +49,7 @@ class Stack {
     }
   }
 
+  //打印栈元素
   print() {
     let current = this.top
     while( current ) {
@@ -55,6 +58,7 @@ class Stack {
     }
   }
 
+  //反转栈元素
   reverse() {
     let current = this.top
     let prev = null
@@ -67,6 +71,7 @@ class Stack {
     this.top = prev
   }
 
+  //栈的长度
   length() {
     let current = this.top
     let counter = 0
@@ -77,6 +82,7 @@ class Stack {
     return counter
   }
 
+  //在栈中搜索
   search( item ) {
     let current = this.top
     while( current ) {
@@ -86,6 +92,7 @@ class Stack {
     return false
   }
 
+  //穿梭栈
   traverse( fn ) {
     let current = this.top
     while( current ) {
@@ -94,18 +101,55 @@ class Stack {
     }
   }
 
+  //栈是否为空
   isEmpty() {
     return this.length > 1
   }
 
   //Output with array
-  dump() {
-    let elems = [], current = this.top
+  dump( all ) {
+    let elems = [], current = this.top, level
+    if(!all){
+      current = this.active()
+    }
+    if(!current)
+      return elems
+
+    level = current.data.level
+
     while( current ) {
-      elems.unshift(current.data)
-      current = current.next
+      if(current.data.level == level) {
+        elems.unshift(current.data)
+        current = current.next
+        level--
+
+        if(level <= 0)
+          return elems
+      } else {
+        while(current.data.level != level) {
+          current = current.next
+        }
+      }
     }
     return elems
+  }
+
+  //改变栈当前指针
+  pointAt( item ) {
+    if(item && item.key) {
+      this.curr = item.key
+    }
+  }
+
+  //当前指针指向元素
+  active() {
+    let current = this.top
+    while( current ) {
+      if(current.data.key == this.curr)
+        return current
+      current = current.next
+    }
+    return null
   }
 
 }

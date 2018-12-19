@@ -1,4 +1,4 @@
-import { photoType, breadSizeType } from './actionTypes'
+import { photoType, trackCurrType, trackStackType } from './actionTypes'
 import crumbDefine from './crumbDefine'
 
 //
@@ -8,20 +8,48 @@ export const photoGet = (key) => ({
 })
 
 //
-export const crumbDispatch = (dispatch, crumbSeed) => {
+// export const crumbDispatch = (dispatch, crumbSeed) => {
+//   dispatch({
+//     type: crumbSeed.breadType, 
+//     payload: crumbSeed.breadData
+//   })
+//   dispatch({
+//     type: crumbSeed.breadSizeType
+//   })   
+// }
+
+export const trackCurrDispatch = (dispatch, curr) => {
   dispatch({
-    type: crumbSeed.breadType, 
-    payload: crumbSeed.breadData
+    type: trackCurrType['TRACK_CURR_SET'],
+    payload: curr
   })
-  dispatch({
-    type: crumbSeed.breadSizeType
-  })   
 }
 
-// export const breadSizeDispatch = (dispatch, module) => {
-//   let breadSize = crumbDefine[module].key
-//   dispatch({
-//     type: breadSizeType['BREAD_SIZE_SET'],
-//     payload: breadSize
-//   })
-// }
+export const trackDispatch = (dispatch, history) => {
+  const { location } = history
+  const _path = location.pathname
+  const crumb = crumbDefine[_path]
+  let _payload = location
+  _payload.level = crumb.level
+  _payload.name = crumb.name
+
+  if(history.action == 'PUSH') {
+    dispatch({
+      type: trackStackType['TRACK_STACK_PUSH'],
+      payload: _payload
+    })
+  } else if(history.action == "POP") {
+    if(history.length == 1 && !location.key && location.pathname == '/') {
+      _payload.key = 'home'
+      dispatch({
+        type: trackStackType['TRACK_STACK_PUSH'],
+        payload: _payload
+      })
+    } else {
+      dispatch({
+        type: trackStackType['TRACK_STACK_POINT'],
+        payload: location
+      })
+    }
+  }
+}
