@@ -13,7 +13,7 @@ import {
 } from 'antd'
 import PageHead from '../CommonHeader/PageHead'
 import { parseUpload } from '../../utils/uploadFile'
-import { albumType, trackStackType } from '../../actions/actionTypes'
+import { albumType } from '../../actions/actionTypes'
 import { trackCurrDispatch, trackDispatch } from '../../actions'
 import { getBase64, checkFile } from '../../utils/uploadFile'
 // import '../../utils/constant'
@@ -48,6 +48,7 @@ const AlbumCreate = Form.create()(
 
     componentDidMount() {
       const { history, history: { location}, dispatch} = this.props
+
       //Track the history
       trackDispatch(dispatch, history)
       trackCurrDispatch(dispatch, history.location.key)
@@ -59,7 +60,6 @@ const AlbumCreate = Form.create()(
       //item for category select
       this.changeSelectTab(location.state.categoryKey, this.props.category)
 
-      //Record router history
       console.log(this.props)
     }
 

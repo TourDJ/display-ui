@@ -12,7 +12,7 @@ import {
 } from 'antd'
 import PageHead from '../CommonHeader/PageHead'
 import PhotoFoot from './PhotoFoot'
-import { photoGet } from '../../actions'
+import { photoGet, trackCurrDispatch, trackDispatch } from '../../actions'
 import styles from './photo.less'
 
 const { Meta } = Card
@@ -26,8 +26,12 @@ class ViewPhoto extends PureComponent {
   }
 
   componentDidMount() {
-    const { match, dispatch } = this.props
+    const { history, match, dispatch } = this.props
     dispatch(photoGet(match.params.key))
+
+    //Track the history
+    trackDispatch(dispatch, history)
+    trackCurrDispatch(dispatch, history.location.key)
   }
 
   componentDidUpdate(prevProps) {

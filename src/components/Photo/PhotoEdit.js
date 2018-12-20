@@ -15,6 +15,7 @@ import moment from 'moment'
 import PageHead from '../CommonHeader/PageHead'
 import dateUtils from '../../utils/dateUtils'
 import { photoType } from '../../actions/actionTypes'
+import { trackCurrDispatch, trackDispatch } from '../../actions'
 
 const { TextArea } = Input
 const FormItem = Form.Item
@@ -30,11 +31,15 @@ const PhotoEdit = Form.create()(
     }
 
     componentDidMount() {
-      const { history: {location} } = this.props
+      const { history, history: {location}, dispatch } = this.props
       const { photo } = location.state
       this.setState({
         albumKey: photo.album
       })
+
+      //Track the history
+      trackDispatch(dispatch, history)
+      trackCurrDispatch(dispatch, history.location.key)
     }
 
     componentDidUpdate(prevProps) {

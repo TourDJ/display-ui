@@ -1,5 +1,4 @@
 import { trackCurrType } from '../actions/actionTypes'
-import crumbDefine from '../actions/crumbDefine'
 
 const initState = ''
 

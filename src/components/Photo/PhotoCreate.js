@@ -13,6 +13,7 @@ import {
 } from 'antd'
 import PageHead from '../CommonHeader/PageHead'
 import { photoType } from '../../actions/actionTypes'
+import { trackCurrDispatch, trackDispatch } from '../../actions'
 import { getBase64, checkFile, parseUpload } from '../../utils/uploadFile'
 import dateUtils from '../../utils/dateUtils'
 import '../../utils/constant'
@@ -41,10 +42,14 @@ const PhotoCreate = Form.create()(
     }
 
     componentDidMount() {
-      const { history: {location} } = this.props
+      const { history, history: {location}, dispatch } = this.props
       this.setState({
         albumKey: location.state.albumKey
       })
+
+      //Track the history
+      trackDispatch(dispatch, history)
+      trackCurrDispatch(dispatch, history.location.key)
     }
 
     componentDidUpdate(prevProps) {

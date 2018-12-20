@@ -15,6 +15,7 @@ import {
 import PageHead from '../CommonHeader/PageHead'
 import { parseUpload } from '../../utils/uploadFile'
 import { albumType } from '../../actions/actionTypes'
+import { trackCurrDispatch, trackDispatch } from '../../actions'
 import { getBase64, checkFile } from '../../utils/uploadFile'
 import '../../utils/constant'
 
@@ -47,8 +48,12 @@ const AlbumEdit = Form.create()(
     }
 
     componentDidMount() {
-      const { history: { location}} = this.props
+      const { history, history: { location}, dispatch} = this.props
       const { album } = location.state
+
+      //Track the history
+      trackDispatch(dispatch, history)
+      trackCurrDispatch(dispatch, history.location.key)
 
       //Use catetores wrap select options
       const categoryDatas = this.getCategotySelect(this.props.category)

@@ -14,7 +14,7 @@ import {
 import PageHead from '../CommonHeader/PageHead'
 import PhotoEdit from './PhotoEdit'
 import { breadType, breadSizeType } from '../../actions/actionTypes'
-import { photoGet, crumbDispatch } from '../../actions'
+import { photoGet, trackCurrDispatch, trackDispatch } from '../../actions'
 import styles from './photo.less'
 
 const { Meta } = Card
@@ -34,8 +34,12 @@ class Photo extends PureComponent {
   }
 
   componentDidMount() {
-    const { match } = this.props
-    this.props.dispatch(photoGet(match.params.key))
+    const { history, match, dispatch } = this.props
+    dispatch(photoGet(match.params.key))
+
+    //Track the history
+    trackDispatch(dispatch, history)
+    trackCurrDispatch(dispatch, history.location.key)
   }
 
   componentDidUpdate(prevProps) {
@@ -46,29 +50,11 @@ class Photo extends PureComponent {
 
   addPhoto() {
     const { match } = this.props
-    crumbDispatch(this.props.dispatch, {
-      breadType: breadType['BREAD_PUSH'], 
-      breadData: {
-        name: '添加照片',
-        path: '/photo/add',
-        active: false
-      }, 
-      breadSizeType: breadSizeType['BREAD_SIZE_ADD']
-    })
     this.props.history.push('/photo/add', {albumKey: match.params.key})
   }
 
   //Edit photo's description
   editPhoto = (photo) => {
-    crumbDispatch(this.props.dispatch, {
-      breadType: breadType['BREAD_PUSH'], 
-      breadData: {
-        name: '照片编辑',
-        path: '/photo/edit',
-        active: false
-      }, 
-      breadSizeType: breadSizeType['BREAD_SIZE_ADD']
-    })
     this.props.history.push('/photo/edit', {photo: photo})
   }
 

@@ -6,7 +6,7 @@ const crumbDefine = {
     level: 1,
     name: "首页",
     path: "/",
-    visit: true,
+    visit: false,
   },
 
   "/album/add": {
@@ -34,6 +34,7 @@ const crumbDefine = {
     path: "/album/photo/view",
     prev: "/",
     visit: false,
+    dynamic: true,
   },
 
   "/album/photo": {
@@ -43,6 +44,7 @@ const crumbDefine = {
     path: "/album/photo",
     prev: "/",
     visit: false,
+    dynamic: true,
   },
 
   "/photo/add": {

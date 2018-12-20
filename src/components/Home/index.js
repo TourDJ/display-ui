@@ -37,13 +37,13 @@ class Home extends PureComponent {
 
 	componentDidMount() {
     console.log(this.props)
-    const { history, dispatch } = this.props
+    const { history, dispatch, trackCurr } = this.props
     let _key_ = history.location.key
     if(!_key_ && history.location.pathname == "/")
       _key_ = 'home'
 
     //Track the history
-    trackDispatch(dispatch, history)
+    trackDispatch(dispatch, history, trackCurr)
     trackCurrDispatch(dispatch, _key_)
 
     //Get all categories
@@ -252,7 +252,7 @@ const mapStateToProps = state => ({
   category: state.category,
   albums: state.albums,
   tabKey: state.tabKey,
-  router: state.router
+  trackCurr: state.trackCurr
 })
 
 const mapDispatchToProps = dispatch => ({

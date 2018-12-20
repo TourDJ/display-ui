@@ -7,17 +7,6 @@ export const photoGet = (key) => ({
   album: key
 })
 
-//
-// export const crumbDispatch = (dispatch, crumbSeed) => {
-//   dispatch({
-//     type: crumbSeed.breadType, 
-//     payload: crumbSeed.breadData
-//   })
-//   dispatch({
-//     type: crumbSeed.breadSizeType
-//   })   
-// }
-
 export const trackCurrDispatch = (dispatch, curr) => {
   dispatch({
     type: trackCurrType['TRACK_CURR_SET'],
@@ -25,13 +14,35 @@ export const trackCurrDispatch = (dispatch, curr) => {
   })
 }
 
-export const trackDispatch = (dispatch, history) => {
+//递归匹配路径
+function matchCrumb(_path) {
+  let crumb = crumbDefine[_path]
+  if(crumb)
+    return crumb
+
+  let _path_ = _path
+  let index = _path_.lastIndexOf('/')
+  while( index > 0 ) {
+    _path_ = _path_.substring(0, index)
+    crumb = crumbDefine[_path_]
+    if(crumb && crumb.dynamic)
+      return crumb 
+
+    index = _path_.lastIndexOf('/')  
+  }
+  return null
+}
+
+export const trackDispatch = (dispatch, history, curr) => {
   const { location } = history
   const _path = location.pathname
-  const crumb = crumbDefine[_path]
+  const crumb = matchCrumb(_path)
   let _payload = location
-  _payload.level = crumb.level
-  _payload.name = crumb.name
+  if(crumb) {
+    _payload.level = crumb.level
+    _payload.name = crumb.name
+    _payload.visit = crumb.visit
+  }
 
   if(history.action == 'PUSH') {
     dispatch({
@@ -39,13 +50,15 @@ export const trackDispatch = (dispatch, history) => {
       payload: _payload
     })
   } else if(history.action == "POP") {
-    if(history.length == 1 && !location.key && location.pathname == '/') {
+    if(location.level == 1 && !location.key && location.pathname == '/' && !curr) {
       _payload.key = 'home'
       dispatch({
         type: trackStackType['TRACK_STACK_PUSH'],
         payload: _payload
       })
     } else {
+      if(!location.key && location.pathname == '/')
+        location.key = 'home'
       dispatch({
         type: trackStackType['TRACK_STACK_POINT'],
         payload: location
