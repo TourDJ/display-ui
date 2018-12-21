@@ -13,7 +13,6 @@ import {
 } from 'antd'
 import PageHead from '../CommonHeader/PageHead'
 import PhotoEdit from './PhotoEdit'
-import { breadType, breadSizeType } from '../../actions/actionTypes'
 import { photoGet, trackCurrDispatch, trackDispatch } from '../../actions'
 import styles from './photo.less'
 

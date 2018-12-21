@@ -21,15 +21,7 @@ class BasicSkeleton extends Component {
     return (
       <Layout>
           <Header style={{ padding: 0 }}>
-            <CommonHeader
-              logo={logo}
-              user={{
-                name: 'Jiefang',
-                avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
-                userid: '00000001',
-                notifyCount: 12,
-              }}
-            />
+            <CommonHeader />
           </Header>
 
           <Content style={{ margin: '24px 24px 0', height: '100%' }}>

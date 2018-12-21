@@ -1,5 +1,12 @@
 //Action type object dictionary, which defined all the ations for dispatch
 
+//User action type
+export const userType = {
+  USER_GET: 'USER_GET',
+  USER_GET_SUCCEEDED: 'USER_GET_SUCCEEDED',
+  USER_GET_FAILED: 'USER_GET_FAILED'
+}
+
 //Category action type
 export const categoryType = {
   CATEGORY_ALL_GET: 'CATEGORY_ALL_GET',
@@ -53,14 +60,6 @@ export const photoType = {
 export const tabType = {
   TAB_KEY: 'TAB_KEY'
 }
-
-//Bread crumb type
-// export const breadType = {
-//   BREAD_SET: 'BREAD_SET',
-//   BREAD_JUMP: 'BREAD_JUMP',
-//   BREAD_PUSH: 'BREAD_PUSH',
-//   BREAD_POP: 'BREAD_POP'
-// }
 
 export const trackCurrType = {
   TRACK_CURR_SET: 'TRACK_CURR_SET'

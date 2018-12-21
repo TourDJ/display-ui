@@ -63,6 +63,10 @@ module.exports = {
         test: /\.svg$/,
         loader: 'svg-inline-loader',
         include: path.resolve('src/assets/logo.svg')
+      },
+      {
+        test: /\.(png|jpg)$/,
+        loader: 'url-loader?limit=8192'
       }
     ],
   },

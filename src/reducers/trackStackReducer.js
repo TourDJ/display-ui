@@ -23,9 +23,8 @@ const trackStackReducer = (state = initState, action) => {
       payload = action.payload
       top = data.peek()
       while(top && top.key != data.curr) {
-        console.log(top.key)
-        console.log(data.curr)
-          top = data.pop()
+        data.pop()
+        top = data.peek()
       }
       data.push(payload)
       changeVisit(data)

@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react'
 import { 
   Spin, Tag, Menu, Icon, Dropdown, Avatar, Tooltip 
-} from 'antd';
-import styles from './index.less';
+} from 'antd'
+import styles from './index.less'
+import '../../utils/constant'
 
 export default class TopHeadRight extends PureComponent {
 
@@ -11,7 +12,7 @@ export default class TopHeadRight extends PureComponent {
   }
 
   render() {
-    const {user} = this.props;
+    const {user} = this.props
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
         <Menu.Item>
@@ -32,7 +33,7 @@ export default class TopHeadRight extends PureComponent {
               <Avatar
                 size="small"
                 className={styles.avatar}
-                src={user.avatar}
+                src={`${constant.service_url}${user.avatar}`}
                 alt="avatar"
               />
               <span className={styles.name}>{user.name}</span>

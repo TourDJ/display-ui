@@ -50,6 +50,7 @@ export const trackDispatch = (dispatch, history, curr) => {
       payload: _payload
     })
   } else if(history.action == "POP") {
+    //首页第一次加载时，action为pop，所以要特殊处理
     if(location.level == 1 && !location.key && location.pathname == '/' && !curr) {
       _payload.key = 'home'
       dispatch({
