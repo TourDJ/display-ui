@@ -56,8 +56,17 @@ const crumbDefine = {
     visit: false,
   },
 
-  "/photo/edit": {
+  "/photo/add/batch": {
     serial: 7,
+    level: 3,
+    name: "批量添加照片",
+    path: "/photo/add/batch",
+    prev: "/album/photo",
+    visit: false,
+  },
+
+  "/photo/edit": {
+    serial: 8,
     level: 3,
     name: "照片编辑",
     path: "/photo/edit",

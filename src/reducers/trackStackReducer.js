@@ -5,11 +5,15 @@ const initState = new Stack()
 
 function changeVisit(data) {
   let top = data.active()
-  top.data.visit = false
-  let current = top.next
-  while(current) {
-    current.data.visit = true
-    current = current.next
+  if(top) {
+    if(top.data)
+      top.data.visit = false
+
+    let current = top.next
+    while(current) {
+      current.data.visit = true
+      current = current.next
+    }
   }
 }
 

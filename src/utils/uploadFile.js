@@ -1,3 +1,4 @@
+//File deal tool
 
 export function getBase64(img, callback) {
   const reader = new FileReader()
@@ -22,8 +23,8 @@ export function checkFile(file) {
 
 //re-organize cover object
 export const parseUpload = (upload) => {
-  let file = upload ? upload.file : null,
-      cover
+  let file = upload ? upload.file : null, cover
+
   if(file && file.status === "done") {
     let response = file.response
     cover = {
@@ -36,4 +37,36 @@ export const parseUpload = (upload) => {
     }
   }
   return cover
+}
+
+export const parseBatchUpload = (fileList, albumKey) => {
+  let photos = [], photoFile, photo
+
+  if(fileList && fileList.length > 0) {
+    fileList.forEach((file) => {
+      photoFile = {
+        title: '标题',
+        place: '',
+        date: '',
+        description: '',
+        privacy: 2,
+        album: albumKey
+      }
+      photo = {
+        lastModified: file.lastModified,
+        size: file.size,
+        type: file.type,
+        uid: file.uid
+      }
+      if (file.response) {
+        photo.filename = file.response.data.realName
+        photo.filepath = file.response.data.filePath
+        if(photo.filepath.indexOf("//") == 0)
+          photo.filepath = photo.filepath.substr(1)
+      }
+      photoFile.photo = photo
+      photos.push(photoFile)
+    })
+  }
+  return photos
 }

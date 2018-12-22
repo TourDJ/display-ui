@@ -33,16 +33,23 @@ class CommonHeader extends PureComponent {
   }
 
   render() {
+    const { user } = this.props
 
     return (
       <div className={styles.header}>
         <Row>
           <Col span={8}>
-            <Link to="/" className={styles.logo} key="logo">
-              {/* <img src={logo} alt="logo" width="32" /> */}             
+            {
+              user.site && user.site.logo ?
+              <Link to="/" className={styles.logo} key="logo">
+                <img src={`${constant.service_url}${user.site.logo}`} width="32" />
+              </Link>
+              : null
+            }
+            <Link to="/" className={styles.caption} key="caption">
               {
-                this.props.user.site ?
-                <img src={`${constant.service_url}${this.props.user.site.title}`} 
+                user.site && user.site.caption ?
+                <img src={`${constant.service_url}${user.site.caption}`} 
                   height="55" />
                 : <strong>游&nbsp;&nbsp;記</strong>
               }
@@ -51,8 +58,8 @@ class CommonHeader extends PureComponent {
           </Col>
           <Col span={12}>
             {
-              this.props.user.site ?
-              <img src={`${constant.service_url}${this.props.user.site.banner}`} height="55" />
+              user.site && user.site.banner ?
+              <img src={`${constant.service_url}${user.site.banner}`} height="55" />
               : <span>解放心情，踏足远行</span>
             }        
           </Col>

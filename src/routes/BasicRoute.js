@@ -6,6 +6,7 @@ import AlbumEdit from '../components/Album/AlbumEdit'
 import Photo from '../components/Photo'
 import PhotoView from '../components/Photo/PhotoView'
 import PhotoCreate from '../components/Photo/PhotoCreate'
+import PhotoBatch from '../components/Photo/PhotoBatch'
 import PhotoEdit from '../components/Photo/PhotoEdit'
 import NoMatch from '../components/NoMatch'
 
@@ -17,6 +18,7 @@ const BasicRoute = (
     <Route exact path="/album/photo/:key(\d+)" component={Photo} />
     <Route exact path="/album/photo/view/:key(\d+)" component={PhotoView} />
     <Route exact path="/photo/add" component={PhotoCreate} />
+    <Route exact path="/photo/add/batch" component={PhotoBatch} />
     <Route exact path="/photo/edit" component={PhotoEdit} />
     <Route component={NoMatch} />
   </Switch>

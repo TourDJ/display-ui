@@ -52,6 +52,11 @@ class Photo extends PureComponent {
     this.props.history.push('/photo/add', {albumKey: match.params.key})
   }
 
+  addBatch() {
+    const { match } = this.props
+    this.props.history.push('/photo/add/batch', {albumKey: match.params.key})
+  }
+
   //Edit photo's description
   editPhoto = (photo) => {
     this.props.history.push('/photo/edit', {photo: photo})
@@ -80,6 +85,8 @@ class Photo extends PureComponent {
         <div style={{ marginBottom: 16 }}>
           <Button type="primary" icon="photo" className={styles.btn} 
               onClick={this.addPhoto.bind(this)}>添加照片</Button>
+          <Button type="primary" icon="upload" className={styles.btn}
+              onClick={this.addBatch.bind(this)}>批量添加</Button>
         </div>
         <Row>
         {

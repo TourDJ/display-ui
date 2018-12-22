@@ -192,7 +192,9 @@ class Home extends PureComponent {
                           <Card
                             hoverable
                             style={{ width: 300, marginBottom: 20 }}
-                            cover={<img alt="example" src={`${constant.service_url}${album.cover.filepath}`} onClick={(e) => this.photoView(e, album)} />}
+                            headStyle={{height: 300}}
+                            cover={<img alt="example" src={`${constant.service_url}${album.cover.filepath}`} 
+                                  onClick={(e) => this.photoView(e, album)} />}
                             actions={[
                               <Tooltip title='相册编辑'>
                                 <Icon type="setting" theme="filled" onClick={() => this.editAlbum(album)} />

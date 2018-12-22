@@ -90,6 +90,9 @@ const PhotoCreate = Form.create()(
         }
 
         values.photo = parseUpload(values.photo)
+        if(values.photo.filepath.indexOf("//") == 0)
+          values.photo.filepath = values.photo.filepath.substr(1)
+
         values.date = dateUtils.date2String(new Date(values.date), false)
         // delete values.upload
         console.log('Received values of photo form: ', values)

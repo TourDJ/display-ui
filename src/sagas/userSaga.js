@@ -9,7 +9,8 @@ function* getUser(action) {
     let result = yield call(getUserinfo, action.id)
     if(result.statusCode == 200)
       data = result.data[0]
-
+      if(!data)
+        data = {}
     yield put({type: userType['USER_GET_SUCCEEDED'], payload: data})
   } catch (e) {
     yield put({type: userType['USER_GET_FAILED'], message: e.message})

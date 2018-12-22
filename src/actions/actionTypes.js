@@ -56,6 +56,12 @@ export const photoType = {
   PHOTO_FAILE_STATE: 'PHOTO_FAILE_STATE'
 }
 
+export const photoBatchType = {
+  PHOTO_SAVE_BATCH: 'PHOTO_SAVE_BATCH',
+  PHOTO_SAVE_BATCH_SUCCEEDED: 'PHOTO_SAVE_BATCH_SUCCEEDED',
+  PHOTO_SAVE_BATCH_FAILED: 'PHOTO_SAVE_BATCH_FAILED'
+}
+
 //Category tab selected type
 export const tabType = {
   TAB_KEY: 'TAB_KEY'

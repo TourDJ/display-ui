@@ -5,12 +5,15 @@ const initialState = {}
 
 //
 const userReducer = (state = initialState, action) => {
+  let data
 
   switch (action.type) {
 
     //Get photos success, return current photos
     case userType['USER_GET_SUCCEEDED']:
-      let data = action.payload
+      if(action.payload) {
+        data = action.payload
+      }
       return data
 
     case userType['USER_GET_FAILED']:

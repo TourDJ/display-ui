@@ -12,7 +12,7 @@ export default class TopHeadRight extends PureComponent {
   }
 
   render() {
-    const {user} = this.props
+    const { user } = this.props
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
         <Menu.Item>
@@ -27,21 +27,24 @@ export default class TopHeadRight extends PureComponent {
 
     return (
       <div className={styles.right}>
-        {user.name ? (
-          <Dropdown overlay={menu}>
-            <span className={`${styles.action} ${styles.account}`}>
-              <Avatar
-                size="small"
-                className={styles.avatar}
-                src={`${constant.service_url}${user.avatar}`}
-                alt="avatar"
-              />
-              <span className={styles.name}>{user.name}</span>
-            </span>
-          </Dropdown>
-        ) : (
-          <Spin size="small" style={{ marginLeft: 8, marginRight: 8 }} />
-        )}
+        {
+          user && user.name ? (
+            <Dropdown overlay={menu}>
+              <span className={`${styles.action} ${styles.account}`}>
+                <Avatar
+                  size="small"
+                  className={styles.avatar}
+                  src={`${constant.service_url}${user.avatar}`}
+                  alt="avatar"
+                />
+                <span className={styles.name}>{user.nickname}({user.name})</span>
+              </span>
+            </Dropdown>
+          ) 
+          : (
+            <Spin size="small" style={{ marginLeft: 8, marginRight: 8 }} />
+          )
+        }
       </div>
     )
   }

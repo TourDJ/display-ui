@@ -1,4 +1,4 @@
-import { photoType } from '../actions/actionTypes'
+import { photoType, photoBatchType } from '../actions/actionTypes'
 
 //The initial state of photo data flow
 const initialState = []
@@ -17,9 +17,10 @@ const photoReducer = (state = initialState, action) => {
       data = action.payload
       return [...data]
 
-    //Save a photo success, 
+    //Save a photo or add batch photos success, 
     //then add it to current photos
     case photoType['PHOTO_SAVE_SUCCEEDED']:
+    case photoBatchType['PHOTO_SAVE_BATCH_SUCCEEDED']:
       data = action.payload
       return [
         ...state,
@@ -56,6 +57,7 @@ const photoReducer = (state = initialState, action) => {
     case photoType['PHOTO_SAVE_FAILED']:
     case photoType['PHOTO_UPDATE_FAILED']:
     case photoType['PHOTO_DELETE_FAILED']:
+    case photoBatchType['PHOTO_SAVE_BATCH_FAILED']:
       console.log(action.message)
       return state
 

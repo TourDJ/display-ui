@@ -1,4 +1,5 @@
 //JS 栈数据结构
+//Base from 
 
 //栈节点
 class Node {
@@ -117,7 +118,7 @@ class Stack {
 
     level = current.data.level
 
-    while( current ) {
+    while( current && current.data ) {
       if(current.data.level == level) {
         elems.unshift(current.data)
         current = current.next

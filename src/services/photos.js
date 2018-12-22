@@ -36,3 +36,13 @@ export async function deletePhoto(key) {
   })
   return result
 }
+
+export async function savePhotos(photos) {
+  const result = request(`/photo/add/batch`, {
+    method: 'POST',
+    body: {
+      photos
+    }
+  })
+  return result
+}
