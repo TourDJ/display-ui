@@ -56,7 +56,7 @@ class ViewPhoto extends PureComponent {
                 <Card
                   extra={(
                     <div>
-                      <Icon type="like" />&nbsp;
+                      <Icon type="like" className={styles.photoLike} />
                       <strong>{pic.place}/{pic.date}</strong>
                     </div>
                     )}
