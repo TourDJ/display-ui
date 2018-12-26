@@ -1,3 +1,8 @@
 # Display-UI
 
-An application of display album and photo which to share tour experience.
+An application of display album and photo where to share tour experience.
+
+
+
+## Getting Started
+
