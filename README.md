@@ -2,7 +2,7 @@
 
 An application of display albums and photos where to share your tour experience. It's a complete react implementation front end UI application, and the UI design main come from [ant-design](https://github.com/ant-design/ant-design), a popular UI design language at present. 
 
-The Corresponding back end server is use Display-server, as it also is a nodejs application.
+The Corresponding back end server is use [Display-server](https://github.com/TourDJ/display-server), as it also is a nodejs application.
 
 ## Getting Started
 ```javascript
