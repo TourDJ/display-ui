@@ -21,3 +21,5 @@ Before start the UI application, you must first deploy the back end server, whic
 * <strong>Photo</strong>
 
 ## License
+
+MIT
