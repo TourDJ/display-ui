@@ -10,8 +10,8 @@ $ git clone https://github.com/TourDJ/display-ui.git
 $ cd display-ui
 $ npm install
 $ npm start
-```
 Visit http://localhost:8080
+```
 
 Before start the UI application, you must first deploy the back end server, which provier data access and save your input, file upload, etc, or you will can not use the appliction well.
 
