@@ -14,7 +14,9 @@ import {
 import PageHead from '../CommonHeader/PageHead'
 import PhotoEdit from './PhotoEdit'
 import { photoGet, trackCurrDispatch, trackDispatch } from '../../actions'
+import { photoType } from '../../actions/actionTypes'
 import styles from './photo.less'
+import locale from '../../locales/locale'
 
 const { Meta } = Card
 
@@ -77,16 +79,16 @@ class Photo extends PureComponent {
   }
 
   render() {
-    const noPhoto = ['没有照片']
+    const noPhoto = [ locale['photo.index.data.no'] ]
 
     return (
       <div>
-        <PageHead icon="setting" title="照片管理" history={this.props.history} />
+        <PageHead icon="setting" title={locale['photo.index.title']} history={this.props.history} />
         <div style={{ marginBottom: 16 }}>
           <Button type="primary" icon="photo" className={styles.btn} 
-              onClick={this.addPhoto.bind(this)}>添加照片</Button>
+              onClick={this.addPhoto.bind(this)}>{locale['photo.index.button.add.single']}</Button>
           <Button type="primary" icon="upload" className={styles.btn}
-              onClick={this.addBatch.bind(this)}>批量添加</Button>
+              onClick={this.addBatch.bind(this)}>{locale['photo.index.button.add.batch']}</Button>
         </div>
         <Row>
         {
@@ -101,8 +103,9 @@ class Photo extends PureComponent {
                   cover={<img src={`${constant.service_url}${pic.photo.filepath}`} width="100%" />}
                   actions={[
                     <Icon type="setting" theme="filled" onClick={() => this.editPhoto(pic)} />,
-                    <Popconfirm title="确定要删除该照片吗?" 
-                          okText="确定" cancelText="取消"
+                    <Popconfirm title={locale['photo.index.delete.confirm.title']} 
+                          okText={locale['photo.index.delete.confirm.ok']} 
+                          cancelText={locale['photo.index.delete.confirm.cancel']}
                           onConfirm={() => this.confirmDelete(pic._key)}> 
                       <Icon type="delete" theme="filled" />
                     </Popconfirm>
@@ -127,7 +130,11 @@ class Photo extends PureComponent {
             current={this.state.current} 
             pageSize={20}
             total={this.props.photos.length}
-            showTotal={(total, range) => `总共 ${total} 条记录`}
+            showTotal={(total, range) => {
+              return locale['photo.index.pagination.before'] +
+              ` ${total} ` +
+              locale['photo.index.pagination.after']
+            }}
             onChange={this.pageChange} />
         </Row>
       </div>

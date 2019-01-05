@@ -1,12 +1,18 @@
 import { photoType, trackCurrType, trackStackType } from './actionTypes'
 import crumbDefine from './crumbDefine'
 
-//
+//Retrieve photos by album key
 export const photoGet = (key) => ({
   type: photoType['PHOTO_GET'],
   album: key
 })
 
+export const albumGet = (key) => ({
+  
+})
+
+//Dispatch current track to set the current location,
+//it's for bread crumb
 export const trackCurrDispatch = (dispatch, curr) => {
   dispatch({
     type: trackCurrType['TRACK_CURR_SET'],
@@ -14,7 +20,7 @@ export const trackCurrDispatch = (dispatch, curr) => {
   })
 }
 
-//递归匹配路径
+//Recursive match crumb path
 function matchCrumb(_path) {
   let crumb = crumbDefine[_path]
   if(crumb)
@@ -33,6 +39,7 @@ function matchCrumb(_path) {
   return null
 }
 
+//Dispatch track, reset bread crumb stack by push or pop
 export const trackDispatch = (dispatch, history, curr) => {
   const { location } = history
   const _path = location.pathname

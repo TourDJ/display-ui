@@ -10,7 +10,7 @@ import {
   message
 } from 'antd'
 import PageHead from '../CommonHeader/PageHead'
-import { photoType, photoBatchType } from '../../actions/actionTypes'
+import { photoStateType, photoBatchType } from '../../actions/actionTypes'
 import { parseBatchUpload } from '../../utils/uploadFile'
 import { trackCurrDispatch, trackDispatch } from '../../actions'
 import '../../utils/constant'
@@ -46,7 +46,7 @@ const PhotoCreate = Form.create()(
         } else if(this.props.photoState == -1) {
           message.error("保存失败")
         }
-        this.props.dispatch({type: photoType['PHOTO_INITIAL_STATE']})
+        this.props.dispatch({type: photoStateType['PHOTO_INITIAL_STATE']})
       }
     }
 

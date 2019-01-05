@@ -14,10 +14,11 @@ import {
 } from 'antd'
 import PageHead from '../CommonHeader/PageHead'
 import { parseUpload } from '../../utils/uploadFile'
-import { albumType } from '../../actions/actionTypes'
+import { albumType, albumStateType } from '../../actions/actionTypes'
 import { trackCurrDispatch, trackDispatch } from '../../actions'
 import { getBase64, checkFile } from '../../utils/uploadFile'
 import '../../utils/constant'
+import locale from '../../locales/locale'
 
 const FormItem = Form.Item
 const Option = Select.Option
@@ -76,11 +77,11 @@ const AlbumEdit = Form.create()(
         const { history: {location} } = this.props
         if(this.props.albumState == 1) {
           this.props.form.resetFields()
-          message.success('保存成功', () => {this.props.history.push(`/`)})
+          message.success(locale['album.form.add.message.success'], () => {this.props.history.push(`/`)})
         } else if(this.props.albumState == -1) {
-          message.error("保存失败")
+          message.error(locale['album.form.add.message.failure'])
         }
-        this.props.dispatch({type: albumType['ALBUM_INITIAL_STATE']})
+        this.props.dispatch({type: albumStateType['ALBUM_INITIAL_STATE']})
       }
     }
 
@@ -154,7 +155,7 @@ const AlbumEdit = Form.create()(
       const uploadButton = (
         <div>
           <Icon type={this.state.uploading ? 'loading' : 'plus'} />
-          <div className="ant-upload-text">Upload</div>
+          <div className="ant-upload-text">{locale['album.form.add.component.upload']}</div>
         </div>
       )
       const imageUrl = this.state.imageUrl
@@ -170,22 +171,22 @@ const AlbumEdit = Form.create()(
 
       return (
         <div>
-          <PageHead icon="setting" title="相册管理" history={this.props.history} />
+          <PageHead icon="setting" title={locale['album.tooltip.edit']} history={this.props.history} />
           <Form layout="vertical" onSubmit={(e) => this.handleSubmit(e, album)}>
             <Row type="flex" justify="center">
               <Col span={12}>
-                <FormItem label="Title">
+                <FormItem label={locale['album.form.add.label.title']}>
                   {getFieldDecorator('title', {
-                    rules: [{ required: true, message: 'Please input the title of album!' }],
+                    rules: [{ required: true, message: locale['album.form.add.message.title'] }],
                     initialValue: album ? album.title : ""
                   })(
-                    <Input placeholder="the title..." />
+                    <Input placeholder={locale['album.form.add.placeholder.title']} />
                   )}
                 </FormItem>
 
-                <FormItem label="Category">
+                <FormItem label={locale['album.form.add.label.category']}>
                   {getFieldDecorator('category', {
-                    rules: [{ required: true, message: 'Select a category!' }],
+                    rules: [{ required: true, message: locale['album.form.add.message.category'] }],
                     initialValue: album ? 
                             {key: album.category, label: (this.props.category.filter(cat => (
                               cat._key == album.category
@@ -195,7 +196,7 @@ const AlbumEdit = Form.create()(
                     <Select
                         showSearch
                         style={{ width: 200 }}
-                        placeholder="Select a person"
+                        placeholder={locale['album.form.add.placeholder.category']}
                         labelInValue
                         optionFilterProp="children"
                         onChange={categoryChange}
@@ -206,9 +207,9 @@ const AlbumEdit = Form.create()(
                   )}
                 </FormItem>
 
-                <FormItem label="Cover">
+                <FormItem label={locale['album.form.add.label.cover']}>
                   {getFieldDecorator('cover', {
-                    rules: [{ required: true, message: 'Please select a cover!' }],
+                    rules: [{ required: true, message: locale['album.form.add.message.cover'] }],
                     initialValue: imageUrl,
                   })(
                     <Upload {...uploadProps}
@@ -223,19 +224,19 @@ const AlbumEdit = Form.create()(
                   )}
                 </FormItem>
 
-                <FormItem label="Description">
+                <FormItem label={locale['album.form.add.label.description']}>
                   {getFieldDecorator('description', {
                     initialValue: album ? album.description : ""
                   })(<Input type="textarea" />)}
                 </FormItem>
 
-                <FormItem label="Privacy" className="collection-create-form_last-form-item">
+                <FormItem label={locale['album.form.add.label.privacy']} className="collection-create-form_last-form-item">
                   {getFieldDecorator('privacy', {
                     initialValue: album ? album.privacy : '2',
                   })(
                     <Radio.Group>
-                      <Radio value="1">Public</Radio>
-                      <Radio value="2">Private</Radio>
+                      <Radio value="1">{locale['album.form.add.component.privacy.public']}</Radio>
+                      <Radio value="2">{locale['album.form.add.component.privacy.private']}</Radio>
                     </Radio.Group>
                   )}
                 </FormItem>
@@ -245,7 +246,7 @@ const AlbumEdit = Form.create()(
               <Col span={12} offset={6}>
                 <Button type="primary" style={{marginRight: '20px'}} htmlType="submit"
                   loading={this.state.loading}>
-                  保存
+                  {locale['album.form.add.component.button.save']}
                 </Button>
               </Col>
             </Row>

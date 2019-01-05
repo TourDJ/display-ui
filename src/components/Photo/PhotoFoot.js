@@ -5,8 +5,13 @@ import {
   Rate,
   Divider
 } from 'antd'
+import styles from './photo.less'
 
 class PhotoFoot extends PureComponent {
+
+  starHandle = (value) => {
+    console.log(value)
+  }
 
   render() {
     return (
@@ -14,8 +19,11 @@ class PhotoFoot extends PureComponent {
         {
           this.props.photos.length > 0 ?
           <Row>
-            <span>感觉怎样？&nbsp;</span>
-            <Rate defaultValue={3} />
+            <Col>
+              <Divider />
+              <strong className={styles.photoFootTitle}>感觉怎样？&nbsp;</strong>
+              <Rate defaultValue={1} onChange={(value) => this.starHandle(value)} />
+            </Col>
           </Row>
           : null
         }

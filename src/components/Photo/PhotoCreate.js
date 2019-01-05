@@ -12,11 +12,12 @@ import {
   Upload, DatePicker
 } from 'antd'
 import PageHead from '../CommonHeader/PageHead'
-import { photoType } from '../../actions/actionTypes'
+import { photoType, photoStateType } from '../../actions/actionTypes'
 import { trackCurrDispatch, trackDispatch } from '../../actions'
 import { getBase64, checkFile, parseUpload } from '../../utils/uploadFile'
 import dateUtils from '../../utils/dateUtils'
 import '../../utils/constant'
+import locale from '../../locales/locale'
 
 const { TextArea } = Input
 const FormItem = Form.Item
@@ -58,11 +59,11 @@ const PhotoCreate = Form.create()(
         const { history: {location} } = this.props
         if(this.props.photoState == 1) {
           this.props.form.resetFields()
-          message.success('保存成功', () => {this.props.history.push(`/album/photo/${this.state.albumKey}`)})
+          message.success(locale['photo.create.form.add.message.success'], () => {this.props.history.push(`/album/photo/${this.state.albumKey}`)})
         } else if(this.props.photoState == -1) {
-          message.error("保存失败")
+          message.error(locale['photo.create.form.add.message.failure'])
         }
-        this.props.dispatch({type: photoType['PHOTO_INITIAL_STATE']})
+        this.props.dispatch({type: photoStateType['PHOTO_INITIAL_STATE']})
       }
     }
 
@@ -107,7 +108,7 @@ const PhotoCreate = Form.create()(
       const uploadButton = (
         <div>
           <Icon type={this.state.uploading ? 'loading' : 'plus'} />
-          <div className="ant-upload-text">Upload</div>
+          <div className="ant-upload-text">{locale['photo.create.form.add.component.upload']}</div>
         </div>
       )
       const imageUrl = this.state.imageUrl
@@ -123,39 +124,39 @@ const PhotoCreate = Form.create()(
 
       return (
         <div> 
-          <PageHead icon="bar-chart" title="添加照片" history={this.props.history} />
+          <PageHead icon="bar-chart" title={locale['photo.create.title']} history={this.props.history} />
           <Form layout="vertical" onSubmit={this.handleSubmit}>
             <Row type="flex" justify="center">
               <Col span={12}>
-                <FormItem label="Title">
+                <FormItem label={locale['photo.create.form.add.label.title']}>
                   {getFieldDecorator('title', {
-                    rules: [{ required: true, message: 'Please input the title of album!' }],
+                    rules: [{ required: true, message: locale['photo.create.form.add.message.title'] }],
                   })(
-                    <Input placeholder="the title..." />
+                    <Input placeholder={locale['photo.create.form.add.placeholder.title']} />
                   )}
                 </FormItem>
 
-                <FormItem label="Place" style={{width: '140px'}}>
+                <FormItem label={locale['photo.create.form.add.label.place']} style={{width: '140px'}}>
                   {getFieldDecorator('place', {
-                    rules: [{ required: true, message: 'Select a category!' }],
+                    rules: [{ required: true, message: locale['photo.create.form.add.message.place'] }],
                     initialValue: this.state.selectTab,
                   })(
-                    <Input placeholder="the place..." />
+                    <Input placeholder={locale['photo.create.form.add.placeholder.place']} />
                   )}
                 </FormItem>
 
-                <FormItem label="Date">
+                <FormItem label={locale['photo.create.form.add.label.date']}>
                   {getFieldDecorator('date', {
-                    rules: [{ required: true, message: 'Select a category!' }],
+                    rules: [{ required: true, message: locale['photo.create.form.add.message.date'] }],
                     initialValue: this.state.selectTab,
                   })(
-                    <DatePicker />
+                    <DatePicker placeholder={locale['photo.create.form.add.placeholder.date']} />
                   )}
                 </FormItem>
 
-                <FormItem label="Photo">
+                <FormItem label={locale['photo.create.form.add.label.photo']}>
                   {getFieldDecorator('photo', {
-                    rules: [{ required: true, message: 'Please select a cover!' }],
+                    rules: [{ required: true, message: locale['photo.create.form.add.message.photo'] }],
                   })(
                     <Upload {...coverProps}
                       beforeUpload={beforeUpload} onChange={this.handleChange}>
@@ -168,17 +169,17 @@ const PhotoCreate = Form.create()(
                   )}
                 </FormItem>
 
-                <FormItem label="Description">
+                <FormItem label={locale['photo.create.form.add.label.description']}>
                   {getFieldDecorator('description')(<TextArea rows={8} />)}
                 </FormItem>
 
-                <FormItem label="Privacy" className="collection-create-form_last-form-item">
+                <FormItem label={locale['photo.create.form.add.label.privacy']} className="collection-create-form_last-form-item">
                   {getFieldDecorator('privacy', {
                     initialValue: '2',
                   })(
                     <Radio.Group>
-                      <Radio value="1">Public</Radio>
-                      <Radio value="2">Private</Radio>
+                      <Radio value="1">{locale['photo.create.form.add.component.privacy.public']}</Radio>
+                      <Radio value="2">{locale['photo.create.form.add.component.privacy.private']}</Radio>
                     </Radio.Group>
                   )}
                 </FormItem>
@@ -189,7 +190,7 @@ const PhotoCreate = Form.create()(
               <Col span={12} offset={6}>
                 <Button type="primary" style={{marginRight: '20px'}} htmlType="submit"
                   loading={this.state.loading}>
-                  保存
+                  {locale['photo.create.form.add.component.button.save']}
                 </Button>
               </Col>
             </Row>

@@ -27,10 +27,10 @@ function* savePhotoWithAlbum(action) {
       data = result.data
 
     yield put({type: photoType['PHOTO_SAVE_SUCCEEDED'], payload: data})
-    yield put({type: photoType['PHOTO_SUCCEES_STATE']})
+    yield put({type: photoStateType['PHOTO_SUCCEES_STATE']})
   } catch (e) {
     yield put({type: photoType['PHOTO_SAVE_FAILED'], message: e.message})
-    yield put({type: photoType['PHOTO_FAILE_STATE']})
+    yield put({type: photoStateType['PHOTO_FAILE_STATE']})
   }
 }
 
@@ -44,10 +44,10 @@ function* updatePhotoByKey(action) {
       data = result.data
 
     yield put({type: photoType['PHOTO_UPDATE_SUCCEEDED'], payload: data})
-    yield put({type: photoType['PHOTO_SUCCEES_STATE']})
+    yield put({type: photoStateType['PHOTO_SUCCEES_STATE']})
   } catch (e) {
     yield put({type: photoType['PHOTO_UPDATE_FAILED'], message: e.message})
-    yield put({type: photoType['PHOTO_FAILE_STATE']})
+    yield put({type: photoStateType['PHOTO_FAILE_STATE']})
   }
 }
 
@@ -75,10 +75,10 @@ function* saveBatchPhoto(action) {
       data = result.data
 
     yield put({type: photoBatchType['PHOTO_SAVE_BATCH_SUCCEEDED'], payload: data})
-    yield put({type: photoType['PHOTO_SUCCEES_STATE']})
+    yield put({type: photoStateType['PHOTO_SUCCEES_STATE']})
   } catch (e) {
     yield put({type: photoBatchType['PHOTO_SAVE_BATCH_FAILED'], message: e.message})
-    yield put({type: photoType['PHOTO_FAILE_STATE']})
+    yield put({type: photoStateType['PHOTO_FAILE_STATE']})
   }  
 }
 

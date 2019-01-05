@@ -56,8 +56,11 @@ class ViewPhoto extends PureComponent {
                 <Card
                   extra={(
                     <div>
-                      <Icon type="like" className={styles.photoLike} />
-                      <strong>{pic.place}/{pic.date}</strong>
+                      <strong>{pic.place}</strong>
+                      &nbsp;&nbsp;
+                      <strong style={{color: 'green'}}>/</strong>
+                      &nbsp;&nbsp;
+                      <strong>{pic.date}</strong>
                     </div>
                     )}
                   style={{ width: '100%', marginBottom: 5 }}
@@ -66,7 +69,8 @@ class ViewPhoto extends PureComponent {
                   <img src={`${constant.service_url}${pic.photo.filepath}`} width="100%" />
                   <Meta
                     style={{marginTop:'10px'}}
-                    description={pic.description}
+                    description={<span><Icon type="tags" theme="twoTone"/>&nbsp;&nbsp;
+                    <span style={{color: '#6D7F3FFF'}}>{pic.description}</span></span>}
                   />
                 </Card>
               </Col>

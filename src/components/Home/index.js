@@ -19,13 +19,14 @@ import {
 } from '../../actions/actionTypes'
 import { trackCurrDispatch, trackDispatch } from '../../actions'
 import styles from './home.less'
-import locale from '../../locales/zh'
+import locale from '../../locales/locale'
 import '../../utils/constant'
 
 const TabPane = Tabs.TabPane
 const { Meta } = Card
 
-//Home page
+//Home page of the applicaton, which contains all categories
+//and all albums of respective category
 class Home extends PureComponent {
 	constructor(props) {
 		super(props)
@@ -38,6 +39,7 @@ class Home extends PureComponent {
 	componentDidMount() {
     console.log(this.props)
     const { history, dispatch, trackCurr } = this.props
+    //The first load of location has no key
     let _key_ = history.location.key
     if(!_key_ && history.location.pathname == "/")
       _key_ = 'home'
@@ -59,24 +61,24 @@ class Home extends PureComponent {
 
   }
 
-  //Category form
+  //Save the reference of category modal of create form
   saveCategoryFormRef = (categoryFormRef) => {
     this.categoryFormRef = categoryFormRef
   }
 
-  //显示新建分类窗口
+  //Show the category modal create form
   showCategoryModal = () => {
     const form = this.categoryFormRef.props.form
     form.resetFields()
     this.setState({ categoryVisible: true })
   }
 
-  //分类窗口取消操作
+  //Cancel handle of category create
   categoryHandleCancel = () => {
     this.setState({ categoryVisible: false })
   }
 
-  //分类窗口确定操作
+  //Ok handle of category create
   categoryHandleCreate = () => {
     const form = this.categoryFormRef.props.form
     form.validateFields((err, values) => {
@@ -93,7 +95,7 @@ class Home extends PureComponent {
     })
   }
 
-  //
+  //Category tab change handle
   tabCallback = (key) => {
     const {dispatch} = this.props
     console.log("Current tab's key is: ", key)
@@ -104,35 +106,35 @@ class Home extends PureComponent {
     this.props.getAlbums(key)
   }
 
-  //
+  //Pagination change handle
   pageChange = (page) => {
     this.setState({
       current: page,
     })
   }
 
-  //Create album
+  //Create album handle
   createAlbum = (key) => {
     this.props.history.push(`/album/add`, {
       categoryKey: key
     })
   }
 
-  //Edit album
+  //Edit album handle
   editAlbum = (album) => {
     this.props.history.push(`/album/edit`, {
       album: album
     })   
   }
 
-  //View photo
+  //View photo handle
   photoView = (e, album) => {
     const key = album._key
     const name = album.title
     this.props.history.push(`/album/photo/view/${key}`, {name: name})
   }
 
-  //Add, modify, delete photo
+  //Manage photo handle, which include add or modify or delete photo
   photoManage = (key) => {
     this.props.history.push(`/album/photo/${key}`)
   }
@@ -146,13 +148,15 @@ class Home extends PureComponent {
   }
 
 	render() {
-    const noCategory = ['没有分类']
-    const noAlbum = ['没有相册']
+    const noCategory = [ locale['category.data.no'] ]
+    const noAlbum = [ locale['album.data.no'] ]
 
 		return (
 		  <div>
         <div style={{ marginBottom: 16 }}>
-          <Button icon="appstore" className={styles.btn} onClick={this.showCategoryModal}>新建分类</Button>
+          <Button icon="appstore" className={styles.btn} onClick={this.showCategoryModal}>
+            {locale['category.button.add']}
+          </Button>
           <CategoryCreate
             wrappedComponentRef={this.saveCategoryFormRef}
             visible={this.state.categoryVisible}
@@ -172,7 +176,7 @@ class Home extends PureComponent {
                     <Button type="primary" icon="hdd" className={styles.btn} 
                         onClick={() => this.createAlbum(this.props.tabKey)}
                     >
-                      添加相册
+                      {locale['album.button.add']}
                     </Button>
                     </Col>
                     <Col xs={12}>
@@ -196,17 +200,18 @@ class Home extends PureComponent {
                             cover={<img alt="example" src={`${constant.service_url}${album.cover.filepath}`} 
                                   onClick={(e) => this.photoView(e, album)} />}
                             actions={[
-                              <Tooltip title='相册编辑'>
+                              <Tooltip title={locale['album.tooltip.edit']}>
                                 <Icon type="setting" theme="filled" onClick={() => this.editAlbum(album)} />
                               </Tooltip>,
-                              <Tooltip title='相册删除'>
-                                <Popconfirm title="确定要删除该相册吗?" 
-                                      okText="确定" cancelText="取消"
+                              <Tooltip title={locale['album.tooltip.delete']}>
+                                <Popconfirm title={locale['album.tooltip.delete.confirm.title']} 
+                                      okText={locale['album.tooltip.delete.confirm.ok']} 
+                                      cancelText={locale['album.tooltip.delete.confirm.cancel']}
                                       onConfirm={() => this.confirmDelete(album._key)}> 
                                   <Icon type="delete" theme="filled" />
                                 </Popconfirm>
                               </Tooltip>, 
-                              <Tooltip title='照片管理'>
+                              <Tooltip title={locale['album.tooltip.manage']}>
                                 <Icon type="edit" theme="filled" onClick={() => this.photoManage(album._key)} />
                               </Tooltip>
                             ]}
@@ -242,7 +247,12 @@ class Home extends PureComponent {
             current={this.state.current} 
             pageSize={20}
             total={this.props.albums.length}
-            showTotal={(total, range) => `总共 ${total} 条记录`}
+            showTotal={(total, range) => {
+                return locale['album.pagination.total.before'] + 
+                ` ${total} ` + 
+                locale['album.pagination.total.after']
+              }
+            }
             onChange={this.pageChange} />
         </Row>	    
 		  </div>

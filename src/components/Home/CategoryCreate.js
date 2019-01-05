@@ -8,6 +8,7 @@ import {
   Modal
 } from 'antd'
 import { connect } from 'react-redux'
+import locale from '../../locales/locale'
 
 const FormItem = Form.Item
 const { TextArea } = Input;
@@ -22,35 +23,36 @@ const CategoryCreate = Form.create()(
       return (
         <Modal
           visible={visible}
-          title="Create a new Category"
-          okText="Create"
+          title={locale['category.form.add.title']}
+          okText={locale['category.form.add.btn.ok']}
+          cancelText={locale['category.form.add.btn.cancel']}
           onCancel={onCancel}
           onOk={onCreate}
         >
           <Form layout="vertical">
-            <FormItem label="Name">
+            <FormItem label={locale['category.form.add.label.name']}>
               {getFieldDecorator('name', {
-                rules: [{ required: true, message: 'Please input the name of category!' }],
+                rules: [{ required: true, message: locale['category.form.add.message.name'] }],
               })(
-                <Input placeholder="input category name..." />
+                <Input placeholder={locale['category.form.add.placeholder.name']} />
               )}
             </FormItem>
 
-            <FormItem label="Code">
+            <FormItem label={locale['category.form.add.label.code']}>
               {getFieldDecorator('code', {
-                rules: [{ required: true, message: 'Please input the code of category!' }],
+                rules: [{ required: true, message: locale['category.form.add.message.code'] }],
               })(
-                <Input style={{width:140}} placeholder="code..." />
+                <Input style={{width:140}} placeholder={locale['category.form.add.placeholder.code']} />
               )}
             </FormItem>
 
-            <FormItem label="Order">
+            <FormItem label={locale['category.form.add.label.order']}>
               {getFieldDecorator('order')(
                 <InputNumber min={1} max={10} />
               )}
             </FormItem>
 
-            <FormItem label="Description">
+            <FormItem label={locale['category.form.add.label.description']}>
               {getFieldDecorator('description')(<TextArea rows={4} />)}
             </FormItem>
 

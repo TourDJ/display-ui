@@ -14,7 +14,7 @@ import {
 import moment from 'moment'
 import PageHead from '../CommonHeader/PageHead'
 import dateUtils from '../../utils/dateUtils'
-import { photoType } from '../../actions/actionTypes'
+import { photoType, photoStateType } from '../../actions/actionTypes'
 import { trackCurrDispatch, trackDispatch } from '../../actions'
 
 const { TextArea } = Input
@@ -51,7 +51,7 @@ const PhotoEdit = Form.create()(
         } else if(this.props.photoState == -1) {
           message.error("保存失败")
         }
-        this.props.dispatch({type: photoType['PHOTO_INITIAL_STATE']})
+        this.props.dispatch({type: photoStateType['PHOTO_INITIAL_STATE']})
       }
     }
 

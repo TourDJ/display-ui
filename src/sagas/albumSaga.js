@@ -1,6 +1,6 @@
 import { takeEvery, take, call, put } from 'redux-saga/effects'
 import { addAlbum, getCategoryAlbums, removeAlbum, editAlbum } from '../services/albums'
-import { categoryType, albumType } from '../actions/actionTypes'
+import { categoryType, albumType, albumStateType } from '../actions/actionTypes'
 
 //When the ALBUM_GET action trigger, then invoke it
 function* getAlbumsByCategory(action) {
@@ -25,10 +25,10 @@ function* saveAlbum(action) {
       data = result.data
 
     yield put({type: albumType['ALBUM_SAVE_SUCCEEDED'], payload: data})
-    yield put({type: albumType['ALBUM_SUCCEES_STATE']})
+    yield put({type: albumStateType['ALBUM_SUCCEES_STATE']})
   } catch (e) {
     yield put({type: albumType['ALBUM_SAVE_FAILED'], message: e.message})
-    yield put({type: albumType['ALBUM_FAILE_STATE']})
+    yield put({type: albumStateType['ALBUM_FAILE_STATE']})
   }
 }
 
@@ -41,10 +41,10 @@ function* updateAlbum(action) {
       data = result.data
 
     yield put({type: albumType['ALBUM_UPDATE_SUCCEEDED'], payload: data})
-    yield put({type: albumType['ALBUM_SUCCEES_STATE']})
+    yield put({type: albumStateType['ALBUM_SUCCEES_STATE']})
   } catch (e) {
     yield put({type: albumType['ALBUM_UPDATE_FAILED'], message: e.message})
-    yield put({type: albumType['ALBUM_FAILE_STATE']})
+    yield put({type: albumStateType['ALBUM_FAILE_STATE']})
   }  
 }
 
