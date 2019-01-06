@@ -1,22 +1,23 @@
-import React, { Component } from 'react';
-import { Layout } from 'antd';
-import CommonHeader from '../components/CommonHeader';
+import React, { Component } from 'react'
+import { Layout } from 'antd'
+import CommonHeader from '../components/CommonHeader'
 import NavigatorBar from '../components/CommonHeader/NavigatorBar'
-import logo from '../assets/logo.svg';
+import CommonFooter from '../components/CommonFooter'
+import logo from '../assets/logo.svg'
 import 'antd/dist/antd.css'
 
-const { Content, Header, Footer } = Layout;
+const { Content, Header, Footer } = Layout
 
 class BasicSkeleton extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       
-    };
+    }
   }
 
   render() {
-    const { children, location } = this.props;
+    const { children, location } = this.props
 
     return (
       <Layout>
@@ -33,10 +34,10 @@ class BasicSkeleton extends Component {
           </Content>
 
           <Footer style={{ textAlign: 'center' }}>
-            Display ©2018 Created by Hank Jiefang
+            <CommonFooter />
           </Footer>          
       </Layout>
-    );
+    )
   }
 }
 

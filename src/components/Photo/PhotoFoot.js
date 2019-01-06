@@ -10,7 +10,12 @@ import locale from '../../../config/locale'
 
 class PhotoFoot extends PureComponent {
 
+  componentDidMount() {
+    console.log(this.props)
+  }
+
   starHandle = (value) => {
+    const { history } = this.props
     console.log(value)
   }
 

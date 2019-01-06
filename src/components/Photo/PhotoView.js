@@ -84,7 +84,7 @@ class ViewPhoto extends PureComponent {
             />
         }
         </Row>
-        <PhotoFoot photos={this.props.photos} />
+        <PhotoFoot photos={this.props.photos} history={this.props.history} />
       </div>
     )   
   }  

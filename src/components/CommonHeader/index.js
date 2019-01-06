@@ -19,7 +19,7 @@ class CommonHeader extends PureComponent {
 
   componentDidMount() {
     const { dispatch } = this.props
-    const id = "0002"
+    const id = "0001"
     dispatch({
       type: userType['USER_GET'],
       id: id
