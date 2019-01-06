@@ -24,4 +24,5 @@ Before start the UI application, you must first deploy the back end server, whic
 
 ## License
 
-MIT
+[MIT](https://github.com/TourDJ/display-ui/blob/master/LICENSE)    
+
