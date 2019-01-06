@@ -1,6 +1,6 @@
 import locale from './locale'
 
-//Crumb hierachy definition
+//Crumb hierachy definition setting
 const crumbDefine = {
   "/": {
     serial: 1,
