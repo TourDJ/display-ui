@@ -5,7 +5,7 @@ const crumbDefine = {
   "/": {
     serial: 1,
     level: 1,
-    name: "首页",
+    name: locale['app.crumb.index'],
     path: "/",
     visit: false,
   },
@@ -13,7 +13,7 @@ const crumbDefine = {
   "/album/add": {
     serial: 2,
     level: 2,
-    name: "添加相册",
+    name: locale['app.crumb.album.add'],
     path: "/album/add",
     prev: "/",
     visit: false,
@@ -22,7 +22,7 @@ const crumbDefine = {
   "/album/edit": {
     serial: 3,
     level: 2,
-    name: "相册编辑",
+    name: locale['app.crumb.album.edit'],
     path: "/album/edit",
     prev: "/",
     visit: false,
@@ -31,7 +31,7 @@ const crumbDefine = {
   "/album/photo/view": {
     serial: 4,
     level: 2,
-    name: "照片欣赏",
+    name: locale['app.crumb.photo.view'],
     path: "/album/photo/view",
     prev: "/",
     visit: false,
@@ -41,7 +41,7 @@ const crumbDefine = {
   "/album/photo": {
     serial: 5,
     level: 2,
-    name: "照片管理",
+    name: locale['app.crumb.photo.manage'],
     path: "/album/photo",
     prev: "/",
     visit: false,
@@ -51,7 +51,7 @@ const crumbDefine = {
   "/photo/add": {
     serial: 6,
     level: 3,
-    name: "添加照片",
+    name: locale['app.crumb.photo.add'],
     path: "/photo/add",
     prev: "/album/photo",
     visit: false,
@@ -60,7 +60,7 @@ const crumbDefine = {
   "/photo/add/batch": {
     serial: 7,
     level: 3,
-    name: "批量添加照片",
+    name: locale['app.crumb.photo.add.batch'],
     path: "/photo/add/batch",
     prev: "/album/photo",
     visit: false,
@@ -69,7 +69,7 @@ const crumbDefine = {
   "/photo/edit": {
     serial: 8,
     level: 3,
-    name: "照片编辑",
+    name: locale['app.crumb.photo.edit'],
     path: "/photo/edit",
     prev: "/album/photo",
     visit: false,

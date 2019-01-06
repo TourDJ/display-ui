@@ -57,8 +57,12 @@ export const trackDispatch = (dispatch, history, curr) => {
       payload: _payload
     })
   } else if(history.action == "POP") {
-    //首页第一次加载时，action为pop，所以要特殊处理
-    if(location.level == 1 && !location.key && location.pathname == '/' && !curr) {
+    //Applicable to situation list below:
+    //1. First load of web index page, and have no location key right now;
+    //2. Sometimes we can input web url in the address bar directly, and no matter
+    //   the which location the url stop
+    //All above situations must satisfy to the location action is POP.
+    if(location.level == 1 /*&& !location.key*/ && location.pathname == '/' && !curr) {
       _payload.key = 'home'
       dispatch({
         type: trackStackType['TRACK_STACK_PUSH'],

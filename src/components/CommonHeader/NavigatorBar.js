@@ -32,7 +32,7 @@ class NavigatorBar extends Component {
 
   //When click the crumb, link it
   //and meanwhile change the redux store data
-  crumbsHandler = (e, pathname, state) => {
+  crumbsHandler = (e, pathname, state) => {console.log(this.props)
     this.props.history.push(pathname, state) 
   }
 

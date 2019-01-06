@@ -1,3 +1,4 @@
+//Include the specific locale which apply to all module's i18n
 import locale from '../src/locales/zh-CN'
 
 //This file is global setting of internationalization. All the modules 
