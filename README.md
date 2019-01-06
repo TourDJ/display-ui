@@ -4,6 +4,8 @@ An application of display albums and photos where to share your tour experience.
 
 The Corresponding back end server is [Display-server](https://github.com/TourDJ/display-server), and it's pure a nodejs application, use express framework.
 
+![sample](https://github.com/TourDJ/display-ui/blob/master/src/assets/sample.png)    
+
 ## Getting Started
 ```javascript
 $ git clone https://github.com/TourDJ/display-ui.git
