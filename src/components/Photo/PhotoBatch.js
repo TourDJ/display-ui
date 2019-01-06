@@ -14,6 +14,7 @@ import { photoStateType, photoBatchType } from '../../actions/actionTypes'
 import { parseBatchUpload } from '../../utils/uploadFile'
 import { trackCurrDispatch, trackDispatch } from '../../actions'
 import '../../utils/constant'
+import locale from '../../../config/locale'
 
 const PhotoCreate = Form.create()(
   class PhotoCreateForm extends React.Component {
@@ -42,9 +43,9 @@ const PhotoCreate = Form.create()(
         const { history: {location} } = this.props
         if(this.props.photoState == 1) {
           this.props.form.resetFields()
-          message.success('保存成功', () => {this.props.history.push(`/album/photo/${this.state.albumKey}`)})
+          message.success(locale['photo.create.form.add.message.success'], () => {this.props.history.push(`/album/photo/${this.state.albumKey}`)})
         } else if(this.props.photoState == -1) {
-          message.error("保存失败")
+          message.error(locale['photo.create.form.add.message.failure'])
         }
         this.props.dispatch({type: photoStateType['PHOTO_INITIAL_STATE']})
       }
@@ -100,15 +101,15 @@ const PhotoCreate = Form.create()(
 
       return (
         <div> 
-          <PageHead icon="bar-chart" title="批量添加照片" history={this.props.history} />
+          <PageHead icon="bar-chart" title={locale['photo.batch.form.title']} history={this.props.history} />
           <Form layout="vertical" onSubmit={this.handleSubmit}>
             <Row type="flex" justify="center">
               <Col span={12}>
                 <Upload {...props} fileList={this.state.fileList}>
                   <Button>
-                    <Icon type="upload" /> Upload
+                    <Icon type="upload" /> {locale['photo.create.form.add.component.upload']}
                   </Button>
-                  <span style={{marginLeft:10}}>批量选择要上传的文件</span>
+                  <span style={{marginLeft:10}}>{locale['photo.batch.form.upload.clue']}</span>
                 </Upload>
               </Col>
             </Row>
@@ -116,7 +117,7 @@ const PhotoCreate = Form.create()(
               <Col span={12} offset={6}>
                 <Button type="primary" style={{marginTop: 20}} htmlType="submit"
                   loading={this.state.loading}>
-                  保存
+                  {locale['photo.batch.form.component.button.save']}
                 </Button>
               </Col>
             </Row>

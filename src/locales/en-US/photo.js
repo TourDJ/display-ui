@@ -29,5 +29,9 @@ export default {
   'photo.create.form.add.component.privacy.private': 'Private',
   'photo.create.form.add.component.button.save': 'Save',
   'photo.create.form.add.component.upload': 'Upload',
-  
+  'photo.batch.form.title': 'Batch add photos',
+  'photo.batch.form.upload.clue': 'Batch select upload files',
+  'photo.batch.form.component.button.save': 'Save',
+  'photo.edit.title': 'Edit photo',
+  'photo.view.foot.rate': 'How do you feel？',
 }

@@ -1,5 +1,5 @@
 import { photoType, trackCurrType, trackStackType } from './actionTypes'
-import crumbDefine from './crumbDefine'
+import crumbDefine from '../../config/crumbDefine'
 
 //Retrieve photos by album key
 export const photoGet = (key) => ({

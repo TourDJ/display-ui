@@ -16,7 +16,7 @@ import PhotoEdit from './PhotoEdit'
 import { photoGet, trackCurrDispatch, trackDispatch } from '../../actions'
 import { photoType } from '../../actions/actionTypes'
 import styles from './photo.less'
-import locale from '../../locales/locale'
+import locale from '../../../config/locale'
 
 const { Meta } = Card
 

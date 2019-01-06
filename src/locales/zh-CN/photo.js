@@ -29,5 +29,9 @@ export default {
   'photo.create.form.add.component.privacy.private': '保密',
   'photo.create.form.add.component.button.save': '保存',
   'photo.create.form.add.component.upload': '上传',
-
+  'photo.batch.form.title': '批量添加照片',
+  'photo.batch.form.upload.clue': '批量选择要上传的文件',
+  'photo.batch.form.component.button.save': '保存',
+  'photo.edit.title': '编辑照片',
+  'photo.view.foot.rate': '感觉怎样？',
 }

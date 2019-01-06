@@ -17,7 +17,7 @@ import { trackCurrDispatch, trackDispatch } from '../../actions'
 import { getBase64, checkFile, parseUpload } from '../../utils/uploadFile'
 import dateUtils from '../../utils/dateUtils'
 import '../../utils/constant'
-import locale from '../../locales/locale'
+import locale from '../../../config/locale'
 
 const { TextArea } = Input
 const FormItem = Form.Item

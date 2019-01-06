@@ -1,3 +1,4 @@
+import locale from './locale'
 
 //Crumb hierachy definition
 const crumbDefine = {

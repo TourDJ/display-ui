@@ -7,6 +7,7 @@ import TopHeadRight from './TopHeadRight'
 import { userType } from '../../actions/actionTypes'
 import styles from './index.less'
 import '../../utils/constant'
+import locale from '../../../config/locale'
 
 class CommonHeader extends PureComponent {
   constructor(props){
@@ -51,7 +52,7 @@ class CommonHeader extends PureComponent {
                 user.site && user.site.caption ?
                 <img src={`${constant.service_url}${user.site.caption}`} 
                   height="55" />
-                : <strong>游&nbsp;&nbsp;記</strong>
+                : <strong>{locale['app.basic.caption']}</strong>
               }
 
             </Link>
@@ -60,7 +61,7 @@ class CommonHeader extends PureComponent {
             {
               user.site && user.site.banner ?
               <img src={`${constant.service_url}${user.site.banner}`} height="55" />
-              : <span>解放心情，踏足远行</span>
+              : <span>{locale['app.basic.banner']}</span>
             }        
           </Col>
           <Col span={4}>

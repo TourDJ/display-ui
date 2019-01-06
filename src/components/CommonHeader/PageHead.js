@@ -7,19 +7,13 @@ import {
   Icon,
   Divider
 } from 'antd'
-// import { breadType, breadSizeType } from '../../actions/actionTypes'
 import styles from './index.less'
+import locale from '../../../config/locale'
 
 class PageHead extends PureComponent {
 
   handleBack(obj, e) {
     const { history } = this.props
-    // this.props.dispatch({
-    //   type: breadType['BREAD_POP']
-    // })
-    // this.props.dispatch({
-    //   type: breadSizeType['BREAD_SIZE_MINUS']
-    // })
     if(history) {
       history.go(-1)
     }
@@ -36,7 +30,7 @@ class PageHead extends PureComponent {
           <Col span={4}>
             <Button type="primary" ghost htmlType="button" onClick={this.handleBack.bind(this)}
               style={{float: 'right'}}>
-              返回
+              {locale['app.basic.return']}
             </Button>
           </Col>
         </Row>

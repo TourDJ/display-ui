@@ -8,8 +8,11 @@ import photo from './zh-CN/photo'
 //This file's setting be composed of a common global setting, plus included every big 
 //module's setting
 export default {
-  'app.forms.basic.description':
-    '表单页用于向用户收集或验证信息，基础表单常见于数据项较少的表单场景。',
+  'app.basic.caption': '游&nbsp;&nbsp;記',
+  'app.basic.banner': '解放心情，踏足远行',
+  'app.basic.return': '返回',
+  'app.top.right.personal': '个人中心',
+  'app.top.right.logout': '退出登录',
   ...category,
   ...album,
   ...photo,

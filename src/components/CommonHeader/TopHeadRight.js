@@ -4,6 +4,7 @@ import {
 } from 'antd'
 import styles from './index.less'
 import '../../utils/constant'
+import locale from '../../../config/locale'
 
 export default class TopHeadRight extends PureComponent {
 
@@ -16,11 +17,11 @@ export default class TopHeadRight extends PureComponent {
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
         <Menu.Item>
-          <Icon type="user" />个人中心
+          <Icon type="user" />{locale['app.top.right.personal']}
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item key="logout">
-          <Icon type="logout" />退出登录
+          <Icon type="logout" />{locale['app.top.right.logout']}
         </Menu.Item>
       </Menu>
     )

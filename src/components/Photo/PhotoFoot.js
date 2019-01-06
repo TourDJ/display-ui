@@ -6,6 +6,7 @@ import {
   Divider
 } from 'antd'
 import styles from './photo.less'
+import locale from '../../../config/locale'
 
 class PhotoFoot extends PureComponent {
 
@@ -21,7 +22,7 @@ class PhotoFoot extends PureComponent {
           <Row>
             <Col>
               <Divider />
-              <strong className={styles.photoFootTitle}>感觉怎样？&nbsp;</strong>
+              <strong className={styles.photoFootTitle}>{locale['photo.view.foot.rate']}&nbsp;</strong>
               <Rate defaultValue={1} onChange={(value) => this.starHandle(value)} />
             </Col>
           </Row>

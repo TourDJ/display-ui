@@ -18,7 +18,7 @@ import { albumType, albumStateType } from '../../actions/actionTypes'
 import { trackCurrDispatch, trackDispatch } from '../../actions'
 import { getBase64, checkFile } from '../../utils/uploadFile'
 import '../../utils/constant'
-import locale from '../../locales/locale'
+import locale from '../../../config/locale'
 
 const FormItem = Form.Item
 const Option = Select.Option

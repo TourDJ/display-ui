@@ -8,7 +8,7 @@ import {
   Modal
 } from 'antd'
 import { connect } from 'react-redux'
-import locale from '../../locales/locale'
+import locale from '../../../config/locale'
 
 const FormItem = Form.Item
 const { TextArea } = Input;

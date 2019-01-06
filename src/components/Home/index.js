@@ -19,8 +19,8 @@ import {
 } from '../../actions/actionTypes'
 import { trackCurrDispatch, trackDispatch } from '../../actions'
 import styles from './home.less'
-import locale from '../../locales/locale'
 import '../../utils/constant'
+import locale from '../../../config/locale'
 
 const TabPane = Tabs.TabPane
 const { Meta } = Card

@@ -14,6 +14,7 @@ import PageHead from '../CommonHeader/PageHead'
 import PhotoFoot from './PhotoFoot'
 import { photoGet, trackCurrDispatch, trackDispatch } from '../../actions'
 import styles from './photo.less'
+import locale from '../../../config/locale'
 
 const { Meta } = Card
 
@@ -42,7 +43,7 @@ class ViewPhoto extends PureComponent {
 
   render() {
     const { history: {location: {state}} } = this.props
-    const noPhoto = ['没有照片']
+    const noPhoto = [ locale['photo.index.data.no'] ]
 
     return (
       <div>
