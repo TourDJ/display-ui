@@ -1,5 +1,5 @@
-import { photoType, trackCurrType, trackStackType } from './actionTypes'
-import crumbDefine from '../../config/crumbDefine'
+import { photoType, trackCurrType, trackStackType, albumCurrType } from './actionTypes'
+import crumbs from '../../config/crumbs'
 
 //Retrieve photos by album key
 export const photoGet = (key) => ({
@@ -7,8 +7,16 @@ export const photoGet = (key) => ({
   album: key
 })
 
+//Get current browse album
 export const albumGet = (key) => ({
-  
+  type: albumCurrType['ALBUM_CURRENT_GET'],
+  key: key
+})
+
+//Update album with some properties, such as star, views and so on.
+export const albumUpdate = (album) => ({
+  type: albumCurrType['ALBUM_CURRENT_UPDATE'],
+  album: album
 })
 
 //Dispatch current track to set the current location,
@@ -22,7 +30,7 @@ export const trackCurrDispatch = (dispatch, curr) => {
 
 //Recursive match crumb path
 function matchCrumb(_path) {
-  let crumb = crumbDefine[_path]
+  let crumb = crumbs[_path]
   if(crumb)
     return crumb
 
@@ -30,7 +38,7 @@ function matchCrumb(_path) {
   let index = _path_.lastIndexOf('/')
   while( index > 0 ) {
     _path_ = _path_.substring(0, index)
-    crumb = crumbDefine[_path_]
+    crumb = crumbs[_path_]
     if(crumb && crumb.dynamic)
       return crumb 
 

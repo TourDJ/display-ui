@@ -1,6 +1,8 @@
 import { takeEvery, take, call, put } from 'redux-saga/effects'
-import { addAlbum, getCategoryAlbums, removeAlbum, editAlbum } from '../services/albums'
-import { categoryType, albumType, albumStateType } from '../actions/actionTypes'
+import { addAlbum, getCategoryAlbums, removeAlbum, 
+  editAlbum, getAlbum } from '../services/albums'
+import { categoryType, albumType, albumStateType, 
+  albumCurrType } from '../actions/actionTypes'
 
 //When the ALBUM_GET action trigger, then invoke it
 function* getAlbumsByCategory(action) {
@@ -64,10 +66,38 @@ function* deleteAlbum(action) {
   }  
 }
 
+function* getAlbumByKey(action) {
+  let data
+  try {
+    let result = yield call(getAlbum, action.key)
+    if(result.statusCode == 200)
+      data = result.data[0]
+
+    yield put({type: albumCurrType['ALBUM_CURRENT_GET_SUCCEEDED'], payload: data})
+  } catch (e) {
+    yield put({type: albumCurrType['ALBUM_CURRENT_GET_FAILED'], message: e.message})
+  }
+}
+
+function* updateAlbumSingle(action) {
+  let data
+  try {
+    let result = yield call(editAlbum, action.album)
+    if(result.statusCode == 200)
+      data = result.data
+
+    yield put({type: albumCurrType['ALBUM_CURRENT_UPDATE_SUCCEEDED'], payload: data})
+  } catch (e) {
+    yield put({type: albumCurrType['ALBUM_CURRENT_UPDATE_FAILED'], message: e.message})
+  }    
+}
+
 //Get albums by category
 export default function* watchAlbums() {
   yield takeEvery(albumType['ALBUM_GET'], getAlbumsByCategory) 
   yield takeEvery(albumType['ALBUM_SAVE'], saveAlbum)
   yield takeEvery(albumType['ALBUM_UPDATE'], updateAlbum)
   yield takeEvery(albumType['ALBUM_DELETE'], deleteAlbum)
+  yield takeEvery(albumCurrType['ALBUM_CURRENT_GET'], getAlbumByKey)
+  yield takeEvery(albumCurrType['ALBUM_CURRENT_UPDATE'], updateAlbumSingle)
 }

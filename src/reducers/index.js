@@ -9,11 +9,13 @@ import photoStateReducer from './photoStateReducer'
 import tabReducer from './tabReducer'
 import trackCurrReducer from './trackCurrReducer'
 import trackStackReducer from './trackStackReducer'
+import albumCurrentReducer from './albumCurrentReducer'
 
 const rootReducer = (history) => combineReducers({
   user: userReducer,
   category: categoryReducer,
   albums: albumReducer,
+  albumCurrent: albumCurrentReducer,
   albumState: albumStateReducer,
   photos: photoReducer,
   photoState: photoStateReducer,

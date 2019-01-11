@@ -12,9 +12,11 @@ import {
 } from 'antd'
 import PageHead from '../CommonHeader/PageHead'
 import PhotoFoot from './PhotoFoot'
-import { photoGet, trackCurrDispatch, trackDispatch } from '../../actions'
+import { photoGet, albumGet, albumUpdate,
+  trackCurrDispatch, trackDispatch } from '../../actions'
 import styles from './photo.less'
 import locale from '../../../config/locale'
+import icons from '../../../config/icons'
 
 const { Meta } = Card
 
@@ -28,6 +30,7 @@ class ViewPhoto extends PureComponent {
 
   componentDidMount() {
     const { history, match, dispatch } = this.props
+    dispatch(albumGet(match.params.key))
     dispatch(photoGet(match.params.key))
 
     //Track the history
@@ -36,9 +39,13 @@ class ViewPhoto extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if(prevProps.photos.length != this.props.photos.length) {
-
-    }
+    // let { dispatch, album } = this.props 
+    // if(prevProps.album._key != album._key) {
+    //   let views = !album.views ? 0 : album.views
+    //   album.views = views + 1
+    //   album.key = album._key
+    //   dispatch(albumUpdate(album))
+    // }
   }
 
   render() {
@@ -47,7 +54,7 @@ class ViewPhoto extends PureComponent {
 
     return (
       <div>
-        <PageHead icon="bars" title={state.name} history={this.props.history} />
+        <PageHead icon={icons['photo_view']} title={state.name} history={this.props.history} />
         <Row>
         {
           this.props.photos.length > 0 ?
@@ -84,13 +91,14 @@ class ViewPhoto extends PureComponent {
             />
         }
         </Row>
-        <PhotoFoot photos={this.props.photos} history={this.props.history} />
+        <PhotoFoot album={this.props.album} photos={this.props.photos} />
       </div>
     )   
   }  
 }
 
 const mapStateToProps = state => ({
+  album: state.albumCurrent,
   photos: state.photos
 })
 

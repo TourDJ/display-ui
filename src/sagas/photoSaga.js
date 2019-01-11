@@ -1,5 +1,5 @@
 import { takeEvery, take, call, put } from 'redux-saga/effects'
-import { photoType, photoBatchType } from '../actions/actionTypes'
+import { photoType, photoBatchType, photoStateType } from '../actions/actionTypes'
 import { getAlbumPhotos, savePhoto, deletePhoto, 
   updatePhoto, savePhotos
 } from  '../services/photos'

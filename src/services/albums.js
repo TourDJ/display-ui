@@ -9,6 +9,13 @@ export async function getCategoryAlbums(category) {
   return result
 }
 
+export async function getAlbum(key) {
+  const result = request(`/album/${key}`, {
+    method: 'GET'
+  })
+  return result
+}
+
 //Add a album in a category
 export async function addAlbum(album) {
   const result = request(`/album/add`, {

@@ -1,25 +1,32 @@
 import React , { PureComponent } from 'react'
+import { connect } from 'react-redux'
 import { 
   Row, 
   Col,
   Rate,
   Divider
 } from 'antd'
+import { albumUpdate } from '../../actions'
 import styles from './photo.less'
 import locale from '../../../config/locale'
 
 class PhotoFoot extends PureComponent {
 
   componentDidMount() {
-    console.log(this.props)
+    
   }
 
-  starHandle = (value) => {
-    const { history } = this.props
-    console.log(value)
+  starHandle = (album, value) => {
+    const { dispatch } = this.props
+    dispatch(albumUpdate({
+      key: album._key,
+      star: value
+    }))
   }
 
   render() {
+    const { album } = this.props
+
     return (
       <Row>
         {
@@ -28,7 +35,7 @@ class PhotoFoot extends PureComponent {
             <Col>
               <Divider />
               <strong className={styles.photoFootTitle}>{locale['photo.view.foot.rate']}&nbsp;</strong>
-              <Rate defaultValue={1} onChange={(value) => this.starHandle(value)} />
+              <Rate defaultValue={album.star} onChange={(value) => this.starHandle(album, value)} />
             </Col>
           </Row>
           : null
@@ -38,4 +45,15 @@ class PhotoFoot extends PureComponent {
   }
 }
 
-export default PhotoFoot
+const mapStateToProps = state => ({
+  album: state.albumCurrent
+})
+
+const mapDispatchToProps = dispatch => ({
+  dispatch: dispatch
+})  
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PhotoFoot)

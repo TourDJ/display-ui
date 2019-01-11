@@ -1,7 +1,8 @@
 import locale from './locale'
 
-//Crumb hierachy definition setting
-const crumbDefine = {
+//Crumb hierachy definition setting, it's used for generate bread crumbs.
+//The data structure defined below demstrate
+const crumbs = {
   "/": {
     serial: 1,
     level: 1,
@@ -76,4 +77,4 @@ const crumbDefine = {
   }
 }
 
-export default crumbDefine
+export default crumbs
